@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>架构理念 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5/</link>
+    <description>Recent content in 架构理念 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>波波的架构理念</title>
+      <link>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</link>
+      <pubDate>Thu, 17 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</guid>
+      <description>背景 近期我会陆陆续续把我之前在infoq/聊聊架构等媒体上发表的文章，陆续搬到我的公司博客JSkillCloud上，这个是第一篇。 这篇有特殊</description>
+    </item>
+    
+  </channel>
+</rss>

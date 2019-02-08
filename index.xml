@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JSkillCloud</title>
+    <link>http://jskillcloud.com/</link>
+    <description>Recent content on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 17 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>波波的架构理念</title>
+      <link>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</link>
+      <pubDate>Thu, 17 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</guid>
+      <description>背景 近期我会陆陆续续把我之前在infoq/聊聊架构等媒体上发表的文章，陆续搬到我的公司博客JSkillCloud上，这个是第一篇。 这篇有特殊</description>
+    </item>
+    
+    <item>
+      <title>Welcome to JSkillCloud Blog</title>
+      <link>http://jskillcloud.com/2017/11/03/hello-world/</link>
+      <pubDate>Sat, 04 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/2017/11/03/hello-world/</guid>
+      <description>“Yeah It&amp;rsquo;s on. ” Hello World!</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://jskillcloud.com/search/placeholder/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/search/placeholder/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://jskillcloud.com/top/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/top/about/</guid>
+      <description>JSkillCloud 全称上海掘艺网络技术有限公司，是一家技术咨询公司，公司专注开源微服务技术的培训和咨询。
+公司使命：
+ 分享和推广开源微服务技术 帮助研发人员学习和掌握微服务技术 帮助企业落地微服务架构，赋能业务创新  创始人 杨波 网名波波 具有超过15年的互联网分布式系统架构和研发经验，曾先后就职于：
+ 亿贝中国研发中心[2007~2012]，任资深软件研发工程师，参与亿贝大规模分布式开放API平台研发。 携程旅游网[2012~2015]，任基础框架研发总监，主导携程大规模分布式SOA基础架构体系建设。 拍拍贷[2016~2018]，任基础架构研发总监，主导拍拍贷微服务基础架构体系建设。  杨波专注的技术领域包括：互联网基础架构，微服务架构，中间件，Docker/K8s/PaaS，云原生架构和DevOps等。</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://jskillcloud.com/top/books/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/top/books/</guid>
+      <description>Machine learning学习笔记 Coursera 在线课程 Machine learning 笔记 讲师: 吴恩达(Andrew Ng)  课程地址：https://www.coursera.org/learn/machine-learning</description>
+    </item>
+    
+  </channel>
+</rss>

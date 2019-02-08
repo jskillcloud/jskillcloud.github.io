@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/2017/11/03/hello-world/</loc>
+    <lastmod>2017-11-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/search/placeholder/</loc>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/top/about/</loc>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/top/books/</loc>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/post/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/search/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/top/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/tags/%E5%BA%B7%E5%A8%81%E6%B3%95%E5%88%99/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/categories/%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%81%93/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5/</loc>
+    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

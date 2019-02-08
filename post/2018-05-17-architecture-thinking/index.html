@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="波波的架构理念" />
+    <meta property="og:title" content="波波的架构理念" />
+    <meta property="twitter:title" content="波波的架构理念" />
+    
+
+    
+    <meta name="description" content="波波近年通过实践和总结梳理出来的架构理念">
+    <meta property="og:description" content="波波近年通过实践和总结梳理出来的架构理念" />
+    <meta property="twitter:description" content="波波近年通过实践和总结梳理出来的架构理念" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>波波的架构理念-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-05-17-architecture-thinking/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%81%93">架构之道</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/xes.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5" title="架构理念">
+                            架构理念
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%BA%B7%E5%A8%81%E6%B3%95%E5%88%99" title="康威法则">
+                            康威法则
+                        </a>
+                        
+                    </div>
+                    <h1>波波的架构理念</h1>
+                    <h2 class="subheading">波波近年通过实践和总结梳理出来的架构理念</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Thursday, May 17, 2018
+                        
+                            <span id="/post/2018-05-17-architecture-thinking/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#背景">背景</a></li>
+<li><a href="#一-我对架构定义的理解">一、我对架构定义的理解</a></li>
+<li><a href="#二-架构的迭代和演化性">二、架构的迭代和演化性</a></li>
+<li><a href="#三-构建闭环反馈架构">三、构建闭环反馈架构</a></li>
+<li><a href="#四-再谈微服务">四、再谈微服务</a></li>
+<li><a href="#五-架构和组织文化关系">五、架构和组织文化关系</a></li>
+<li><a href="#六-架构师心态和软技能">六、架构师心态和软技能</a></li>
+<li><a href="#七-我对一些架构争议主题的看法">七、我对一些架构争议主题的看法</a></li>
+<li><a href="#最后">最后</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h2 id="背景">背景</h2>
+
+<p>近期我会陆陆续续把我之前在infoq/聊聊架构等媒体上发表的文章，陆续搬到我的公司博客<strong><em>JSkillCloud</em></strong>上，这个是第一篇。</p>
+
+<p>这篇有特殊的意义，2015年下半年的时候，我还没有养成定期总结梳理的习惯，是极客邦的郭蕾鼓励我尝试。今天回头看，这个投资有很大价值，这一路积累了不少东西，后面需要持续积累，将价值和影响力进一步扩大化。</p>
+
+<p>我之前的背景主要是做互联网框架、中间件和平台架构，之前工作过的公司eBay、携程、唯品会都是平台型互联网公司，所以今天主要带着系统和平台架构的视角和大家分享心得体会。架构的视角每个人都不一样，可以说是一万种眼光，有业务架构、平台架构、数据架构、安全架构等等，各不相同，这里仅仅是我的一家之言，欢迎大家参与讨论。今天聊的话题主要包括以下几点：</p>
+
+<ol>
+<li>我对架构定义的理解</li>
+<li>架构的迭代和演化性</li>
+<li>构建闭环反馈架构</li>
+<li>再谈微服务架构</li>
+<li>架构和组织文化关系</li>
+<li>架构师心态和软技能</li>
+<li>我对一些架构争议主题的看法</li>
+</ol>
+
+<h2 id="一-我对架构定义的理解">一、我对架构定义的理解</h2>
+
+<p>大概10年前，我曾经有一个对口的美国架构导师，他对我讲架构其实是要找出干系人（stakeholders），然后解决他们的关注点(concerns)。后来我读到一本书《软件系统架构：使用视点和视角与利益相关者合作》，里面提到的理念也是这样的：系统架构的目标是解决利益相关者或者关系人的关注点。</p>
+
+<p><img src="/img/20180517/whats_arch.png" alt="what's architecture" /></p>
+
+<p>这是从那本书里头截取的一张图，我之前分享架构定义常常用这张图，架构是这样定义的：</p>
+
+<ol>
+<li>每个系统都有一个架构，</li>
+<li>架构由架构元素以及相互之间的关系构成，</li>
+<li>系统是为了满足干系人（stakeholder）的需求而构建的，</li>
+<li>干系人都有自己的关注点(concerns),</li>
+<li>架构由架构文档描述，</li>
+<li>架构文档描述了一系列的架构视角，</li>
+<li>每个视角都对应到并解决干系人的关注点。</li>
+</ol>
+
+<p>对系统进行架构前，架构师的首要任务是尽最大可能找出所有的干系人，业务方、产品经理、客户/用户、开发经理，工程师、项目经理、测试人员、运维人员、产品运营人员等等都有可能是干系人，架构师要充分和干系人沟通，深入理解他们的关注点和痛点，并出架构解决这些关注点。架构师常犯错误是漏掉重要的干系人，沟通不充分，都会造成架构有欠缺，不能满足干系人的需求。干系人的关注点是有可能冲突的，比如管理层（可管理性）vs技术方(性能)，业务方(多快好省) vs 技术方（可靠稳定），这需要架构师去灵活平衡，如何平衡体现了架构师的水平和价值。</p>
+
+<p>关于架构的第二点定义是说架构主要关注非功能性需求(non-functional requirements)，即所谓的-abilities，</p>
+
+<p><img src="/img/20180517/ability.png" alt="non-functional requirements" /></p>
+
+<p>上图是我上次在公司内分享的一个图，</p>
+
+<p><img src="/img/20180517/arch_requirements.png" alt="non-functional requirements" /></p>
+
+<p>上图是在slideshare上的一个ppt里头截取出来，两个图都是列出架构师经常需要关注的非功能性需求。</p>
+
+<p>另外，去年我偶尔看到UML创始人Grady Booch是这样描述架构的：</p>
+
+<blockquote>
+<p>“Architecture represents the significant design decisions that shape a system, where significant is measured by cost of change”。
+翻译成中文就是，架构表示对一个系统的成型起关键作用的设计决策， 架构定系统基本就成型了，这里的关键性可由变化造成的成本来衡量。</p>
+</blockquote>
+
+<p>进一步展开讲，架构的目标在于管理复杂性、易变性和不确定性，以确保在长期的系统演化过程中，一部分架构的变化不会对架构的其它部分产生不必要的负面影响。这样做可以确保业务和研发效率的敏捷，让应用的易变部分能够频繁地变化，对应用的其它部分的影响尽可能地小。</p>
+
+<p>我进入软件开发行业之初，关注的架构主要是性能，高可能等方面。如今，见过无数遗留系统，特别是国内企业IT的现状，无数耦合性高的遗留系统，不良的架构像手铐一样牢牢地限制住业务，升级替换成本巨大，所以我现在更关注系统可扩展性，可维护性，可替换性，成本。我顺便补充一句，<strong>创业公司创业之初获得好的架构师或技术CTO非常重要</strong>，这种重要性在创业公司跨过Product/Market Fit之后，进入Scale规模化阶段就更加明显。</p>
+
+<h2 id="二-架构的迭代和演化性">二、架构的迭代和演化性</h2>
+
+<p>我是属于老一代的架构师，99年参加工作。职业初期学了很多RUP(Rational Unified Process)，即统一软件过程的理念，RUP的理念对我的架构有很深的影响，RUP总结起来有三个特点：</p>
+
+<ol>
+<li>用例和风险驱动（Use Case and Risk Driven）</li>
+<li>以架构为中心（Architecture Centric）</li>
+<li>迭代和增量式开发（Iterative and Incremental）</li>
+</ol>
+
+<p>RUP注重架构，提倡以架构作为最大风险之一驱动开发，并提倡一开始要做端到端的原型prototype，通过压测等手段尽早验证架构可行性，然后在原型基础上持续迭代和增量开发，架构-&gt;开发-&gt;测试-&gt;调整架构-&gt;开发，循环，如下图所示：</p>
+
+<p><img src="/img/20180517/arch_loop.png" alt="arch loop" /></p>
+
+<p>从上图看出，架构师要尽可能写代码，做测试，纯纸上谈兵式做架构而后丢给研发团队的作法非常不靠谱（除非是已经非常成熟清晰的领域）。</p>
+
+<p>另外，做技术架构的都有点完美主义倾向，一开始往往喜欢求大求全，忽视架构的演化和迭代性，这种倾向易造产品和用户之间不能形成有效的反馈，产品不满足最终用户需求，继续看下面两个图：</p>
+
+<p><img src="/img/20180517/mvp.png" alt="mvp" /></p>
+
+<p><img src="/img/20180517/over_engineering.png" alt="over engineering" /></p>
+
+<p>第一个图是讲最小可用产品（Minimum Viable Product， MVP）理念，做出最小可用产品，尽快丢给用户试用，快速获取客户反馈，在此基础上不断迭代和演化架构和产品。第二个图是过度工程(Over Engineering)的问题，其实也是讲产品架构和用户之间没有形成有效的反馈闭环，架构师想的和客户想的不在一个方向上，通过最小可用产品，快速迭代反馈的策略，可以避免这种问题。</p>
+
+<p><strong>注意，在系统真正地投入生产使用之前，再好的架构都只是假设，产品越晚被使用者使用，失败的成本和风险就越高，而小步行进，通过MVP快速实验，获取客户反馈，迭代演化产品，能有效地减少失败的风险和成本。</strong></p>
+
+<p>另外，多年的经验告诉我，架构，平台不是买来的，不是用一个开源能马上获得的，也不是单纯设计出来的，而是长期演化才能落地生根的，给大家推荐两篇不错的文章(具体链接可以用搜索引擎在网上搜一下)：</p>
+
+<ol>
+<li>58同城沈剑：好的架构源于不停地衍变，而非设计</li>
+<li>宜人贷系统架构—高并发下的进化之路</li>
+</ol>
+
+<p>两篇文章都是讲互联网系统的迭代演化之路，值得每个架构师学习吸收。</p>
+
+<h2 id="三-构建闭环反馈架构">三、构建闭环反馈架构</h2>
+
+<p>先分享这几年对我的架构理念影响最深的一篇文章的链接，这篇文章是关于DevOps的，但对系统架构同样适用。文章名称<a href="http://itrevolution.com/the-three-ways-principles-underpinning-devops/">The Three Ways: The Principles Underpinning DevOps</a>。</p>
+
+<p>这篇文章讲述了企业通向DevOps的三条必经之路，我们来看看这三条道路对架构师的启示：</p>
+
+<p><img src="/img/20180517/first_way.png" alt="The First Way" /></p>
+
+<p>第一条道路，<strong>系统思维</strong>，开发驱动的组织机体，其能力不是制作软件，而是持续的交付客户价值，架构师需要有全局视角和系统思维(System Thinking)，深入理解整个价值交付链，从业务需求、研发、测试、集成，到部署运维。这条价值链的效率并不依赖于单个或者几个环节，局部优化的结果往往是全局受损，架构师要站在系统高度去优化整个价值交付链，让企业和客户之间形成快速和高效的价值传递。</p>
+
+<p><img src="/img/20180517/second_way.png" alt="The Second Way" /></p>
+
+<p>第二条道路，<strong>强化反馈环</strong>，任何过程改进都是通过加强和缩短反馈环来达成的，而反馈需要测量和数据，有两句话值得推荐给大家：</p>
+
+<ul>
+<li>No measurement, no improvement，没有测量，就没有改进和提升</li>
+<li>What you measure is what you get，你测量什么，就得到什么</li>
+</ul>
+
+<p>没有监控或者监控不完善的系统相当于开车上高速却无仪表盘，看不到反馈。Infoq上有一篇很不错的关于<a href="http://www.infoq.com/cn/articles/metrics-driven-development">测量驱动开发</a>的文章，推荐阅读。</p>
+
+<p>这篇文章提出了度量驱动开发的理念，即所谓MDD，在系统、应用和业务，通过三级监控，构建三个反馈环，在监控测量基础上持续改进系统和架构。我最近也在参考这个理念设计一个电商平台的技术架构体系，见下图：</p>
+
+<p><img src="/img/20180517/platform_arch.png" alt="platform arch" /></p>
+
+<p>该体系同样采用了三级监控和闭环反馈的理念：
+* 系统层监控计算、网络、存储，构建系统层的反馈环，
+* 应用服务层，监控业务、应用、服务，甚至整个研发流程，构建应用和服务层的反馈环，
+* 客户体验层，监控端用户和分析网站用户的行为，构建和客户的反馈环。</p>
+
+<p>下面这个图展示了系统提升和改进的一般方法，</p>
+
+<p><img src="/img/20180517/measure_loop.png" alt="measure loop" /></p>
+
+<p>收集-&gt;测量-&gt;调整-&gt;闭环重复，在有测量数据和反馈的基础上，系统、应用、流程和客户体验才有可能获得持续的提升和改善，否则没有数据的所谓改进只能靠拍脑袋或者说猜测。</p>
+
+<p><img src="/img/20180517/third_way.png" alt="The Third Way" /></p>
+
+<p>第三条道路，<strong>鼓励勇于承担责任，冒险试错和持续提升的文化</strong>。这点是最难的，一般和企业人才密度有关。工具，技术，流程只是一个公司的冰山浮出水面的部分，而真正对企业效能影响大的则是冰山水下的部分，即企业的人和文化，架构师作为技术和架构的布道者，有责任义务鼓励和推动试错文化。</p>
+
+<p>总之，架构师要深入领会这三条道路，关注整个价值交付链的效率，关注每个环节的闭环反馈，鼓励和推动公司的试错文化，打造全系统的闭环架构（Architecting for closed loop feedback），提升整个系统效能。下图的DevOps和每日交付是每一个互联网系统架构师的梦想和努力的方向。</p>
+
+<p><img src="/img/20180517/devops_pipeline.png" alt="devops pipeline" /></p>
+
+<h2 id="四-再谈微服务">四、再谈微服务</h2>
+
+<p>微服务我想大家都听得很多了，我本人也非常关注和推崇微服务。从技术角度讲，我认为微服务主要体现的是单一职责和关注分离的思想，从单进程模块化进一步扩展到跨进程分布式的模块化。微服务是独立的开发、测试、部署和升级单元，正如我在第一点架构定义中提到的，微服务中每个服务可以独立演变，它的cost of change比较小，整体架构比较灵活，是一种支持创新的演化式架构。</p>
+
+<p>MartinFowler之前写过两篇文章，给微服务泼凉水，建议大家好好读读：</p>
+
+<ul>
+<li><a href="http://martinfowler.com/bliki/MicroservicePrerequisites.html">微服务先决条件</a></li>
+<li><a href="http://martinfowler.com/bliki/MicroservicePremium.html">微服务的额外成本</a></li>
+</ul>
+
+<p>第二篇文章里有个图，讲企业在什么时候引入微服务合适，</p>
+
+<p><img src="/img/20180517/microservice_premium.png" alt="microservices premium" /></p>
+
+<p>微服务有额外成本，需要搭建配套的框架、发布和监控等基础设施。初创和小规模团队不建议采用。主要决定因素是系统复杂性和团队规模，当到达一个点，单块架构严重影响效率才考虑引入微服务。</p>
+
+<p><strong>另外补充一点，微服务更多是关于组织和团队的，而不是技术。</strong></p>
+
+<h2 id="五-架构和组织文化关系">五、架构和组织文化关系</h2>
+
+<p>再谈一下康威定律：</p>
+
+<blockquote>
+<p>Conway’s law: Organizations which design systems[&hellip;] are constrained to produce designs which are copies of the communication structures of these organizations.
+（设计系统的组织，其产生的设计和架构等价于组织间的沟通结构。）</p>
+</blockquote>
+
+<p>从单块架构到微服务架构的衍变是这个定律的体现，</p>
+
+<p><img src="/img/20180517/conway_law1.png" alt="conway's lay 1" /></p>
+
+<p>团队是分布式的，系统架构是单块的，开发、测试、部署协调沟通成本大，严重影响效率，严重时团队之间还容易起冲突conflict。</p>
+
+<p><img src="/img/20180517/conway_law2.png" alt="conway's lay 2" /></p>
+
+<p>将单块架构解耦成微服务，每个团队开发，测试和发布自己负责的微服务，互不干扰，系统效率得到提升。</p>
+
+<p>可见，组织和系统架构之间有一个映射关系（1 ~ 1 mapping），两者不对齐就会出各种各样的问题。一方面，如果你的组织结构和文化结构不支持，你就无法成功建立高效的系统架构，例如集中式和严格职能（业务/Dev/QA/Deployment/Ops）的企业，很难推行微服务和DevOps，这样的组织职能之间都倾向于局部优化（local optimization），难于形成有效的合作和闭环。</p>
+
+<p>反过来也是成立的，如果你的系统设计或者架构不支持，那么你也就无法成功建立一个高效的组织。</p>
+
+<p>作为系统架构师，一定要深入领会康威定律，设计系统架构之前，先看清组织结构，也要看组织文化（民主合作式、集权式、丛林法则式和人才密度等），再根据情况调整系统架构甚至是组织架构。</p>
+
+<h2 id="六-架构师心态和软技能">六、架构师心态和软技能</h2>
+
+<p>空杯，或者说开放（open minded）心态，是一个成熟架构师的应有心态。你的杯子是空的，才能容纳新的东西，保持愚蠢，保持饥饿，心态有多开放，视野就有多开阔。与人沟通协作是不少技术型架构师的软肋，尤其在听到不同意见和不同视角观点的时候。这里有来自《高效能人士的七个习惯~史蒂芬.柯维》的一句话送给每一个架构师：</p>
+
+<blockquote>
+<p><strong>如果一位具有相当聪明才智的人跟我意见不同，那么对方的主张必有我尚未体会的奥秘，值得加以了解。与人合作最重要的是，重视不同个体的不同心理、情绪与智能，以及个人眼中所见的不同世界。与所见略同的人沟通，益处不大，要有分歧才有收获。</strong></p>
+</blockquote>
+
+<p>另外再推荐一本书《软件架构师的12项修炼》，这本书中的三个软技能观点值得每个架构师学习领会：</p>
+
+<ol>
+<li>Soft skills are always hard than hard skills，软技能比硬技能难</li>
+<li>Choosing relationship over correctness，注重关系重于争论孰对孰错</li>
+<li>架构的政治性，在大中型公司里工作的架构师尤其要学习。政治指的是和他人协作并将事情搞定的艺术，架构是一种社交活动，在技术的世界里，个人主义很容易被打败，即使你的目的是好的技术是最优的。技术决策是政治决策（technical decisions are political decisions），一个技术产品，一波人可以做，另一波人也可以做，到底谁做的好，真不好说，但不管谁做，都给业务套上了一副手铐。</li>
+</ol>
+
+<p>架构师如何提升？实战，实战，实战！管理好自己的时间，规划职业，找好的团队和项目，总结分享，学习GitHub开源项目，尽可能参与和开创自己的开源项目和产品，并长期积累。</p>
+
+<h2 id="七-我对一些架构争议主题的看法">七、我对一些架构争议主题的看法</h2>
+
+<p>主要有两个争议主题：</p>
+
+<ol>
+<li>技术和业务的关系，</li>
+<li>架构师要写代码吗？</li>
+</ol>
+
+<p>对于这类问题，一个聪明和有经验的回答是：视情况而定，不一定，是也不是，it depends。</p>
+
+<p>技术和业务，架构师要理解业务吗？看产品和客户，如果是业务型产品，肯定要理解业务，如果是技术型产品，就不一定。但是技术产品也是有客户的，所以技术也好，业务也好，找准客户满足他们的需求是关键，脱离客户和产品，空谈技术或业务无意义。</p>
+
+<p>架构师要写代码？也不一定，个人觉得尽可能要写，如果你写过十年以上代码了，每年不少于2万行，都玩通了，可以不写。另外架构师如果写代码，要把控度，不要一头钻入代码，花大量时间解决细节和复杂性问题，忽视全局和系统性问题。</p>
+
+<h2 id="最后">最后</h2>
+
+<p>我想说中国现在的互联网发展趋势很好，越来越多的人加入架构师这个行业，这个行业正在&rdquo;万物生长&rdquo;。 但是我们现在还没有马丁福勒，adrian cockcroft这样的架构大牛人物。我辈仍需不断努力，期待中国10~20年后出现超过十个马丁福勒，adrian cockcroft这样的大牛级人物。</p>
+
+<blockquote>
+<p>我们必不可停止探索，而一切探索的尽头，就是重回起点，并对起点有首次般的认识。</p>
+</blockquote>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2017/11/03/hello-world/" data-toggle="tooltip" data-placement="top" title="Welcome to JSkillCloud Blog">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>
