@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="Welcome to JSkillCloud Blog" />
-    <meta property="og:title" content="Welcome to JSkillCloud Blog" />
-    <meta property="twitter:title" content="Welcome to JSkillCloud Blog" />
+    <meta name="title" content="SoundCloud微服务是如何分层的？" />
+    <meta property="og:title" content="SoundCloud微服务是如何分层的？" />
+    <meta property="twitter:title" content="SoundCloud微服务是如何分层的？" />
     
 
     
-    <meta name="description" content="掘艺云的博客, 开源微服务技术培训和咨询 | 这里是 掘艺云 的博客，与你一起学习开源微服务技术。">
-    <meta property="og:description" content="掘艺云的博客, 开源微服务技术培训和咨询 | 这里是 掘艺云 的博客，与你一起学习开源微服务技术。" />
-    <meta property="twitter:description" content="掘艺云的博客, 开源微服务技术培训和咨询 | 这里是 掘艺云 的博客，与你一起学习开源微服务技术。" />
+    <meta name="description" content="SoundCloud是一家德国网站，提供音乐分享社区服务，成长很快，Alexa世界排名已经进入200位以内。本文以SoundCloud公司为案例，通过一系列架构视图，展示SoundCloud微服务架构的分层组织方式。">
+    <meta property="og:description" content="SoundCloud是一家德国网站，提供音乐分享社区服务，成长很快，Alexa世界排名已经进入200位以内。本文以SoundCloud公司为案例，通过一系列架构视图，展示SoundCloud微服务架构的分层组织方式。" />
+    <meta property="twitter:description" content="SoundCloud是一家德国网站，提供音乐分享社区服务，成长很快，Alexa世界排名已经进入200位以内。本文以SoundCloud公司为案例，通过一系列架构视图，展示SoundCloud微服务架构的分层组织方式。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Welcome to JSkillCloud Blog-掘艺云 | JSkillCloud</title>
+    <title>SoundCloud微服务是如何分层的？-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/2017/11/03/hello-world/">
+    <link rel="canonical" href="/post/2018-06-29-soundcloud-microservices-layers/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/nested_squares.png')
+        background-image: url('/img/background/diamonds.png')
     }
 </style>
 <header class="intro-header">
@@ -161,18 +161,26 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%86%E5%B1%82" title="微服务分层">
+                            微服务分层
+                        </a>
+                        
                     </div>
-                    <h1>Welcome to JSkillCloud Blog</h1>
-                    <h2 class="subheading">Hello World, Hello Blog</h2>
+                    <h1>SoundCloud微服务是如何分层的？</h1>
+                    <h2 class="subheading"></h2>
                     <span class="meta">
 			Posted by 
 			
-			    杨波
+			         &#34;杨波&#34;
 			 
 			on 
-			Saturday, November 4, 2017
+			Friday, June 29, 2018
                         
-                            <span id="/2017/11/03/hello-world/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-06-29-soundcloud-microservices-layers/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -334,18 +342,93 @@ $(function() {
 <ul>
 <li>
 <ul>
-<li><a href="#hello-world">Hello World!</a></li>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#soundcloud微服务分层架构">SoundCloud微服务分层架构</a></li>
+<li><a href="#结论">结论</a></li>
+<li><a href="#附录">附录</a></li>
 </ul></li>
 </ul>
 </nav>
                 
                 
 
-<blockquote>
-<p>“Yeah It&rsquo;s on. ”</p>
-</blockquote>
+<h2 id="介绍">介绍</h2>
 
-<h2 id="hello-world">Hello World!</h2>
+<p>在前一篇<a href="/post/2018-06-07-bff-gateway-evolution/">BFF和网关是如何演化出来的</a>文章中，我向大家解释了BFF和网关是什么，在微服务架构体系中各承担什么职责，以及它们是如何演化出来的。在上一篇<a href="/post/2018-06-28-netflix-microservices-layers/">Netflix的微服务是如何分层的</a>一文中，我以Netflix公司为案例，分析了Netflix的微服务分层架构的组织方式和近期演进。</p>
+
+<p>本文继续以SoundCloud公司为案例，通过一系列架构视图，展示SoundCloud微服务架构的分层组织方式。如果你阅读并理解了前面两篇文章的内容，那么就比较容易理解本文的内容，所有本文的分析会相对简单一点。</p>
+
+<p>注，SoundCloud是一家德国网站，提供音乐分享社区服务，成长很快，Alexa世界排名已进入200位以内。</p>
+
+<h2 id="soundcloud微服务分层架构">SoundCloud微服务分层架构</h2>
+
+<p>下图展示SoundCloud微服务分层架构：</p>
+
+<p><img src="/img/post/20180629/layered_msa_04.png" alt="layered msa architecture 04" />
+图片来自附录1</p>
+
+<p>分析：</p>
+
+<ol>
+<li>SouldCloud采用经典的三层微服务架构，用户体验层-&gt;边界BFF层-&gt;后端微服务层</li>
+<li>SoundCloud的BFF主要分为四类：
+
+<ul>
+<li>面向主站的Api-V2 BFF</li>
+<li>面向移动端的Api-mobile BFF</li>
+<li>面向嵌入页面场景的Api-embeded BFF</li>
+<li>面向开放平台场景的Public API BFF</li>
+</ul></li>
+<li>SoundCloud没有像Netflix那样的独立的网关Gateway层，它的BFF层融合了网关功能+服务聚合裁剪和适配功能</li>
+<li>SoundCloud的微服务分层架构也是为了应对业务和技术挑战，不断演化出来的。关于其内部微服务的演进历程，以及BFF在演进中扮演的角色，可以参考ThoughtWorks上的文章BFF@SoundCloud[附录3]</li>
+</ol>
+
+<p>下面是SoundCloud微服务的另一个架构视图，展示了一些额外细节，
+<img src="/img/post/20180629/layered_msa_01.png" alt="layered msa architecture 01" />
+图片来自附录2</p>
+
+<p>分析：</p>
+
+<ol>
+<li>SoundCloud的BFF层兼具网关作用，会横向调用一些跨横切面的服务，例如，限流，认证，安全和ip定位等。这些跨横切面的能力由网关统一处理以后，后面的微服务就不需要再调用。</li>
+<li>SoundCloud对其微服务层又进一步做了一次细分：
+
+<ul>
+<li>基础服务层，SoundCloud最底层的领域服务，例如tracks/users/playlists/stats/images等。</li>
+<li>增值服务层，在基础服务基础上再封装提供一些增值的服务，例如track-coordinator/timeline/creator-stats等。</li>
+</ul></li>
+</ol>
+
+<p>下面是SoundCloud微服务的另外一个更全面的架构视图
+<img src="/img/post/20180629/layered_msa_02.png" alt="layered msa architecture" />
+图片来自附录1</p>
+
+<h2 id="结论">结论</h2>
+
+<ol>
+<li>Netflix的微服务架构有独立的网关层，SoundCloud则没有独立网关层，它的网关和BFF层是融合在一起的。我认为这个和两家公司的业务体量和团队规模不同有关。Netflix业务体量更大也更复杂，需要独立的网关层实现架构上的关注分离，保障研发交付效率。SoundCloud则业务体量和团队规模相对小，暂时还没有分解那么细。将网关和BFF融合的做法，在国内很多公司也是这么实践的。</li>
+<li>SoundCloud对其微服务还进行了一层细分，包括基础服务+增值服务，这个应该是架构师根据需要，额外定义的一种架构分层规范，有助于研发人员更清晰理解架构，并遵循架构规范开展研发。</li>
+<li>Netflix/SoundCloud等大公司的微服务分层架构仅供参考，各家做法有差异，但是背后原理相同。架构师要理解其背后的分布式原理，然后灵活应用，不可拘泥照搬。</li>
+<li>SoundCloud还给出微服务架构的一种更抽象的描述，如下图所示，微服务架构本质上可以理解成是一种分布式的企业操作系统
+
+<ul>
+<li>内核是一个企业的业务领域基础服务</li>
+<li>第二层是BFF，将基础服务聚合裁剪适配，暴露面向不同用户体验的API</li>
+<li>第三层是面向不同用户体验(无线\PC\开放平台等)的客户应用</li>
+<li>最外层是使用这个企业操作系统的用户</li>
+</ul></li>
+</ol>
+
+<p><img src="/img/post/20180629/distributed_os.png" alt="msa os" />
+图片来自附录1</p>
+
+<h2 id="附录">附录</h2>
+
+<ol>
+<li><a href="https://www.slideshare.net/grandbora/soundclouds-toolbox-for-microservices">SoundCloud&rsquo;s Toolbox for Microservices</a></li>
+<li><a href="https://www.slideshare.net/grandbora/microservices-soundcloud">Microservices @ SoundCloud</a></li>
+<li><a href="https://www.thoughtworks.com/insights/blog/bff-soundcloud">BFF @ SoundCloud</a></li>
+</ol>
 
 
                 
@@ -353,11 +436,11 @@ $(function() {
                 <hr>
                 <ul class="pager">
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-05-17-architecture-thinking/" data-toggle="tooltip" data-placement="top" title="波波的架构理念">Next
-                            Post &rarr;</a>
+                    <li class="previous">
+                        <a href="/post/2018-06-28-netflix-microservices-layers/" data-toggle="tooltip" data-placement="top" title="Netflix微服务架构是如何分层的？">&larr;
+                            Previous Post</a>
                     </li>
+                    
                     
                 </ul>
 
@@ -531,7 +614,7 @@ $(function() {
                     
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; JSkillCloud , 2017
+                    Copyright &copy; JSkillCloud , 2018
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe

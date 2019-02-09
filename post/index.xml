@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 29 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SoundCloud微服务是如何分层的？</title>
+      <link>http://jskillcloud.com/post/2018-06-29-soundcloud-microservices-layers/</link>
+      <pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-06-29-soundcloud-microservices-layers/</guid>
+      <description>介绍 在前一篇BFF和网关是如何演化出来的文章中，我向大家解释了BFF和网关是什么，在微服务架构体系中各承担什么职责，以及它们是如何演化出来的</description>
+    </item>
     
     <item>
       <title>Netflix微服务架构是如何分层的？</title>
