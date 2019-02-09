@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="" />
-    <meta property="og:title" content="" />
-    <meta property="twitter:title" content="" />
+    <meta name="title" content="Netflix微服务架构是如何分层的？" />
+    <meta property="og:title" content="Netflix微服务架构是如何分层的？" />
+    <meta property="twitter:title" content="Netflix微服务架构是如何分层的？" />
     
 
     
-    <meta name="description" content="掘艺云的博客, 开源微服务技术培训和咨询 | 这里是 掘艺云 的博客，与你一起学习开源微服务技术。">
-    <meta property="og:description" content="掘艺云的博客, 开源微服务技术培训和咨询 | 这里是 掘艺云 的博客，与你一起学习开源微服务技术。" />
-    <meta property="twitter:description" content="掘艺云的博客, 开源微服务技术培训和咨询 | 这里是 掘艺云 的博客，与你一起学习开源微服务技术。" />
+    <meta name="description" content="本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。">
+    <meta property="og:description" content="本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。" />
+    <meta property="twitter:description" content="本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>掘艺云 | JSkillCloud</title>
+    <title>Netflix微服务架构是如何分层的？-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/search/placeholder/">
+    <link rel="canonical" href="/post/2018-06-28-netflix-microservices-layers/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/overlapping_rings.png')
+        background-image: url('/img/background/concentric_circles.png')
     }
 </style>
 <header class="intro-header">
@@ -161,18 +161,30 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                        <a class="tag" href="/tags/netflix" title="Netflix">
+                            Netflix
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%86%E5%B1%82" title="微服务分层">
+                            微服务分层
+                        </a>
+                        
                     </div>
-                    <h1></h1>
+                    <h1>Netflix微服务架构是如何分层的？</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
 			Posted by 
 			
-		            JSkillCloud
+			         &#34;杨波&#34;
 			 
 			on 
-			Monday, January 1, 0001
+			Thursday, June 28, 2018
                         
-                            <span id="/search/placeholder/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-06-28-netflix-microservices-layers/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -330,14 +342,115 @@ $(function() {
                 <header>
                     <h2>TOC</h2>
                 </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#netflix微服务分层架构-2017前">Netflix微服务分层架构(2017前)</a></li>
+<li><a href="#netflix微服务分层架构-2018">Netflix微服务分层架构(2018)</a></li>
+<li><a href="#结论">结论</a></li>
+<li><a href="#附录">附录</a></li>
+</ul></li>
+</ul>
+</nav>
                 
                 
-                
+
+<h2 id="介绍">介绍</h2>
+
+<p>在之前一篇<a href="/post/2018-06-07-bff-gateway-evolution/">BFF和网关是如何演化出来的</a>文章中，我向大家解释了BFF和网关Gateway是什么，在微服务架构体系中各承担什么职责，以及它们是如何演化出来的。</p>
+
+<p>在本文和后续一篇文章中，我会分析Netflix(本文)和SoundCloud(下一篇)两家公司的微服务分层架构，帮助大家更深入理解BFF和网关Gateway在分布式微服务架构中的地位和作用，以及前沿互联网公司的微服务架构是如何分层组织的。希望对架构师理解和实践微服务架构有所帮助。</p>
+
+<p>本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017~2018年间，Netflix对其微服务分层架构进行了升级，本文也会分析这次升级背后的架构驱动因素。</p>
+
+<h2 id="netflix微服务分层架构-2017前">Netflix微服务分层架构(2017前)</h2>
+
+<p>下面两个架构图分别展示2017年前的Netflix微服务分层架构，两个图展示的总体分层架构是一致的，只是视角不同：</p>
+
+<p><img src="/img/post/20180628/arch_2017_1.png" alt="arch 2017 before 1" />
+图片来自附录1</p>
+
+<p><img src="/img/post/20180628/arch_2017_2.png" alt="arch 2018 before 2" />
+图片来自附录2</p>
+
+<p>这个分层架构和《BFF和网关是如何演化出来的》一文中的V4架构基本类似，共分四个层次：</p>
+
+<ol>
+<li><strong>用户体验层</strong>，据说Netflix要支持超过一千种的不同设备体验，这个对Netflix技术团队特别是前端团队是一个巨大的挑战。</li>
+<li><strong>网关路由层</strong>，Netflix使用Zuul网关作为服务路由层，同时兼具安全认证，监控，限流熔断等跨横切面功能。Zuul网关无状态以集群方式部署，网关依赖AWS ELB做负载均衡。</li>
+<li><strong>边界API层</strong>，Netflix的裁剪聚合和适配层，也就是BFF层，将后端微服务，适配到不同的前端体验。在Netflix体系中，该层也称Edge Service Layer。</li>
+<li><strong>微服务层</strong>，Netflix的核心领域服务，也称中间层(Middle Tier)服务。</li>
+</ol>
+
+<p>网关+边界API层(BFF)+一些前端服务(如安全认证，Playback相关服务，DRM等)，统一由一个Netflix的前端团队负责，该团队也称边界工程(Edge Engineering)团队。</p>
+
+<p>因为Netflix要应对处理的设备类型巨多，所以它们在边界层投入了很大工程技术资源，2017年前Netflix的边界API层(BFF)具有下面架构特点：</p>
+
+<ol>
+<li>整个边界API层(BFF)住在一个PaaS平台里头，称为Edge PaaS。</li>
+<li>Edge PaaS本质上是一个动态脚本平台(Dyanmic Scripting Platform)，支持使用Groovy等JVM脚本语言，方便前端团队快速聚合裁剪后端微服务，并向前端设备暴露友好的API。之所以使用动态脚本语言Groovy，主要是考虑脚本语言对前端开发的友好性和生产率。</li>
+<li>Edge PaaS里头同时预置后端微服务的Java客户端SDK，方便Groovy脚本调用后端服务，同时对客户端进行Hystrix埋点，保障对后台微服务调用的稳定性。</li>
+<li>由于前端需求变更比较频繁，所以Edge PaaS里头的脚本一般更新也比较频繁，前端团队可以按需每日更新，上传动态脚本即可。</li>
+<li>如果后端微服务有升级更新，一般需要升级Edge PaaS里头的客户端SDK，但是这个不是频繁操作，一般以固定周期（比如两周一个full release）发生，但是集成回归测试成本还是比较高的。</li>
+</ol>
+
+<p>关于Netflix动态脚本平台的更多技术细节，可以参考其官方博客[附录4]。</p>
+
+<h2 id="netflix微服务分层架构-2018">Netflix微服务分层架构(2018)</h2>
+
+<p>上述的Edge PaaS其实是一个单块架构，随着Netflix的前端业务变得更加复杂，Edge PaaS也逐渐遭遇康威法则的约束，暴露出如下问题：</p>
+
+<ol>
+<li>Edge PaaS里头同时耦合了前端聚合裁剪适配和后端API/SDK逻辑，当后端API有升级，一般需要升级Edge PaaS里头的客户端SDK，这种升级可能因不兼容和测试不充分，造成前端业务代码出问题。总体上前后端团队因升级、集成测试而造成的沟通协调成本非常大。</li>
+<li>所有面向用户体验的脚本逻辑都住在一套Edge PaaS里头，缺乏隔离性，当某个团队的脚本有bug，很容易负面影响到其它脚本。整个Edge PaaS也是一个大单点(Single Point of Failure)，严重脚本缺陷或者流量洪峰可致集群宕机。</li>
+<li>前端脚本有上传快和动态加载等优势，但是本地调试不方便，很多依赖的环境(Edge PaaS + API/SDK)难以在本地开发环境复制，造成开发反馈效率低下，出现问题排障困难。</li>
+</ol>
+
+<p>为解决上述问题，Netflix边界工程团队对Edge PaaS的架构进行了调整，从单块一分为二，新的架构如下图所示：
+<img src="/img/post/20180628/arch_2018_new.png" alt="arch 2018 new" />
+图片来自附录3</p>
+
+<p>主要变化是将边界API层分成两个子层次：</p>
+
+<ol>
+<li><strong>API聚合层</strong>，专注对后端微服务进行聚合，提供前端友好、抽象统一的API。API聚合层主要基于Java+后台服务的客户端SDK实现。API聚合层还按业务功能进行分集群部署(API Sharding)。</li>
+<li><strong>设备适配层BFF</strong>，专注对API聚合层的服务进行裁剪和适配，提供给不同的用户体验展示。</li>
+</ol>
+
+<p>设备聚合层采用对前端开发友好的Node.js框架，各个团队的服务可以独立部署在容器环境(Netflix的容器云Titus)中，使用容器机制进行隔离，避免相互干扰。Node.js+容器在Netflix称为NodeQuark平台。NodeQuark环境在开发人员本地可以搭建，方便开发本地调试。</p>
+
+<p>经过拆分，当前Netflix演化出一个五层的微服务分层架构，前面三层(用户体验、网关路由和设备适配层)专注解决前端开发人员生产率的问题；后端两层(API聚合层和微服务层)专注解决领域抽象和运维监控稳定性问题。整个体系架构层次职责分明，初步解决了之前单块Edge PaaS的诸多问题，解放了生产率。</p>
+
+<h2 id="结论">结论</h2>
+
+<ol>
+<li>Netflix采用经典的微服务分层架构，前端体验-&gt;网关路由-&gt;边界API层(BFF)-&gt;后端微服务。这个分层架构可供一线企业实践微服务参考。</li>
+<li>近年，为了进一步提升前端研发效率，Netflix又将边界API层(BFF)拆分成两个子层次，设备适配层BFF和API聚合层。总体演化出一个五层的微服务分层架构。增加新的层次对于Netflix这种体谅的公司来说，有其架构合理性，但一般企业没必要细分5层，采用上述经典4层架构就OK了。</li>
+<li>从Netflix架构体系演变我们可以看出，为了提升研发效率，它的架构经过多层细分，这种分层会带来一定的性能损失。但是对于前沿大体量的互联网公司，性能一般并不是其架构的首要考量，灵活性、可治理性和研发效率才是它们的首要考量。性能的损失一般可以通过云计算+水平扩展+缓存等手段来弥补。</li>
+<li>波波近期和极客时间合作，推出《微服务架构实践160讲》的视频课程，其中第三个模块(预计6月份推出)，会对Netflix的微服务网关Zuul的升级版Zuul2进行深度剖析，欢迎大家关注。</li>
+</ol>
+
+<h2 id="附录">附录</h2>
+
+<ol>
+<li><a href="https://www.slideshare.net/danieljacobson/netflix-edge-engineering-open-house-presentations-june-9-2016">Netflix Edge Engineering Open House</a></li>
+<li><a href="https://www.slideshare.net/KatharinaProbst/the-new-netflix-api">The New Netflix API</a></li>
+<li><a href="https://www.slideshare.net/kcasella/edge-engineering-women-in-tech-dinner-20180322">Edge Engineering Women in Tech Dinner</a></li>
+<li><a href="https://medium.com/netflix-techblog/the-netflix-dynamic-scripting-platform-78c1b18b2a74">The Netflix Dynamic Scripting Platform</a></li>
+</ol>
+
 
                 
 
                 <hr>
                 <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-06-07-bff-gateway-evolution/" data-toggle="tooltip" data-placement="top" title="BFF和网关是如何演化出来的？">&larr;
+                            Previous Post</a>
+                    </li>
                     
                     
                 </ul>
@@ -508,7 +621,7 @@ $(function() {
                     
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; JSkillCloud , 0001
+                    Copyright &copy; JSkillCloud , 2018
                     <br>
                     <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
                     <iframe
