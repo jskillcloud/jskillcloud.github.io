@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务发布 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%8F%91%E5%B8%83/</link>
+    <description>Recent content in 微服务发布 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%8F%91%E5%B8%83/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>微服务该如何发布?</title>
+      <link>http://jskillcloud.com/post/2018-05-28-deployment-mode/</link>
+      <pubDate>Mon, 28 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-28-deployment-mode/</guid>
+      <description>一、前言 根据2017年的DevOps发展报告，高效能组织和低效能组织在软件交付的效率上有数量级上的差异。技术组织的软件交付能力是一种综合能力</description>
+    </item>
+    
+  </channel>
+</rss>
