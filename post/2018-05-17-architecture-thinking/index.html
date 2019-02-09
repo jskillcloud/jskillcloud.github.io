@@ -97,6 +97,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%81%93">架构之道</a>
                     </li>
                     
@@ -375,7 +379,7 @@ $(function() {
 
 <p>大概10年前，我曾经有一个对口的美国架构导师，他对我讲架构其实是要找出干系人（stakeholders），然后解决他们的关注点(concerns)。后来我读到一本书《软件系统架构：使用视点和视角与利益相关者合作》，里面提到的理念也是这样的：系统架构的目标是解决利益相关者或者关系人的关注点。</p>
 
-<p><img src="/img/20180517/whats_arch.png" alt="what's architecture" /></p>
+<p><img src="/img/post/20180517/whats_arch.png" alt="what's architecture" /></p>
 
 <p>这是从那本书里头截取的一张图，我之前分享架构定义常常用这张图，架构是这样定义的：</p>
 
@@ -393,11 +397,11 @@ $(function() {
 
 <p>关于架构的第二点定义是说架构主要关注非功能性需求(non-functional requirements)，即所谓的-abilities，</p>
 
-<p><img src="/img/20180517/ability.png" alt="non-functional requirements" /></p>
+<p><img src="/img/post/20180517/ability.png" alt="non-functional requirements" /></p>
 
 <p>上图是我上次在公司内分享的一个图，</p>
 
-<p><img src="/img/20180517/arch_requirements.png" alt="non-functional requirements" /></p>
+<p><img src="/img/post/20180517/arch_requirements.png" alt="non-functional requirements" /></p>
 
 <p>上图是在slideshare上的一个ppt里头截取出来，两个图都是列出架构师经常需要关注的非功能性需求。</p>
 
@@ -424,15 +428,15 @@ $(function() {
 
 <p>RUP注重架构，提倡以架构作为最大风险之一驱动开发，并提倡一开始要做端到端的原型prototype，通过压测等手段尽早验证架构可行性，然后在原型基础上持续迭代和增量开发，架构-&gt;开发-&gt;测试-&gt;调整架构-&gt;开发，循环，如下图所示：</p>
 
-<p><img src="/img/20180517/arch_loop.png" alt="arch loop" /></p>
+<p><img src="/img/post/20180517/arch_loop.png" alt="arch loop" /></p>
 
 <p>从上图看出，架构师要尽可能写代码，做测试，纯纸上谈兵式做架构而后丢给研发团队的作法非常不靠谱（除非是已经非常成熟清晰的领域）。</p>
 
 <p>另外，做技术架构的都有点完美主义倾向，一开始往往喜欢求大求全，忽视架构的演化和迭代性，这种倾向易造产品和用户之间不能形成有效的反馈，产品不满足最终用户需求，继续看下面两个图：</p>
 
-<p><img src="/img/20180517/mvp.png" alt="mvp" /></p>
+<p><img src="/img/post/20180517/mvp.png" alt="mvp" /></p>
 
-<p><img src="/img/20180517/over_engineering.png" alt="over engineering" /></p>
+<p><img src="/img/post/20180517/over_engineering.png" alt="over engineering" /></p>
 
 <p>第一个图是讲最小可用产品（Minimum Viable Product， MVP）理念，做出最小可用产品，尽快丢给用户试用，快速获取客户反馈，在此基础上不断迭代和演化架构和产品。第二个图是过度工程(Over Engineering)的问题，其实也是讲产品架构和用户之间没有形成有效的反馈闭环，架构师想的和客户想的不在一个方向上，通过最小可用产品，快速迭代反馈的策略，可以避免这种问题。</p>
 
@@ -453,11 +457,11 @@ $(function() {
 
 <p>这篇文章讲述了企业通向DevOps的三条必经之路，我们来看看这三条道路对架构师的启示：</p>
 
-<p><img src="/img/20180517/first_way.png" alt="The First Way" /></p>
+<p><img src="/img/post/20180517/first_way.png" alt="The First Way" /></p>
 
 <p>第一条道路，<strong>系统思维</strong>，开发驱动的组织机体，其能力不是制作软件，而是持续的交付客户价值，架构师需要有全局视角和系统思维(System Thinking)，深入理解整个价值交付链，从业务需求、研发、测试、集成，到部署运维。这条价值链的效率并不依赖于单个或者几个环节，局部优化的结果往往是全局受损，架构师要站在系统高度去优化整个价值交付链，让企业和客户之间形成快速和高效的价值传递。</p>
 
-<p><img src="/img/20180517/second_way.png" alt="The Second Way" /></p>
+<p><img src="/img/post/20180517/second_way.png" alt="The Second Way" /></p>
 
 <p>第二条道路，<strong>强化反馈环</strong>，任何过程改进都是通过加强和缩短反馈环来达成的，而反馈需要测量和数据，有两句话值得推荐给大家：</p>
 
@@ -470,7 +474,7 @@ $(function() {
 
 <p>这篇文章提出了度量驱动开发的理念，即所谓MDD，在系统、应用和业务，通过三级监控，构建三个反馈环，在监控测量基础上持续改进系统和架构。我最近也在参考这个理念设计一个电商平台的技术架构体系，见下图：</p>
 
-<p><img src="/img/20180517/platform_arch.png" alt="platform arch" /></p>
+<p><img src="/img/post/20180517/platform_arch.png" alt="platform arch" /></p>
 
 <p>该体系同样采用了三级监控和闭环反馈的理念：
 * 系统层监控计算、网络、存储，构建系统层的反馈环，
@@ -479,17 +483,17 @@ $(function() {
 
 <p>下面这个图展示了系统提升和改进的一般方法，</p>
 
-<p><img src="/img/20180517/measure_loop.png" alt="measure loop" /></p>
+<p><img src="/img/post/20180517/measure_loop.png" alt="measure loop" /></p>
 
 <p>收集-&gt;测量-&gt;调整-&gt;闭环重复，在有测量数据和反馈的基础上，系统、应用、流程和客户体验才有可能获得持续的提升和改善，否则没有数据的所谓改进只能靠拍脑袋或者说猜测。</p>
 
-<p><img src="/img/20180517/third_way.png" alt="The Third Way" /></p>
+<p><img src="/img/post/20180517/third_way.png" alt="The Third Way" /></p>
 
 <p>第三条道路，<strong>鼓励勇于承担责任，冒险试错和持续提升的文化</strong>。这点是最难的，一般和企业人才密度有关。工具，技术，流程只是一个公司的冰山浮出水面的部分，而真正对企业效能影响大的则是冰山水下的部分，即企业的人和文化，架构师作为技术和架构的布道者，有责任义务鼓励和推动试错文化。</p>
 
 <p>总之，架构师要深入领会这三条道路，关注整个价值交付链的效率，关注每个环节的闭环反馈，鼓励和推动公司的试错文化，打造全系统的闭环架构（Architecting for closed loop feedback），提升整个系统效能。下图的DevOps和每日交付是每一个互联网系统架构师的梦想和努力的方向。</p>
 
-<p><img src="/img/20180517/devops_pipeline.png" alt="devops pipeline" /></p>
+<p><img src="/img/post/20180517/devops_pipeline.png" alt="devops pipeline" /></p>
 
 <h2 id="四-再谈微服务">四、再谈微服务</h2>
 
@@ -504,7 +508,7 @@ $(function() {
 
 <p>第二篇文章里有个图，讲企业在什么时候引入微服务合适，</p>
 
-<p><img src="/img/20180517/microservice_premium.png" alt="microservices premium" /></p>
+<p><img src="/img/post/20180517/microservice_premium.png" alt="microservices premium" /></p>
 
 <p>微服务有额外成本，需要搭建配套的框架、发布和监控等基础设施。初创和小规模团队不建议采用。主要决定因素是系统复杂性和团队规模，当到达一个点，单块架构严重影响效率才考虑引入微服务。</p>
 
@@ -521,11 +525,11 @@ $(function() {
 
 <p>从单块架构到微服务架构的衍变是这个定律的体现，</p>
 
-<p><img src="/img/20180517/conway_law1.png" alt="conway's lay 1" /></p>
+<p><img src="/img/post/20180517/conway_law1.png" alt="conway's lay 1" /></p>
 
 <p>团队是分布式的，系统架构是单块的，开发、测试、部署协调沟通成本大，严重影响效率，严重时团队之间还容易起冲突conflict。</p>
 
-<p><img src="/img/20180517/conway_law2.png" alt="conway's lay 2" /></p>
+<p><img src="/img/post/20180517/conway_law2.png" alt="conway's lay 2" /></p>
 
 <p>将单块架构解耦成微服务，每个团队开发，测试和发布自己负责的微服务，互不干扰，系统效率得到提升。</p>
 
@@ -588,6 +592,11 @@ $(function() {
                     </li>
                     
                     
+                    <li class="next">
+                        <a href="/post/2018-05-20-engineer-growth/" data-toggle="tooltip" data-placement="top" title="工程师成长快车道">Next
+                            Post &rarr;</a>
+                    </li>
+                    
                 </ul>
 
                 
@@ -629,6 +638,10 @@ $(function() {
                     <hr class="hidden-sm hidden-xs">
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
+                        
+                        
+                        
+                        
                         
                         
                         
