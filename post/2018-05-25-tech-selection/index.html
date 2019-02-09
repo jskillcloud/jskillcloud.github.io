@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="架构师该如何做技术选型？" />
+    <meta property="og:title" content="架构师该如何做技术选型？" />
+    <meta property="twitter:title" content="架构师该如何做技术选型？" />
+    
+
+    
+    <meta name="description" content="技术选型说小了关乎项目和团队成败，说大了关乎企业业务的发展，不可小觑。本文是波波在十几年研发趟坑经验基础上，提炼出来的技术选型理念。">
+    <meta property="og:description" content="技术选型说小了关乎项目和团队成败，说大了关乎企业业务的发展，不可小觑。本文是波波在十几年研发趟坑经验基础上，提炼出来的技术选型理念。" />
+    <meta property="twitter:description" content="技术选型说小了关乎项目和团队成败，说大了关乎企业业务的发展，不可小觑。本文是波波在十几年研发趟坑经验基础上，提炼出来的技术选型理念。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>架构师该如何做技术选型？-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-05-25-tech-selection/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84">微服务架构</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/overlapping_rings.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B" title="技术选型">
+                            技术选型
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5" title="架构理念">
+                            架构理念
+                        </a>
+                        
+                    </div>
+                    <h1>架构师该如何做技术选型？</h1>
+                    <h2 class="subheading">波波的技术选型哲学</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Friday, May 25, 2018
+                        
+                            <span id="/post/2018-05-25-tech-selection/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#一-前言">一、前言</a></li>
+<li><a href="#二-软件的本质复杂性">二、软件的本质复杂性</a></li>
+<li><a href="#三-使用成熟的技术">三、使用成熟的技术</a></li>
+<li><a href="#四-少即是多">四、少即是多</a></li>
+<li><a href="#五-技术的先决条件">五、技术的先决条件</a></li>
+<li><a href="#六-来自大公司的技术">六、来自大公司的技术</a></li>
+<li><a href="#七-技术的文化特性">七、技术的文化特性</a></li>
+<li><a href="#八-开源还是第三方软件提供商的技术">八、开源还是第三方软件提供商的技术</a></li>
+<li><a href="#九-使用能掌控的技术">九、使用能掌控的技术</a></li>
+<li><a href="#十-剑要交给懂得挥舞它的人">十、剑要交给懂得挥舞它的人</a></li>
+<li><a href="#十一-浪费是创新的副产品">十一、浪费是创新的副产品</a></li>
+<li><a href="#十二-技术的宗教信仰">十二、技术的宗教信仰</a></li>
+<li><a href="#十三-通过背书做技术选型">十三、通过背书做技术选型</a></li>
+<li><a href="#十四-实践出真知">十四、实践出真知</a></li>
+<li><a href="#十五-技术的落地">十五、技术的落地</a></li>
+<li><a href="#十六-定制-自研还是购买">十六、定制、自研还是购买</a></li>
+<li><a href="#十七-写在最后">十七、写在最后</a></li>
+<li><a href="#十八-附录">十八、附录</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h2 id="一-前言">一、前言</h2>
+
+<p>技术选型是一个很热门的话题，最近我看到自己的微信朋友圈有好几篇关于技术选型的文章，读者对这类主题的热情很高。在技术组织内部，技术人员经常会面临技术选型问题，有时候，技术选型还常常牵扯好几波干系人，相互之间还会产生争议，有的甚至还可能发展到派系斗争的地步。即便像我自己，已经有十几年研发和架构经验的老司机，不管是工作还是业余，有很大部分时间的思考都是深陷在A技术和B技术的利弊权衡之中，不能自拔。无论如何，技术选型说小了关乎项目和团队成败，说大了关乎企业业务的发展，不可小觑。</p>
+
+<p>本文所表达的技术选型理念应该是具体技术无关的，但是由于我个人的背景更偏向互联网后端的研发和架构，所以本文的视角更偏向后端技术的选型。</p>
+
+<h2 id="二-软件的本质复杂性">二、软件的本质复杂性</h2>
+
+<p>近年，云计算、微服务、容器和DevOps等新技术和理念层出不穷，技术人员对各种新技术的追捧热情也空前高涨，各种新技术微信讨论群也如雨后春笋般冒了出来。这是一个好现象，说明我们的开发人员多了，技术环境也日趋成熟，有点百花齐放的感觉。同时也让我有一点担忧，我担忧的是纯技术和工具论的抬头，也就是太过专注技术，认为技术可以搞定一切，反而忽略了软件研发的本质复杂性。回想当年，自己也曾是这样的技术狂热分子，EJB刚出来的时候，我为EJB摇旗呐喊，Spring出来的时候，我也曾一度是该技术的死忠，简单认为这些技术是银弹可以帮助解决所有的复杂性问题。</p>
+
+<p>1986年，人月神话的作者Brooks就提出，软件的本质复杂性（Essential Complexity）存在于复杂的业务领域中（用技术的话讲是业务领域建模复杂性），技术仅是辅助工具，它解决的问题是帮助将业务领域问题映射转换成软件实现，只解决次要复杂性（Accidental Complexity）。作者同时指出，由于软件本质的复杂性，真正的银弹并不存在；也断言在十年内，没有任何一项技术或者方法可使软件工程的生产力提高一个数量级。30年前作者提出的论断，今天依然闪烁智慧的光芒。人月神话已经出了40周年纪念版了，堪称软件工程的圣经，建议所有从事软工行业的朋友学习。除了业务和技术，我还想强调软件的本质复杂性同时隐含在企业的人、组织、流程和管理中，不容忽视。</p>
+
+<p>架构师只有深刻理解软件的本质复杂性，才能站在解决实际业务问题的角度，更好的做出技术选型，否则易陷入唯技术工具论的陷阱。</p>
+
+<p><img src="/img/post/20180525/mythical_man_month.jpg" alt="mythical man month" /></p>
+
+<h2 id="三-使用成熟的技术">三、使用成熟的技术</h2>
+
+<p>大部分公司都是商业组织，不是科研机构或者纯软件研发机构。商业组织使用技术是为了解决当下的业务问题，他们更应该使用成熟稳定的技术。</p>
+
+<p>如下图，技术的使用有明显的生命周期，早期有创新者和早期使用者采用，我把这个阶段称为试水趟坑期，也就是说这个阶段技术不是很成熟稳定的，虽然尝新者可能占据一定的技术领先优势，但是他们常常需要以踩坑填坑作为代价；如果这项技术经过早期验证则会跨越鸿沟进入早期大众阶段，这个阶段技术会逐渐走向成熟，处于上升期，坑逐渐被填平，技术被大众所采纳；之后技术缓慢经过末期大众阶段，最终走向滞后期，一直到生命周期的结束退出历史舞台。</p>
+
+<p><img src="/img/post/20180525/tech_adoption.jpg" alt="technology adoption life cycle" /></p>
+
+<p>技术选型的一大智慧是不要盲目追求新技术，老老实实采用成熟稳定的技术，让那些喜欢追新的人去踩坑😊，等这项技术跨越鸿沟，进入早期大众阶段，你再择机投入，这样最保险和高效。当然作为技术人员，对新技术保持敏锐，提前预研是完全OK的，但是投入生产的话还是成熟稳定第一。</p>
+
+<h2 id="四-少即是多">四、少即是多</h2>
+
+<p>一项新技术既有学习成本，又有维护（定制、监控、管理和运维）成本，新技术引入很容易，学好用好运维好却很难。一个不严格把控技术栈数量的公司，开发人员常常会各自为政，随意引入新技术，造成技术栈散乱，学习和维护成本高，技术栈知识无法共享，技术体系无法建立等问题，严重的会极大影响研发效率和业务规模化能力。</p>
+
+<p>以我本人专注的后端基础框架领域为例，技术栈散乱还会直接影响系统稳定性，因为技术组件和工具太多，无法统一埋点和建立完善的监控体系。当业务量发展到一定规模，技术栈散乱还会给系统扩容跨机房迁移等带来巨大障碍。</p>
+
+<p>在一些成熟的互联网公司，比如国内的阿里，国外的Netflix和eBay等公司，这些公司虽然财力和资源丰富，但是他们的核心技术栈（比如主流开发语言，框架和数据存储等）的数量同样是受到严格把控的。</p>
+
+<p>新技术引入的基本原则就是少即是多，能不引入新技术尽量不要引入新技术，确实需要引入的话，也要有相应的新技术引入管理流程（一般由公司的技术或者架构委员会制定和把控）。</p>
+
+<h2 id="五-技术的先决条件">五、技术的先决条件</h2>
+
+<p>技术引入常常是有一些先决条件的，比方说最近比较热的微服务架构，按照马丁福勒的说法，微服务有如下先决条件：
+* 快速的环境提供能力（Provisioning）能力（通常指IAAS层能力），
+* 基本的监控能力
+* 快速的发布能力
+* 初步的DevOps文化</p>
+
+<p>马丁特别指出“你必须长足够高才能考虑微服务”，在这些先决条件没有满足之前，直接推行微服务会面临巨大落地挑战。</p>
+
+<p><img src="/img/post/20180525/tech_prerequisite.jpg" alt="tech prerequisite" /></p>
+
+<p>同样，容器技术的引入对应用也是有要求的（参考[<a href="#appendix">附录18.1</a>] ~ 12 Factor App），而DevOps研发模式的引入不仅对基础技术和架构，研发人员技能，甚至组织架构和企业文化都是有很高要求的，在没有满足先决条件前，这些新技术或研发模式都会面临巨大的落地挑战。</p>
+
+<p>作为管理者或者架构师，在引入一项新技术之前，要充分调研了解新技术的先决条件，不能盲目引入。对于确实需要引入但是目前还不满足先决条件的，需要做好阶段性规划，先打好基础，再适时引入新技术。</p>
+
+<h2 id="六-来自大公司的技术">六、来自大公司的技术</h2>
+
+<p>大公司采用的技术，未必适合中小公司。大公司有足够的资源、人力和时间，可以投入一些前沿和重量级的技术（在BAT级别公司，为重量级技术投入几十甚至百人以上的研发团队是很正常的事），但是中小公司资源有限，不能盲目跟风，应该选择和自己发展阶段相适应的技术，否则不仅不能帮助业务发展，反而会给业务发展带来阻碍。</p>
+
+<h2 id="七-技术的文化特性">七、技术的文化特性</h2>
+
+<p>技术常常带有文化特性的，在国外流行的技术，在国内未必流行。一个例子是如Scala这样的函数式语言，Scala在国外互联网公司是有一定流行度的（Twitter、Linkedin等），国内虽然有不少簇拥者，但是始终只是小众，无法流行，究其原因，国外很多大学教授的第一门编程语言是采用函数式语言的（例如美国Berkeley大学的CS61A是基于Scheme函数式语言），国内大学几乎清一色采用C/C++/Java等命令式语言作为第一门编程语言。也就是说函数式语言在国外是有文化基础的，所以容易流行，国内没有这样的文化基础，所以难以流行。</p>
+
+<p>我们在选型的时候，尽量采用在国内有文化基础，已经落地开花的技术，盲目追求国外新技术有可能文化不适应反而难于落地。</p>
+
+<p>同样的，在A公司流行的技术，在B公司也未必流行。比方说BAT三家公司所采用和后面演化出来的技术栈就明显不同，这同样和三家公司不同的业务领域和文化基因有关系。我们在做技术选型的时候，也要考虑公司的文化特性，如业务模式、已有技术生态和开发人员技能等现实情况。</p>
+
+<h2 id="八-开源还是第三方软件提供商的技术">八、开源还是第三方软件提供商的技术</h2>
+
+<p>互联网时代，传统的企业软件供应商开始明显地走下坡路，企业越来越多的采用开源技术来开发他们的业务系统，开源软件具有如下优势：</p>
+
+<ol>
+<li>成本，商业软件一般有昂贵的license费用；</li>
+<li>避免供应商绑定(vendor lockin)；</li>
+<li>灵活的定制能力，现代企业需要灵活的软件定制能力以应对快速变化的用户需求，商业闭源软件常常缺乏这种能力；</li>
+<li>社区和生态，投资具有良好社区和生态的开源技术是企业技术选型的最佳实践。</li>
+</ol>
+
+<p>即使是开源软件，这里面有一个很重要的闭环问题。有些开源软件是一线互联网公司成功落地后再开源出来的，比如阿里的dubbo，点评的CAT，这些公司本身有场景，内部大量使用，也就是说内部已经形成反馈闭环，开源出来和社区又形成了一个更大的反馈闭环。有一些第三方软件供应商提供的开源软件，其实他们本身是没有业务场景的（或者场景非常有限），主要靠社区使用后才能形成反馈闭环，对于这类开源软件的使用需要谨慎，如果选择的话，可能需要一起帮忙踩坑形成社区反馈闭环。</p>
+
+<h2 id="九-使用能掌控的技术">九、使用能掌控的技术</h2>
+
+<p>技术和武器一样，并不是说越先进越好。就像航空母舰和F117这样的尖端武器，确实非常厉害，但是掌握和部署运维这些武器的成本非常之高，如果你的团队没有足够的能力运维和掌控这样的武器，那么这些武器摆在家里充其量只能是摆设，不能形成战斗力，有时甚至还会拖累业务。</p>
+
+<p>在大数据领域重量级武器尤其多（Hadoop, HBase, Spark, Storm…），很多产品既消耗机器资源，部署和运维也非常复杂，如果某种重量级武器被应用在关键业务上，一旦出问题，团队能不能hold住是要重点考虑的，否则可能会死得很难看。架构师需要根据业务阶段规模，团队规模和技能水平，综合评估后再考虑引入，如果团队能力还不足以掌控某种重量级技术，则可以先从轻量级技术开始。</p>
+
+<h2 id="十-剑要交给懂得挥舞它的人">十、剑要交给懂得挥舞它的人</h2>
+
+<p>同一种技术，不同的人使用，可能会得出完全相反的结论。比如Cassandra这种NoSql分布式数据库，在Netflix有比较成功的应用，Netflix从2010开始将系统迁移到AWS云中，并开始将大部分业务数据从传统Oracle数据库迁移到Cassandra上，Netflix的前架构总监Adrian Cockcroft把他们技术升级的一大成功功劳归结为采用了Cassandra这种天然支持跨数据中心的分布式数据库。但是，在2012年时候，Digg在网站改版升级过程中也试图将传统Mysql数据库迁移到Cassandra Nosql数据库，结果导致Digg网站问题频发，最后技术副总裁John Quinn主动卷铺盖走人。事后，有人将问题归结为Cassandra，这就是著名的Digg使用Cassandra遭遇滑铁卢事件。有人在Quora上发帖提问“Is Cassandra to blame for Digg v4’s technical failures？”[<a href="#appendix">附录18.2</a>]，回帖中有知情人士出来澄清：把Digg网站升级失败归结为Cassandra完全是转移注意力（red herring），背后的真正原因是工程管理和架构的问题（poor engineering management and architecture），简单讲就是人的问题。</p>
+
+<p>我曾经在2013年左右在携程框架部工作，当时有一个很重要的框架产品叫分布式数据访问层DAL，很多团队都跃跃欲试要做，但是当时的CTO一直没有正式启动这个项目，理由是没有合适的人。这个事情拖了有一年之久才找到合适的人，这个项目才启动并逐步落地，现在已经是携程框架的关键基础设施，承载携程大部分数据库访问流量。</p>
+
+<p>对于一些重量级的，处于业务关键链路上的产品，如果它重要但不紧急的话，一定要找到并交给能搞定它的人。把一个重要产品交给一个不合适的人，不仅不能解决问题，后续还常常会制造问题。设想一下业务的关键链路上的某个关键产品质量不过关，问题频发，但是业务已经跑在上面无法简单替换，这是让人很无奈的事情，很多架构老司机对此场景应该深有体会吧。</p>
+
+<h2 id="十一-浪费是创新的副产品">十一、浪费是创新的副产品</h2>
+
+<p>即使在同一个公司中，在主流技术栈的基础上，不同团队适当引入一些不同的技术栈，比如一个公司主流的技术栈是Java，有些前端团队会尝试用Nodejs开发应用，有些大数据团队会采用Python开发应用（Python里头有很多数据分析库）。这些做法和第二点提出的少即是多并不矛盾，根据业务场景的需要，适当引入一些互补的技术栈，适度冗余可以促进团队创新。</p>
+
+<p>再举个例子，阿里在发展的过程中，曾经发展出两套技术体系，一套是淘宝体系，一套是B2B体系。有一段时间内，两套体系并行发展，团队之间既竞争也相互借鉴，形成一个良性竞争的技术生态。据说Dubbo最早就是B2B搞出来的，淘宝后面又搞了一套HSF（未开源），Dubbo和HSF之间相互借鉴所以功能比较类似，阿里在2014年上市前对技术栈进行了整合，集团统一使用HSF，Dubbo则继续活跃在开源社区，成为中国开源软件的一个传奇，它的成功一方面源自阿里技术的沉淀，另一方面也是B2B和淘宝相关团队思路碰撞融合的结果。</p>
+
+<h2 id="十二-技术的宗教信仰">十二、技术的宗教信仰</h2>
+
+<p>很多技术人员对他们投入时间最多最熟悉的技术栈比较热衷，有些甚至能上升到宗教信仰的程度，不同派系还会有相互鄙视的情况出现（据说PHP是最被鄙视的语言），有的还会发展到派系争斗的地步。之前我在一家互联网公司，在容器PaaS平台选型上出现了两个派系，分别被戏称为K党和M党，K党主张引入谷歌推的Kubernetes，M党主张基于Mesos做定制，两拨人都非常坚持互不相让，争得不可开交。</p>
+
+<p>其实我个人对技术的宗教信仰是非常排斥的，它是一种技术视野狭隘的表现，技术本身没有绝对的好坏之分，只有适用场景和利弊之分。但是，技术的宗教信仰是一种客观存在，有经验的架构师在做技术选型时需要考虑这一层面的因素。</p>
+
+<h2 id="十三-通过背书做技术选型">十三、通过背书做技术选型</h2>
+
+<p>和一线资深的架构师或者技术专家交流，获取技术选型的专家建议，是一种比较靠谱的技术选型策略。专家是一种背书，他们踩坑无数才成为专家，对很多技术有一手的实战经验，是真正know how的人，所以他们给出的建议一般都比较接地气。</p>
+
+<p>大公司是一个很好的背书，比方说Google，当初它推出Kubernetes的时候，其实我一开始看过架构设计之后是对这个产品嗤之以鼻的。但是Google的强大背书和号召力摆在那里，用户深信Google用脚投票，一开始架构设计不好不是根本性问题，只要有足够的用户形成社区闭环，这个产品就会不断长好长大。目前K8S已经基本垄断了容器PaaS平台市场，它的成功很大程度归结为Google公司的背书影响力。所以，绑着技术型大公司这个背书做技术选型，大概率不至于大错（当然不是绝对）。</p>
+
+<p>Github上的星的数量也是一个重要的技术选型参考，同时还有项目代码和文档更新频度（尤其是近期），这些指标直接反应开源项目的社区活跃度和生命力。</p>
+
+<h2 id="十四-实践出真知">十四、实践出真知</h2>
+
+<p>实际评估一项技术时，最靠谱的做法还是详细研究其文档，做一些样例和测试，对性能有要求的则必须实际做充分压力测试获得真实性能数据。对于开源的产品，如果处在业务的关键链路上，则建议把代码拉下来通读梳理一把，深入理解其内部设计和架构，有的还需要根据企业业务场景适当做一些定制。</p>
+
+<p>通过初步评估，仍需要寻找一定数量非关键试点项目（pilot project）做试水躺坑，经过初步生产验证，才可以考虑逐步扩大生产普及的规模。</p>
+
+<p>实践出真知，对于那些长期在一线实战和积累的架构师，他们最终将获得良好的技术选型的sense和对新技术的敏锐性。</p>
+
+<h2 id="十五-技术的落地">十五、技术的落地</h2>
+
+<p>简单回顾下我国辽宁号航母的历史：1999年中国购买了瓦良格号，于2002年3月拖回大连港，2005年4月开始由中国海军继续建造改进，2012年9月正式更名辽宁号，交付中国人民解放军海军，2013年11月，辽宁舰从青岛远赴中国南海展开为期47天的海上综合演练，标志着辽宁号航母开始具备海上编队战斗群能力。我国前前后后花费超过10年才让辽宁号航母初步形成战力能力。</p>
+
+<p>技术和武器一样，你引入一个技术是一码事，真正落地形成战斗力或者说产生业务价值完全是另外一码事。技术一般有落地周期：引入，定制改造，小规模试点，再到逐步扩大生产规模，这个周期可长可短，对于一些基础性和重量级的技术，或者涉及大规模遗留系统升级改造的技术，一般周期比较漫长（可能时间跨度长达1年甚至几年），对于这类技术的引入和落地，架构师需要高屋建瓴，通盘考虑，制定落地计划，分阶段推进技术的落地。</p>
+
+<h2 id="十六-定制-自研还是购买">十六、定制、自研还是购买</h2>
+
+<p>这个问题比较复杂，很难一概而论，和企业的业务和团队规模，架构甚至文化等诸多因素有关系。我个人遵循的两个简单原则分别是：</p>
+
+<ol>
+<li>如果不是你最擅长，也提供不了差异化的竞争优势的技术则直接用开源或者购买。小心Not Invented Here症状，避免重复造轮子，始终牢记达成业务目标才是重点。</li>
+<li>当企业的业务和团队规模达到一定阶段，对于处在业务关键链路上的核心技术，必须要有一定的定制甚至自研能力。创业公司尽量用开源或者购买云服务，验证业务模式是第一优先；当你的业务模式获得验证，业务和团队达到一定规模，则需逐步考虑对核心业务链路上的技术进行定制甚至自研，以获得更大的灵活性；如果你成长到接近BAT那个量级，那么大部分核心技术必然是定制甚至自研的，否则无法支撑那个规模。</li>
+</ol>
+
+<h2 id="十七-写在最后">十七、写在最后</h2>
+
+<p>本文仅限个人经验视角，技术选型理念仅供参考借鉴。每个企业的具体上下文（业务场景，团队组织，技术架构等）各不相同，每个架构师的背景经验也各不相同，大家要结合实际自己做出选型，没有最好的技术，只有相对较合适的技术。另外，好的技术选型是相互借鉴甚至PK出来的，欢迎大家讨论，给出自己的技术选型思考。</p>
+
+<h2 id="十八-附录">十八、附录</h2>
+
+<ol>
+<li><a href="https://12factor.net/">12 Factor App</a></li>
+<li><a href="https://www.quora.com/Is-Cassandra-to-blame-for-Digg-v4s-technical-failures">Is Cassandra to blame for Digg v4’s technical failures?</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-05-24-turn-around/" data-toggle="tooltip" data-placement="top" title="成长组织如何突破技术困局?">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5" title="架构理念">
+                            架构理念
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>

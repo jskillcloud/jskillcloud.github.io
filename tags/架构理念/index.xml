@@ -6,10 +6,19 @@
     <description>Recent content in 架构理念 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 25 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>架构师该如何做技术选型？</title>
+      <link>http://jskillcloud.com/post/2018-05-25-tech-selection/</link>
+      <pubDate>Fri, 25 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-25-tech-selection/</guid>
+      <description>一、前言 技术选型是一个很热门的话题，最近我看到自己的微信朋友圈有好几篇关于技术选型的文章，读者对这类主题的热情很高。在技术组织内部，技术人员</description>
+    </item>
     
     <item>
       <title>波波的架构理念</title>

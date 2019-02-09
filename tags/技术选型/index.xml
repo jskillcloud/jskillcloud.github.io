@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术选型 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/</link>
+    <description>Recent content in 技术选型 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 25 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>架构师该如何做技术选型？</title>
+      <link>http://jskillcloud.com/post/2018-05-25-tech-selection/</link>
+      <pubDate>Fri, 25 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-25-tech-selection/</guid>
+      <description>一、前言 技术选型是一个很热门的话题，最近我看到自己的微信朋友圈有好几篇关于技术选型的文章，读者对这类主题的热情很高。在技术组织内部，技术人员</description>
+    </item>
+    
+  </channel>
+</rss>

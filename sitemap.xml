@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://jskillcloud.com/post/2018-05-25-tech-selection/</loc>
+    <lastmod>2018-05-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://jskillcloud.com/post/2018-05-24-turn-around/</loc>
     <lastmod>2018-05-24T00:00:00+00:00</lastmod>
   </url>
@@ -51,7 +56,7 @@
   
   <url>
     <loc>http://jskillcloud.com/</loc>
-    <lastmod>2018-05-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -63,7 +68,7 @@
   
   <url>
     <loc>http://jskillcloud.com/post/</loc>
-    <lastmod>2018-05-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -115,13 +120,19 @@
   
   <url>
     <loc>http://jskillcloud.com/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2018-05-24T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E8%BD%AC%E5%9E%8B/</loc>
     <lastmod>2018-05-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/</loc>
+    <lastmod>2018-05-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -133,7 +144,7 @@
   
   <url>
     <loc>http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E7%90%86%E5%BF%B5/</loc>
-    <lastmod>2018-05-17T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
