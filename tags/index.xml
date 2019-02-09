@@ -6,10 +6,19 @@
     <description>Recent content in Tags on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>BFF</title>
+      <link>http://jskillcloud.com/tags/bff/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/bff/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Netflix</title>
@@ -125,6 +134,15 @@
       <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
       
       <guid>http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>网关</title>
+      <link>http://jskillcloud.com/tags/%E7%BD%91%E5%85%B3/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/%E7%BD%91%E5%85%B3/</guid>
       <description></description>
     </item>
     
