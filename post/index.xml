@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>微服务为什么需要配置中心?</title>
+      <link>http://jskillcloud.com/post/2018-06-07-why-centralized-configuration/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-06-07-why-centralized-configuration/</guid>
+      <description>一、介绍 在系统架构中，和安全、日志、监控等非功能需求一样，配置管理也是一种非功能需求。配置中心是整个微服务基础架构体系中的一个组件，如下图，</description>
+    </item>
     
     <item>
       <title>四种核心架构思维</title>
@@ -18,6 +27,15 @@
       
       <guid>http://jskillcloud.com/post/2018-05-29-four-arch-thinkings/</guid>
       <description>一、介绍 架构的本质是管理复杂性，抽象、分层、分治和演化思维是我们工程师/架构师应对和管理复杂性的四种最基本武器。 最近团队来了一些新人，有些有</description>
+    </item>
+    
+    <item>
+      <title>微服务2.0技术栈选型手册</title>
+      <link>http://jskillcloud.com/post/2018-05-29-msa-2.0-tech-stack-selection/</link>
+      <pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-29-msa-2.0-tech-stack-selection/</guid>
+      <description>一、前言 2014年可以认为是微服务1.0的元年，当年有几个标志性事件，一是Martin Fowler在其博客上发表了“Microservice</description>
     </item>
     
     <item>
@@ -31,10 +49,10 @@
     
     <item>
       <title>中国式微服务技术栈2.0</title>
-      <link>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-2.0/</link>
+      <link>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-chinese-style/</link>
       <pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-2.0/</guid>
+      <guid>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-chinese-style/</guid>
       <description>前言 近年，Spring Cloud俨然已经成为微服务开发的主流技术栈，在国内开发者社区非常火爆。我近年一直在一线互联网公司（携程，拍拍贷等）开</description>
     </item>
     

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="微服务为什么需要配置中心?" />
+    <meta property="og:title" content="微服务为什么需要配置中心?" />
+    <meta property="twitter:title" content="微服务为什么需要配置中心?" />
+    
+
+    
+    <meta name="description" content="本文介绍在分布式微服务环境下，应用配置管理背后的业务需求，配置的各种分类和一些高级应用场景。">
+    <meta property="og:description" content="本文介绍在分布式微服务环境下，应用配置管理背后的业务需求，配置的各种分类和一些高级应用场景。" />
+    <meta property="twitter:description" content="本文介绍在分布式微服务环境下，应用配置管理背后的业务需求，配置的各种分类和一些高级应用场景。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>微服务为什么需要配置中心?-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-06-07-why-centralized-configuration/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84">微服务架构</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/overlapping_rings.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83" title="配置中心">
+                            配置中心
+                        </a>
+                        
+                    </div>
+                    <h1>微服务为什么需要配置中心?</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Thursday, June 7, 2018
+                        
+                            <span id="/post/2018-06-07-why-centralized-configuration/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#一-介绍">一、介绍</a></li>
+<li><a href="#二-配置定义和形态">二、配置定义和形态</a></li>
+<li><a href="#三-传统应用配置的痛点">三、传统应用配置的痛点</a>
+<ul>
+<li><a href="#1-配置散乱格式不标准"><strong>1. 配置散乱格式不标准</strong></a></li>
+<li><a href="#2-主要采用本地静态配置-配置修改麻烦"><strong>2. 主要采用本地静态配置，配置修改麻烦</strong></a></li>
+<li><a href="#3-易引发生产事故"><strong>3. 易引发生产事故</strong></a></li>
+<li><a href="#4-配置缺乏安全审计和版本控制功能"><strong>4. 配置缺乏安全审计和版本控制功能</strong></a></li>
+</ul></li>
+<li><a href="#四-现代应用配置核心需求">四、现代应用配置核心需求</a>
+<ul>
+<li><a href="#1-交付件和配置分离"><strong>1. 交付件和配置分离</strong></a></li>
+<li><a href="#2-抽象标准化"><strong>2. 抽象标准化</strong></a></li>
+<li><a href="#3-多环境多集群"><strong>3. 多环境多集群</strong></a></li>
+<li><a href="#4-高可用"><strong>4. 高可用</strong></a></li>
+<li><a href="#5-实时性"><strong>5. 实时性</strong></a></li>
+<li><a href="#6-治理"><strong>6. 治理</strong></a></li>
+</ul></li>
+<li><a href="#五-配置分类">五、配置分类</a>
+<ul>
+<li><a href="#1-静态配置"><strong>1. 静态配置</strong></a>
+<ul>
+<li><a href="#1-1-环境相关配置">1.1 环境相关配置</a></li>
+<li><a href="#1-2-安全配置">1.2 安全配置</a></li>
+</ul></li>
+<li><a href="#2-动态配置"><strong>2. 动态配置</strong></a>
+<ul>
+<li><a href="#2-1-应用配置">2.1 应用配置</a></li>
+<li><a href="#2-2-业务配置">2.2 业务配置</a></li>
+<li><a href="#2-3-功能开关">2.3 功能开关</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#六-配置中心高级应用场景">六、配置中心高级应用场景</a>
+<ul>
+<li><a href="#场景一-蓝绿部署">场景一、蓝绿部署</a></li>
+<li><a href="#场景二-限流降级">场景二、限流降级</a></li>
+<li><a href="#场景三-数据库迁移">场景三、数据库迁移</a></li>
+<li><a href="#场景四-a-b测试">场景四、A/B测试</a></li>
+</ul></li>
+<li><a href="#七-公司案例和产品">七、公司案例和产品</a></li>
+<li><a href="#八-结论">八、结论</a></li>
+<li><a href="#九-附录">九、附录</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h2 id="一-介绍">一、介绍</h2>
+
+<p>在系统架构中，和安全、日志、监控等非功能需求一样，配置管理也是一种非功能需求。配置中心是整个微服务基础架构体系中的一个组件，如下图，它的功能看上去并不起眼，无非就是简单配置的管理和存取，但它是整个微服务架构中不可或缺的一环。另外，配置中心如果真得用好了，它还能推动技术组织持续交付和DevOps文化转型。</p>
+
+<p><img src="/img/post/2018060701/msa_tech_stack.png" alt="微服务基础架构体系" /></p>
+
+<p>本文介绍在分布式微服务环境下，应用配置管理背后的业务需求，配置的各种分类和一些高级应用场景。</p>
+
+<h2 id="二-配置定义和形态">二、配置定义和形态</h2>
+
+<p><strong>配置其实是独立于程序的可配变量</strong>，同一份程序在不同配置下会有不同的行为，常见的配置有连接字符串，应用配置和业务配置等。</p>
+
+<p>配置有多种形态，下面是一些常见的：</p>
+
+<ul>
+<li><strong>程序内部hardcode</strong>，这种做法是反模式，一般我们<strong>不建议！</strong></li>
+<li><strong>配置文件</strong>，比如Spring应用程序的配置一般放在<code>application.properties</code>文件中。</li>
+<li><strong>环境变量</strong>，配置可以预置在操作系统的环境变量里头，程序运行时读取，这是很多PaaS平台，比如Heroku推荐的做法，参考12 factor app[附录9.1]。</li>
+<li><strong>启动参数</strong>，可以在程序启动时一次性提供参数，例如java程序启动时可以通过<code>java -D</code>方式配启动参数。</li>
+<li><strong>基于数据库</strong>，有经验的开发人员会把易变配置放在数据库中，这样可以在运行期灵活调整配置，这个做法和配置中心的思路已经有点接近了。</li>
+</ul>
+
+<p><img src="/img/post/2018060701/config_format.png" alt="config foramt" /></p>
+
+<h2 id="三-传统应用配置的痛点">三、传统应用配置的痛点</h2>
+
+<p>在没有引入配置中心之前，一般企业研发都会面临如下痛点：</p>
+
+<h3 id="1-配置散乱格式不标准"><strong>1. 配置散乱格式不标准</strong></h3>
+
+<p>有的用properties格式，有的用xml格式，还有的存DB，团队倾向自造轮子，做法五花八门。</p>
+
+<h3 id="2-主要采用本地静态配置-配置修改麻烦"><strong>2. 主要采用本地静态配置，配置修改麻烦</strong></h3>
+
+<p>配置修改一般需要经过一个较长的测试发布周期。在分布式微服务环境下，当服务实例很多时，修改配置费时费力。</p>
+
+<h3 id="3-易引发生产事故"><strong>3. 易引发生产事故</strong></h3>
+
+<p>这个是我亲身经历，之前在一家互联网公司，有团队在发布的时候将测试环境的配置带到生产上，引发百万级资损事故。</p>
+
+<h3 id="4-配置缺乏安全审计和版本控制功能"><strong>4. 配置缺乏安全审计和版本控制功能</strong></h3>
+
+<p>谁改的配置？改了什么？什么时候改的？无从追溯，出了问题也无法及时回滚。</p>
+
+<h2 id="四-现代应用配置核心需求">四、现代应用配置核心需求</h2>
+
+<p>近年，持续交付和DevOps理念开始逐步被一线企业接受，微服务架构和容器云也逐渐在一线企业落地，这些都对应用配置管理提出了更高的要求：</p>
+
+<p><img src="/img/post/2018060701/core_requirements.png" alt="core requirement" /></p>
+
+<h3 id="1-交付件和配置分离"><strong>1. 交付件和配置分离</strong></h3>
+
+<p>传统做法应用在打包部署时，会为不同环境打出不同配置的包，例如为开发/测试/UAT/生产环境分别制作发布包，每个包里头包含环境特定配置。</p>
+
+<p>现代微服务提倡云原生(Cloud Native)和不可变基础设施（Immutable Infrastructure）的理念，推荐采用如容器镜像这种方式打包和交付微服务，应用镜像一般只打一份，可以部署到不同环境。这就要求交付件（比如容器镜像）和配置进行分离，交付件只制作一份，并且是不可变的，可以部署到任意环境，而配置由配置中心集中管理，所有环境的配置都可以在配置中心集中配，运行期应用根据自身环境到配置中心动态拉取相应的配置。</p>
+
+<h3 id="2-抽象标准化"><strong>2. 抽象标准化</strong></h3>
+
+<p>企业应该由框架或者中间件团队提供标准化的配置中心服务(Configuration as a Service)，封装屏蔽配置管理的细节和配置的不同格式，方便用户进行自助式的配置管理。一般用户只需要关注两个抽象和标准化的接口：
+1. 配置管理界面UI，方便应用开发人员管理和发布配置，
+2. 封装好的客户端API，方便应用集成和获取配置。</p>
+
+<h3 id="3-多环境多集群"><strong>3. 多环境多集群</strong></h3>
+
+<p>现代微服务应用大都采用多环境部署，一般标准化的环境有开发/测试/UAT/生产等，有些应用还需要多集群部署，例如支持跨机房或者多版本部署。配置中心需要支持对多环境和多集群应用配置的集中式管理。</p>
+
+<h3 id="4-高可用"><strong>4. 高可用</strong></h3>
+
+<p>配置中心必须保证高可用，不能随便挂，否则可能大面积影响微服务。在极端的情况下，如果配置中心不可用，客户端也需要有降级策略，保证应用可以不受影响。</p>
+
+<h3 id="5-实时性"><strong>5. 实时性</strong></h3>
+
+<p>配置更新需要尽快通知到客户端，这个周期不能太长，理想应该是实时的。有些配置的实时性要求很高，比方说主备切换配置或者蓝绿部署配置，需要秒级切换配置的能力。</p>
+
+<h3 id="6-治理"><strong>6. 治理</strong></h3>
+
+<p>配置需要治理，具体包括：
+* 配置审计，谁、在什么时间、修改了什么配置，需要详细的审计，方便出现问题时能够追溯。
+* 配置版本控制，每次变更需要版本化，出现问题时候能够及时回滚到上一版本。
+* 配置权限控制，配置变更发布需要认证授权，不是所有人都能修改和发布配置。
+* 灰度发布，高级的配置治理支持灰度发布，配置发布时可以先让少数实例生效，确保没有问题再逐步放量。</p>
+
+<h2 id="五-配置分类">五、配置分类</h2>
+
+<p>配置目前还没有特别标准的分类方法，我简单把配置分为静态和动态两大类，每一类再分为若干子类，如下图：</p>
+
+<p><img src="/img/post/2018060701/config_category.png" alt="config category" /></p>
+
+<h3 id="1-静态配置"><strong>1. 静态配置</strong></h3>
+
+<p>所谓静态配置，就是在程序启动前一次性配好，启动时一次性生效，在程序运行期一般不会变化的配置。具体包括：</p>
+
+<h4 id="1-1-环境相关配置">1.1 环境相关配置</h4>
+
+<p>有些配置是和环境相关的，每个环境的配置不一样，例如数据库、中间件和其它服务的连接字符串配置。这些配置一次性配好，运行期一般不变。</p>
+
+<h4 id="1-2-安全配置">1.2 安全配置</h4>
+
+<p>有些配置和安全相关，例如用户名，密码，访问令牌，许可证书等，这些配置也是一次性配好，运行期一般不变。因为涉及安全，相关信息一般需要加密存储，对配置访问需要权限控制。</p>
+
+<h3 id="2-动态配置"><strong>2. 动态配置</strong></h3>
+
+<p>所谓动态配置，就是在程序的运行期可以根据需要动态调整的配置。动态配置让应用行为和功能的调整变得更加灵活，是持续交付和DevOps的最佳实践。具体包括：</p>
+
+<h4 id="2-1-应用配置">2.1 应用配置</h4>
+
+<p>和应用相关的配置，例如服务请求超时，线程池和队列的大小，缓存过期时间，数据库连接池的容量，日志输出级别，限流熔断阀值，服务安全黑白名单等。一般开发或者运维会根据应用的实际运行情况调整这些配置。</p>
+
+<h4 id="2-2-业务配置">2.2 业务配置</h4>
+
+<p>和业务相关的一些配置，例如促销规则，贷款额度，利率等业务参数，A/B测试参数等。一般产品运营或开发人员会根据实际的业务需求，动态调整这些参数。</p>
+
+<h4 id="2-3-功能开关">2.3 功能开关</h4>
+
+<p>在英文中也称Feature Flag/Toggle/Switch，简单的只有真假两个值，复杂的可以是多值参数。功能开关是DevOps的一种最佳实践，在运维中有很多应用场景，比如蓝绿部署，灰度开关，降级开关，主备切换开关，数据库迁移开关等。功能开关在国外互联网公司用得比较多，国内还没有普及开，所以我在下一节会给出一些功能开关的高级应用场景。</p>
+
+<h2 id="六-配置中心高级应用场景">六、配置中心高级应用场景</h2>
+
+<h3 id="场景一-蓝绿部署">场景一、蓝绿部署</h3>
+
+<p>蓝绿部署的传统做法是通过负载均衡器切流量来实现，如下图左边所示。这种做法一般研发人员无法自助操作，需要提交工单由运维介入操作，操作和反馈周期比较长，出了问题回退还需运维人员介入，所以回退也比较慢，总体风险比较高。</p>
+
+<p><img src="/img/post/2018060701/blue_green_deployment.png" alt="blue greeen deployment" /></p>
+
+<p>蓝绿部署也可以通过配置中心+功能开关的方式来实现，如上图右边所示。开发人员在上线新功能时先将新功能隐藏在动态开关后面，开关的值在配置中心里头配。刚上线时新功能暂不启用，走老功能逻辑，然后开发人员通过配置中心打开开关，这个时候新功能就启用了。一旦发现新功能有问题，可以随时把开关关掉切回老功能。这种做法开发人员可以全程自助实现蓝绿部署，不需要运维人员介入，反馈周期短效率高。</p>
+
+<h3 id="场景二-限流降级">场景二、限流降级</h3>
+
+<p>当业务团队在搞促销，或者是系统受DDOS攻击的时候，如果没有好的限流降级机制，则系统很容易被洪峰流量冲垮，这个时候所有用户无法访问，体验糟糕，如下图左边所示。</p>
+
+<p><img src="/img/post/2018060701/rate_limiting_degrade.png" alt="rate limiting and degrade" /></p>
+
+<p>所以我们需要限流降级机制来应对流量洪峰。常见做法，我们一般会在应用的过滤器层或者是网关代理层添加限流降级逻辑，并且和配置中心配合，实现限流降级开关和参数的动态调整。如果促销出现流量洪峰，我们可以通过配置中心启动限流降级策略，比如对于普通用户，我们可以先给出“网络不给力，请稍后再试”的友好提示，对于高级VIP用户，我们仍然保证他们的正常访问。</p>
+
+<p>国内电商巨头阿里，它内部的系统大量采用限流降级机制，实现方式基于其内部的diamond+sentinel配置管理系统。如果没有限流降级机制的保护，则阿里的系统也无法抵御双十一带来的洪峰流量冲击。</p>
+
+<h3 id="场景三-数据库迁移">场景三、数据库迁移</h3>
+
+<p>LaunchDarkly是一家提供配置既服务(Configuration as a Service)的SAAS服务公司，它在其博客上给出了一片关于使用功能开关实现数据库迁移的案例文章，该案例基于其内部一次成功的数据库迁移实践，从MongdoDB迁移到DynamoDB[参考附录9.2]，下图是展示了一个简化的迁移流程：</p>
+
+<p><img src="/img/post/2018060701/ff_database_migration-768x1024.jpg" alt="database migration using feature flag" /></p>
+
+<p>简化迁移腾挪流程如下：
+1. 开发人员先在应用端的DAO层埋好数据双写双读、以及数据比对逻辑。双写双读逻辑由开关控制，开关的值可在配置中心配。
+2. 先保证应用100%读写mongoDB，然后先放开10%的DynamoDB双写，也称金丝雀写(Canary Write)，确保金丝雀写没有功能和性能问题。
+3. 逐步放量DyanamoDB写到100%，确保全量双写没有功能和性能问题。
+4. 放开10%的DynamoDB双读，也称金丝雀读(Canary Read)，通过比对逻辑确保金丝雀读没有逻辑和性能问题。
+5. 逐步放量DynamoDB读到100%，通过比对逻辑确保全量双读没有逻辑和性能问题。
+6. 关闭对mongoDB的读写，迁移完成。</p>
+
+<p>整个迁移流程受配置中心的开关控制，可以灵活调整开关和参数，有问题可以随时回滚，大大降低迁移风险。</p>
+
+<h3 id="场景四-a-b测试">场景四、A/B测试</h3>
+
+<p>如果我们需要对电商平台的结账(checkout)功能进行改版，考虑到结账功能业务影响面大，一下子上线风险大，为了减低风险，我们可以在配置中心配合下，对结账功能进行A/B测试，简化逻辑如下图：</p>
+
+<p><img src="/img/post/2018060701/ab_test.png" alt="ab test" /></p>
+
+<p>我们在配置中心中增加一个<code>ab_test_flag</code>开关，控制A/B测试逻辑：
+1. 如果A/B测试开关是关闭的(<code>ab_test_flag==false</code>)，那么就走老的结账逻辑。
+2. 如果A/B测试开关是打开的(<code>ab_test_flag==true</code>，并且是普通用户(<code>user==regular</code>，可以检查数据库中用户类型)，那么就走老的结账逻辑。
+3. 如果A/B测试开关是打开的(<code>ab_test_flag==true</code>)，并且是beta用户（<code>user==beta</code>），那么就走改版后的新结账逻辑。</p>
+
+<p>通过配置中心，我们可以灵活调整开关，先对新功能进行充分的beta试验，再考虑全量上线，大大降低关键业务新功能的上线风险。</p>
+
+<h2 id="七-公司案例和产品">七、公司案例和产品</h2>
+
+<p>在一线前沿的互联网公司，配置中心都是其技术体系中的关键基础服务，下图给出一些公司案例产品：</p>
+
+<p><img src="/img/post/2018060701/config_center_products.png" alt="config center products" /></p>
+
+<ol>
+<li>阿里巴巴中间件部门很早就自研了配置中心Diamond，并且是开源的。Diamond对阿里系统的灵活稳定性发挥了至关重要的作用。开源版本的Diamond由于研发时间比较早，使用的技术比较老，功能也不够完善，目前社区不热已经不维护了。</li>
+<li>Facebook内部也有一整套完善的配置管理体系[可参考其论文，附录9.3]，其中一个产品叫Gatekeeper，目前没有开源。</li>
+<li>Netflix内部有大量的微服务，它的服务的稳定灵活性也重度依赖于配置中心。Netflix开源了它的配置中心的客户端，叫变色龙Archaius[参考附录9.4]，比较可惜的是，Netflix没有开源它的配置中心的服务器端。</li>
+<li>Apollo[参考附录9.5]是携程框架部研发并开源的一款配置中心产品，企业级治理功能完善，目前社区比较火，在github上有超过5k星，在国内众多互联网公司有落地案例。<strong>如果企业打算引入开源的配置中心，那么Apollo是我推荐的首选</strong>。</li>
+<li>百度之前也开源过一个叫Disconf[参考附录9.6]的配置中心产品，作者是前百度资深工程师廖绮绮。在Apollo没有出来之前，Disconf在社区是比较火的，但是自从廖琦琦离开百度之后，他好像没有足够精力投入维护这个项目，目前社区活跃度已经大不如前。</li>
+</ol>
+
+<h2 id="八-结论">八、结论</h2>
+
+<ol>
+<li>配置中心是微服务基础架构中不可或缺的核心组件，现代微服务架构和云原生环境，对应用配置管理提出了更高的要求。</li>
+<li>配置中心有众多的应用场景，配置中心+功能开关是DevOps最佳实践。用好配置中心，它能帮助技术组织实现持续交付和DevOps文化转型。</li>
+<li>携程开源的Apollo配置中心，企业级功能完善，经过大规模生产验证，社区活跃度高，是开源配置中心产品的首选。</li>
+<li>波波近期和极客时间合作，推出《微服务架构实践160讲》视频课程，<strong>其中第二模块会对微服务配置中心Apollo的架构和实践进行深度剖析</strong>，欢迎大家关注。</li>
+</ol>
+
+<h2 id="九-附录">九、附录</h2>
+
+<ol>
+<li><a href="https://12factor.net/config">12 Factor App</a></li>
+<li><a href="https://blog.launchdarkly.com/feature-flagging-to-mitigate-risk-in-database-migration/">使用功能开关实现数据库迁移</a></li>
+<li><a href="http://sigops.org/sosp/sosp15/current/2015-Monterey/printable/008-tang.pdf">Facebook的配置管理体系论文</a></li>
+<li><a href="https://github.com/Netflix/archaius">Netflix开源的Archaius配置库</a></li>
+<li><a href="https://github.com/ctripcorp/apollo">携程开源的Apollo配置中心</a></li>
+<li><a href="https://github.com/knightliao/disconf">Disconf配置中心</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-05-29-four-arch-thinkings/" data-toggle="tooltip" data-placement="top" title="四种核心架构思维">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B" title="技术选型">
+                            技术选型
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%81%93" title="架构之道">
+                            架构之道
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>

@@ -3,7 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://jskillcloud.com/post/2018-06-07-why-centralized-configuration/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://jskillcloud.com/post/2018-05-29-four-arch-thinkings/</loc>
+    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/post/2018-05-29-msa-2.0-tech-stack-selection/</loc>
     <lastmod>2018-05-29T00:00:00+00:00</lastmod>
   </url>
   
@@ -13,7 +23,7 @@
   </url>
   
   <url>
-    <loc>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-2.0/</loc>
+    <loc>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-chinese-style/</loc>
     <lastmod>2018-05-27T00:00:00+00:00</lastmod>
   </url>
   
@@ -71,7 +81,7 @@
   
   <url>
     <loc>http://jskillcloud.com/</loc>
-    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -83,7 +93,7 @@
   
   <url>
     <loc>http://jskillcloud.com/post/</loc>
-    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -122,20 +132,14 @@
   </url>
   
   <url>
-    <loc>http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%8F%91%E5%B8%83/</loc>
-    <lastmod>2018-05-28T00:00:00+00:00</lastmod>
+    <loc>http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://jskillcloud.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%80%89%E5%9E%8B/</loc>
-    <lastmod>2018-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -165,7 +169,7 @@
   
   <url>
     <loc>http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/</loc>
-    <lastmod>2018-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-29T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -202,6 +206,12 @@
   <url>
     <loc>http://jskillcloud.com/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/</loc>
     <lastmod>2018-05-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</loc>
+    <lastmod>2018-06-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

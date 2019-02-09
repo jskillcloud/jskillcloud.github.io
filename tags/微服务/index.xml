@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+    <description>Recent content in 微服务 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>微服务为什么需要配置中心?</title>
+      <link>http://jskillcloud.com/post/2018-06-07-why-centralized-configuration/</link>
+      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-06-07-why-centralized-configuration/</guid>
+      <description>一、介绍 在系统架构中，和安全、日志、监控等非功能需求一样，配置管理也是一种非功能需求。配置中心是整个微服务基础架构体系中的一个组件，如下图，</description>
+    </item>
+    
+    <item>
+      <title>微服务2.0技术栈选型手册</title>
+      <link>http://jskillcloud.com/post/2018-05-29-msa-2.0-tech-stack-selection/</link>
+      <pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-29-msa-2.0-tech-stack-selection/</guid>
+      <description>一、前言 2014年可以认为是微服务1.0的元年，当年有几个标志性事件，一是Martin Fowler在其博客上发表了“Microservice</description>
+    </item>
+    
+    <item>
+      <title>微服务该如何发布?</title>
+      <link>http://jskillcloud.com/post/2018-05-28-deployment-mode/</link>
+      <pubDate>Mon, 28 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-28-deployment-mode/</guid>
+      <description>一、前言 根据2017年的DevOps发展报告，高效能组织和低效能组织在软件交付的效率上有数量级上的差异。技术组织的软件交付能力是一种综合能力</description>
+    </item>
+    
+    <item>
+      <title>中国式微服务技术栈2.0</title>
+      <link>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-chinese-style/</link>
+      <pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-chinese-style/</guid>
+      <description>前言 近年，Spring Cloud俨然已经成为微服务开发的主流技术栈，在国内开发者社区非常火爆。我近年一直在一线互联网公司（携程，拍拍贷等）开</description>
+    </item>
+    
+  </channel>
+</rss>
