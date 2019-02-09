@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="成长组织如何突破技术困局?" />
+    <meta property="og:title" content="成长组织如何突破技术困局?" />
+    <meta property="twitter:title" content="成长组织如何突破技术困局?" />
+    
+
+    
+    <meta name="description" content="2017年我全程参与了一家成长型组织的技术架构转型升级，本文是在2016年底，在正式启动技术转型之前，我个人的一些战略思考总结。现在转型已经取得阶段性成果，回过头来看，对于大部分成长型组织的技术转型升级，我认为本文还是蛮有借鉴价值的。">
+    <meta property="og:description" content="2017年我全程参与了一家成长型组织的技术架构转型升级，本文是在2016年底，在正式启动技术转型之前，我个人的一些战略思考总结。现在转型已经取得阶段性成果，回过头来看，对于大部分成长型组织的技术转型升级，我认为本文还是蛮有借鉴价值的。" />
+    <meta property="twitter:description" content="2017年我全程参与了一家成长型组织的技术架构转型升级，本文是在2016年底，在正式启动技术转型之前，我个人的一些战略思考总结。现在转型已经取得阶段性成果，回过头来看，对于大部分成长型组织的技术转型升级，我认为本文还是蛮有借鉴价值的。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>成长组织如何突破技术困局?-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-05-24-turn-around/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84">微服务架构</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/diamonds.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%8A%80%E6%9C%AF%E8%BD%AC%E5%9E%8B" title="技术转型">
+                            技术转型
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%8A%80%E6%9C%AF%E5%8D%87%E7%BA%A7" title="技术升级">
+                            技术升级
+                        </a>
+                        
+                    </div>
+                    <h1>成长组织如何突破技术困局?</h1>
+                    <h2 class="subheading">成长型组织的技术转型升级之路</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Thursday, May 24, 2018
+                        
+                            <span id="/post/2018-05-24-turn-around/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#一-困局">一、困局</a></li>
+<li><a href="#二-根因分析和破局思路">二、根因分析和破局思路</a>
+<ul>
+<li><a href="#1-要事第一和压强原则">1. 要事第一和压强原则</a></li>
+<li><a href="#2-系统思考-反馈环和试错文化">2. 系统思考、反馈环和试错文化</a></li>
+<li><a href="#3-提升人才密度">3. 提升人才密度</a></li>
+</ul></li>
+<li><a href="#三-总结">三、总结</a></li>
+<li><a href="#附录">附录：</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h3 id="前言">前言</h3>
+
+<p>2017年我全程参与了一家成长型组织的技术架构转型升级，本文是在2016年底，在正式启动技术转型之前，我个人的一些战略思考总结。现在转型已经取得阶段性成果，回过头来看，对于大部分成长型组织的技术转型升级，我认为本文还是蛮有借鉴价值的。</p>
+
+<p>本分享假设针对提供互联网服务的软件研发型组织，其它类似涉及IT系统的组织也可从中获得借鉴。</p>
+
+<p>本分享属于个人思考心得总结，如有理解不当偏颇之处，还请大家不吝指教。</p>
+
+<h3 id="一-困局">一、困局</h3>
+
+<p>先上三个图，分别说明企业，特别是成长型企业，所面临的普遍困局，下面是第一个：</p>
+
+<p><img src="/img/post/20180524/square_wheel.png" alt="square wheel" />
+<center style="margin: -20px 0 20px">图1 方轮子困局V1</center></p>
+
+<p>这个图对于从大公司（如BAT）跳到初创和成长型公司的童鞋来说感触特别深刻，你跑到随便一家刚刚熬到B或C轮融资的公司，看到这里的童鞋还在用非常落后的技术（方型轮子）支持业务，童鞋们很忙很累，加班超严重，但是效率和产出很低，你忍不住搬出在大公司已经司空见惯的高端技术（圆形轮子，如云计算、容器、微服务和DevOps等一堆天花乱坠的新技术和理念），结果得到的反馈却是：“对不起，我们赶业务太忙没时间升级”，然后你就只能无语了！</p>
+
+<p><img src="/img/post/20180524/square_wheel_v2.png" alt="square wheel v2" />
+<center style="margin: -20px 0 20px">图2 方轮子困局V2</center></p>
+
+<p>第二个图是另一个版本的方轮子困局，在大部分企业里头也是非常常见的。一方面，受到市场竞争的压力，企业中拉车一方（业务方和管理层）和推车的一方（员工），都迫于赶业务而无法停下来做系统改进提升，尽管提升的技术手段存是存在的（车里的圆形轮子）。第二种可能的情况是，企业一线的推车员工可能是意识到企业面临的效率问题的，但是企业的拉车方由于长期脱离生产一线，看不清业务支撑系统的效率问题，无法从上至下推进系统提升改进。</p>
+
+<p><img src="/img/post/20180524/silo.png" alt="silo" />
+<center style="margin: -20px 0 20px">图3 谷仓困局</center></p>
+
+<p>第三个图称为谷仓或者烟筒（Silo）困局，反映企业内部各自为政，缺乏领导力、信任和合作所造成的困局。</p>
+
+<p>上图反映一个典型的场景：</p>
+
+<ol>
+<li>业务方领导层：我们的增长太慢了，为啥我们不能比竞争对手更快推出产品？</li>
+<li>产品管理层：我们现在不招新人了，技术团队不给力，一大堆项目堆着无法推进，研发团队是不是出了问题？</li>
+<li>产品研发团队：没有按时交付项目不能怪我们，我们要求的机器运维一直拖着没有到位，我们的运维太挫，要换个头了。</li>
+<li>运维团队：客户都气疯了，我们大部分时间在救火保证系统稳定性，不要再丢东西给我们了，我的团队天天熬夜都嚷嚷要离职…</li>
+</ol>
+
+<p>烟筒困局还有一个典型的问题是，企业团队倾向自立门户，重复造轮子（基础设施）、造成大量重复劳动，企业效率低下，成本骤增和浪费严重。</p>
+
+<p>对谷仓困局描述最生动的要数小说《凤凰项目：一个IT运维的传奇故事》，推荐有兴趣的童鞋进一步阅读（参考附录1）。</p>
+
+<h3 id="二-根因分析和破局思路">二、根因分析和破局思路</h3>
+
+<p>针对这些困局，背后的深刻原因是什么？我们该如何破局？下面是我近期的三点战略思考：</p>
+
+<h4 id="1-要事第一和压强原则">1. 要事第一和压强原则</h4>
+
+<p>Stephen R.Covey博士的《高效能人士的七个习惯》（附录2）中的第一个习惯称为要事第一，Covey还为我们提供了一个时间管理的重要工具~四象限工作法则，把事情按照重要性和紧迫性分在四个象限里头，我们的注意力应该主要放在和重要性相关的两个象限里头，
+* A.重要但不紧迫：通常是一些基础性长期重要的事情，比如抢占市场的新产品规划，人才引进和培养，基础设施建设，系统提升型项目等
+* B. 既重要又紧迫：通常是一些火烧眉毛的事情，比如系统故障救火，网站紧急bug修复等</p>
+
+<p>这两个象限的时间分配是门平衡的艺术，理想70%的时间应该放在A象限，即未雨绸缪象限，20%的时间放在B象限，用于应急。A象限做好了，B象限事件的概率会变小。如果一个公司大部分时间在B象限救火，通常说明是A和B两个象限的时间分配失衡或者倒挂了，需要关注投资那些长期重要但不紧迫的事情。</p>
+
+<p><img src="/img/post/20180524/priority.png" alt="priority" />
+<center style="margin: -20px 0 20px">图4 四象限工作法</center></p>
+
+<p>实力上处于劣势的企业如何与优势企业竞争？华为公司的实践表明，要实行“压强原则”，也就是将有限的资源集中于一点，在配置强度上大大超过竞争对手，以求重点突破，然后迅速扩大战果，最终达到系统领先。华为公司总裁任正非先生曾用坦克和钉子的比喻说明“压强原则”。坦克重达几十吨，却可以在沙漠中行驶，原因是宽阔的履带分散了加在单位面积上的重量；钉子质量虽小，却可以穿透硬物，是因为它将冲击力集中在小小的尖上，二者的差别就在于后者的压强更大。同样的道理应用到企业战略上，就有了“压强原则”。华为公司靠“压强原则”突破了万门数字程控交换机，突破了GSM全套移动通信设备，突破了光网络设备……几乎所有的重大产品，最初都是这么突破的。公司规模小时如此，如今公司规模大了，每年的研发费用超过了100亿元，但在项目资源配置上，还要继续贯彻“压强原则”。</p>
+
+<p><img src="/img/post/20180524/tank.jpg" alt="tank" />
+<center style="margin: -20px 0 20px">图5 坦克在沙漠中行驶自如</center></p>
+
+<p><img src="/img/post/20180524/hammar.jpg" alt="hammar" />
+<center style="margin: -20px 0 20px">图6 钉子击穿硬物</center></p>
+
+<p>在《华为基本法》中是这么描述的：“在成功关键因素和选定的战略生长点上，以超过主要竞争对手的强度配置资源，要么不做，要做，就极大地集中人力、物力和财力，实现重点突破”。</p>
+
+<p>抓不住重点，克制不住做新产品的冲动、妄图全面开花，常常是制造方轮子和谷仓困局的一个主要诱因。 初创或成长型公司，本身资源匮乏，研发能力相对较弱，更需贯彻“压强原则”，应抓住重点，集中资源各个击破。</p>
+
+<h4 id="2-系统思考-反馈环和试错文化">2. 系统思考、反馈环和试错文化</h4>
+
+<p>我们大部分人都有在高速或高架上堵车的经历，因为两辆车的事故，常常造成整个高速的流量急速下降（用我老婆的话说是龟速）甚至瘫痪，</p>
+
+<p><img src="/img/post/20180524/bottleneck.png" alt="bottleneck" />
+<center style="margin: -20px 0 20px">图7 瓶颈理论</center></p>
+
+<p>上面这个图很形象的展示了企业管理中知名的瓶颈理论（也称约束理论），整个系统的吞吐是由系统的瓶颈决定的，例如上图，瓶颈处的容量是4，那么整个系统的吞吐量是4。在瓶颈上游的优化，上图中上游的容量是6，只会造成上游的进一步拥堵和积压，而在瓶颈下游的优化，上图中下游的容量是6，则对整个系统的吞吐没有任何帮助，反而造成资源的闲置和浪费。</p>
+
+<p>IT运维管理畅销书《凤凰项目》（附录1）的作者Gene Kim在调研了众多高性能IT组织后总结了支持DevOps运作的三个原理(The Three Ways: The Principles Underpinning DevOps)（附录3），可以认为是系统改进提升的一般性原理，见下图：</p>
+
+<p><img src="/img/post/20180524/the_three_ways.png" alt="the three ways" />
+<center style="margin: -20px 0 20px">图8 支持DevOps运作的三个原理</center></p>
+
+<p><strong>原理一：系统思考(Systems Thinking)</strong>，开发驱动的组织，其能力不是制作软件，而是持续的交付客户价值。价值从业务需求开始，经过研发测试，到部署运维，依次流动，并最终以服务形式交付到客户手中。整个价值流速并不依赖单个部门（团队或个人）的杰出工作，而是受整个价值链最薄弱环节（瓶颈）的限制，所以局部优化通常是无效的，反而常常导致全局受损。</p>
+
+<p>Gene Kim特别指出，
+&gt; 在瓶颈之外的任何优化提升都只是幻象。
+&gt; Any improvements made anywhere besides the bottleneck are an illusion.
+&gt; — Gene Kim</p>
+
+<p>在研发型组织中，常见的系统瓶颈如运维机器资源提供（Provisioning）缓慢，发布流程繁琐容易出错，遗留系统耦合历史负担重，研发基础平台和框架薄弱等等。这些瓶颈点是研发型组织特别需要关注和优化的。</p>
+
+<p><strong>原理二：强化反馈环(Amplify Feedback Loops)</strong>，过程改进常常通过缩短和加强反馈环来达成，原理二强调强化企业和客户之间，企业组织团队间，流程上和系统内的反馈环（如图9）。没有测量就没有提升（图10），反馈要以测量和数据作为基础，通过反馈数据来优化和改进系统。强化反馈环在技术上的一些主要手段包括大数据分析和监控告警等。</p>
+
+<p><img src="/img/post/20180524/feedback_loop.png" alt="feedback loop" />
+<center style="margin: -20px 0 20px">图9 强化反馈环</center></p>
+
+<p><img src="/img/post/20180524/measure.png" alt="measure and improve" />
+<center style="margin: -20px 0 20px">图10 没有测量就没有提升</center></p>
+
+<p><strong>原理三：持续试验和学习的文化(Culture of Continual Experimentation And Learning)</strong>，在企业管理文化层面强调勇于试错和持续试验的文化，真正的试错文化包括：</p>
+
+<ol>
+<li>管理层要承认企业内部50%的创新或流程提升项目是可能失败的，即使失败，员工不会受到责罚，鼓励持续的实验和从中学习。</li>
+<li>管理层要有技术偿债意识，勿追求100%的员工利用率，要留至少20%~30%的时间给员工做创新和系统改进提升项目。</li>
+</ol>
+
+<p>技术研发型组织，尤其是领导层，视野不足仅仅关注自己的一亩三分地（局部优化），缺乏全局系统思考和合作意识薄弱，常常是造成组织各自为政的谷仓困局的另一个主要诱因。而企业和客户之间，企业组织团队间，流程上和系统内的反馈环不闭合，则会让谷仓和方轮子困局进一步恶化。企业追求追责文化，则会造成员工束手不敢试错，出了问题则相互推诿和扯皮。企业追求100%的员工利用率，过分“压榨”员工，没有技术债偿还意识，不懂得留至少20%~30%的系统提升改进时间，光顾要母鸡生蛋但对母鸡本身照顾不到位，必然导致方轮子困局。</p>
+
+<h4 id="3-提升人才密度">3. 提升人才密度</h4>
+
+<p>我个人认为，造成方轮子和谷仓困局的根本性问题还是企业的人才密度不够，无法支撑起日益复杂的业务和系统。不管是领导力、信任和协作、规划和抓工作重点能力，还是系统思考、闭环反馈和试错文化、都离不开人才密度这个根基的支撑。初创型公司，一开始的目标是找准市场和谋活，一般花不起钱和很难找到好的开发人员，当然一开始的业务不复杂，一般的开发人员可以应付。随着业务复杂度的增加，一般开发人员难免堆砌业务代码和欠下大量的技术债务（坑），当企业的业务和系统复杂度到一个点，方形轮子和谷仓困局就出现了（如图11）。</p>
+
+<p><img src="/img/post/20180524/talent_density.png" alt="talent density" />
+<center style="margin: -20px 0 20px">图11 人才密度和业务复杂度的关系</center></p>
+
+<p>互联网研发是一个智力密集型行业，一个好的研发人员和一个普通的研发人员到底有多大差异？我看到过至少三个版本：</p>
+
+<ol>
+<li>第一个版本是Steve McConnell在《代码大全》（附录4）一书中提到的：“A good programmer can be as 10x times more productive than a mediocre one”，优秀程序员生产力可以是一般程序员生产力的10倍。</li>
+<li>第二版本来自被誉为硅谷最重要的文档《Netflix企业文化》ppt（附录5）：对于程序性工作，顶级员工的输出量是一般员工的2倍，对于创新和创意型的工作，顶级员工的输出是一般员工的10倍。</li>
+<li>第三个版本是乔布斯讲的：在软件行业里，最好的人才与一般的人才的差距是50倍，甚至是100倍！</li>
+</ol>
+
+<p>不管这些数字是否准确，足以说明说明业界大牛和伟大公司对人才密度的重视。随着业务和系统复杂度的增加，如果企业人才密度跟不上，必然造成方型轮子和谷仓困局。所以应对上述企业困局的根本性方法，还是要想办法提升人才密度，说白了就是要换血，用海尔张瑞敏的话说就是要引入“负熵”。创业或成长型公司到一定阶段如果有钱了，老板千万记得花钱提升人才密度，特别要舍得花钱引进行业大牛。</p>
+
+<p>另外还要注意那些表面看起来常常身处救火一线，常常加班熬夜的所谓“猛将明星”型员工，他们有可能恰恰是埋了很多坑的问题制造者，因为在软件行业，真正好的研发人员其实是非常“懒惰”的，他们大部分时间在思考和设计（好像不在做事），换句话说他们大部分时间花在未雨绸缪的A象限，做事的时候也常常尽可能采用自动化的手段，对于技术方案，他们会权衡长期的可维护性和可规模化，知道有些技术方案虽然可行，但是长期不可维护和规模化，所以不能这样干。找到这样的员工是企业之福。</p>
+
+<h3 id="三-总结">三、总结</h3>
+
+<p>下面总结突破方轮子和谷仓困局的五点思路：</p>
+
+<ol>
+<li>不惜代价引进优秀人才，特别是行业大牛，提升企业人才密度，人才密度要领先于业务复杂度。</li>
+<li>要事优先，总结并抓住系统改进提升的重点环节并立项，贯彻“压强原则”，确保重点系统改进型项目的长期坚持推进和落地。</li>
+<li>培养企业员工特别是领导层的流式(flow)思维、系统性思维和加强合作意识，协同找出系统瓶颈，针对瓶颈立项，集中投入资源做改进和提升。</li>
+<li>培养企业员工的闭环反馈意识，建立和强化业务、团队沟通、流程和系统各个层次的反馈环。建设监控和数据分析基础设施，基于数据和可视化反馈改进和完善系统。</li>
+<li>鼓励试错和免责文化，支持业务的同时留20%~30%时间给员工做系统提升和改进。</li>
+</ol>
+
+<p>上面分析了方轮子和谷仓困局背后的深层次原因和一般性的解决思路，那么我们该如何落地提升呢？如下图，对一个处在方轮子困局阶段的企业，如何达到BAT水平呢？一蹴而就直线到达显然是不现实的。</p>
+
+<p><img src="/img/post/20180524/linear.png" alt="linear" />
+<center style="margin: -20px 0 20px">图12 直线式转型</center></p>
+
+<p><img src="/img/post/20180524/incremental.png" alt="incremental" />
+<center style="margin: -20px 0 20px">图13 曲线式转型</center></p>
+
+<p>图13反映企业改进转型的现实情况，员工一般会经历从害怕，到恐慌，到放弃，到逐步接受并到达终点，中间还会经历反复，可能还会退回到老习惯做事的方法，但只要坚持推进，最终会达到终点。</p>
+
+<p><img src="/img/post/20180524/continous_improvement.png" alt="continous improvement" />
+<center style="margin: -20px 0 20px">图14 持续提升</center></p>
+
+<p>一蹴而就(Big Bang)式的提升转型非常困难，一方面员工通常反弹会很大，另一方面太过折腾甚至可能影响到企业业务的健康发展。所以一般提升需要分解为各个阶段，每个阶段制定重点转型提升任务目标，借助如PDSA（Plan-Do-Study-Act）等闭环式管理工具，稳步长期锲而不舍推进，直至达成目标。</p>
+
+<h3 id="附录">附录：</h3>
+
+<ol>
+<li><a href="https://book.douban.com/subject/26644070/">凤凰项目：一个IT运维的传奇故事</a></li>
+<li><a href="https://book.douban.com/subject/1048007/">高效能人士的七个习惯</a></li>
+<li><a href="http://itrevolution.com/the-three-ways-principles-underpinning-devops/">支持DevOps运作的三个原理</a></li>
+<li><a href="https://book.douban.com/subject/1477390/">代码大全第2版</a></li>
+<li><a href="http://wenku.baidu.com/view/ef9319b4ad51f01dc381f166.html">Netflix企业文化ppt</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-05-23-netflix-tech-innovation/" data-toggle="tooltip" data-placement="top" title="顶级技术组织为啥没有CTO?">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>

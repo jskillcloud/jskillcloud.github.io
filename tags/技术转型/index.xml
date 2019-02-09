@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术转型 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E8%BD%AC%E5%9E%8B/</link>
+    <description>Recent content in 技术转型 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 May 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E6%8A%80%E6%9C%AF%E8%BD%AC%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>成长组织如何突破技术困局?</title>
+      <link>http://jskillcloud.com/post/2018-05-24-turn-around/</link>
+      <pubDate>Thu, 24 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-24-turn-around/</guid>
+      <description>前言 2017年我全程参与了一家成长型组织的技术架构转型升级，本文是在2016年底，在正式启动技术转型之前，我个人的一些战略思考总结。现在转型</description>
+    </item>
+    
+  </channel>
+</rss>
