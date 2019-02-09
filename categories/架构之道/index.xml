@@ -6,10 +6,19 @@
     <description>Recent content in 架构之道 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/categories/%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%81%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>架构师必须知道的架构设计原则</title>
+      <link>http://jskillcloud.com/post/2018-05-21-architecture-principle/</link>
+      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-21-architecture-principle/</guid>
+      <description>一、前言 如果一个技术已经存在3年，比如现在很火的前端技术react和vue等，那么我能预估这个技术大致还有3年的生命期，再久就不确定了；如果</description>
+    </item>
     
     <item>
       <title>波波的架构理念</title>

@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="架构师必须知道的架构设计原则" />
+    <meta property="og:title" content="架构师必须知道的架构设计原则" />
+    <meta property="twitter:title" content="架构师必须知道的架构设计原则" />
+    
+
+    
+    <meta name="description" content="原则是比具体技术更抽象，更接近事物本质，也更经得起时间考验的东西。这些原则沉淀在架构师的脑海中，最终内化成他的mindset，以潜意识方式影响和指导他的架构和设计工作。">
+    <meta property="og:description" content="原则是比具体技术更抽象，更接近事物本质，也更经得起时间考验的东西。这些原则沉淀在架构师的脑海中，最终内化成他的mindset，以潜意识方式影响和指导他的架构和设计工作。" />
+    <meta property="twitter:description" content="原则是比具体技术更抽象，更接近事物本质，也更经得起时间考验的东西。这些原则沉淀在架构师的脑海中，最终内化成他的mindset，以潜意识方式影响和指导他的架构和设计工作。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>架构师必须知道的架构设计原则-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-05-21-architecture-principle/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%9E%B6%E6%9E%84%E4%B9%8B%E9%81%93">架构之道</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/hexagons.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E6%9E%B6%E6%9E%84%E5%8E%9F%E5%88%99" title="架构原则">
+                            架构原则
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1" title="架构设计">
+                            架构设计
+                        </a>
+                        
+                    </div>
+                    <h1>架构师必须知道的架构设计原则</h1>
+                    <h2 class="subheading">架构师必须知道的架构设计原则</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Monday, May 21, 2018
+                        
+                            <span id="/post/2018-05-21-architecture-principle/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#一-前言">一、前言</a></li>
+<li><a href="#二-软件设计原则">二、软件设计原则</a>
+<ul>
+<li><a href="#grasp通用职责分配软件模式">GRASP通用职责分配软件模式</a>
+<ul>
+<li><a href="#1-信息专家-information-expert">1. 信息专家(Information Expert)</a></li>
+<li><a href="#2-创建者-creator">2. 创建者(Creator)</a></li>
+<li><a href="#3-低耦合-low-coupling">3. 低耦合(Low Coupling)</a></li>
+<li><a href="#4-高内聚-high-cohesion">4. 高内聚(High Cohesion)</a></li>
+<li><a href="#5-控制器-controller">5.控制器(Controller)</a></li>
+<li><a href="#6-多态-polymorphism">6. 多态(Polymorphism)</a></li>
+<li><a href="#7-纯虚构-pure-fabrication">7. 纯虚构(Pure Fabrication)</a></li>
+<li><a href="#8-间接-indirection">8. 间接(Indirection)</a></li>
+<li><a href="#9-受保护的变化-protected-variation">9. 受保护的变化(Protected Variation)</a></li>
+</ul></li>
+<li><a href="#solid面向对象设计原则">SOLID面向对象设计原则</a>
+<ul>
+<li><a href="#1-单一职责原则-the-single-responsibility-principle">1. 单一职责原则(The Single Responsibility Principle)</a></li>
+<li><a href="#2-开放封闭原则-the-open-closed-principle">2. 开放封闭原则(The Open Closed Principle)</a></li>
+<li><a href="#3-里氏替代原则-the-liskov-substitution-principle">3. 里氏替代原则(The Liskov Substitution Principle)</a></li>
+<li><a href="#4-依赖倒置原则-the-dependency-inversion-principle">4. 依赖倒置原则(The Dependency Inversion Principle)</a></li>
+<li><a href="#5-接口分离原则-the-interface-segregation-principle">5. 接口分离原则(The Interface Segregation Principle)</a></li>
+</ul></li>
+<li><a href="#我的解读">我的解读</a></li>
+</ul></li>
+<li><a href="#三-分布式系统架构设计原则和理论">三、分布式系统架构设计原则和理论</a>
+<ul>
+<li><a href="#akf架构原则">AKF架构原则</a>
+<ul>
+<li><a href="#1-n-1设计">1. N + 1设计</a></li>
+<li><a href="#2-回滚设计">2. 回滚设计</a></li>
+<li><a href="#3-禁用设计">3. 禁用设计</a></li>
+<li><a href="#4-监控设计">4. 监控设计</a></li>
+<li><a href="#5-设计多活数据中心">5. 设计多活数据中心</a></li>
+<li><a href="#6-使用成熟的技术">6. 使用成熟的技术</a></li>
+<li><a href="#7-异步设计">7. 异步设计</a></li>
+<li><a href="#8-无状态系统">8. 无状态系统</a></li>
+<li><a href="#9-水平扩展而非垂直升级">9. 水平扩展而非垂直升级</a></li>
+<li><a href="#10-设计时至少要有两步前瞻性">10. 设计时至少要有两步前瞻性</a></li>
+<li><a href="#11-非核心则购买">11. 非核心则购买</a></li>
+<li><a href="#12-使用商品化硬件">12. 使用商品化硬件</a></li>
+<li><a href="#13-小构建-小发布和快试错">13. 小构建、小发布和快试错</a></li>
+<li><a href="#14-隔离故障">14. 隔离故障</a></li>
+<li><a href="#15-自动化">15. 自动化</a></li>
+</ul></li>
+<li><a href="#我的解读-1">我的解读</a></li>
+<li><a href="#十二要素应用">十二要素应用</a>
+<ul>
+<li><a href="#1-基准代码">1. 基准代码</a></li>
+<li><a href="#2-依赖">2. 依赖</a></li>
+<li><a href="#3-配置">3. 配置</a></li>
+<li><a href="#4-后端服务">4. 后端服务</a></li>
+<li><a href="#5-构建-发布和运行">5. 构建、发布和运行</a></li>
+<li><a href="#6-进程">6. 进程</a></li>
+<li><a href="#7-端口绑定">7. 端口绑定</a></li>
+<li><a href="#8-并发">8. 并发</a></li>
+<li><a href="#9-易处理">9. 易处理</a></li>
+<li><a href="#10-开发环境和线上环境等价">10. 开发环境和线上环境等价</a></li>
+<li><a href="#11-日志">11. 日志</a></li>
+<li><a href="#12-管理进程">12. 管理进程</a></li>
+</ul></li>
+<li><a href="#我的解读-2">我的解读</a></li>
+<li><a href="#cap定理">CAP定理</a>
+<ul>
+<li><a href="#1-一致性-consistency">1. 一致性(Consistency)</a></li>
+<li><a href="#2-可用性-availability">2. 可用性(Availability)</a></li>
+<li><a href="#3-分区容忍性-partition-tolerance">3. 分区容忍性(Partition tolerance)</a></li>
+</ul></li>
+<li><a href="#base理论">BASE理论</a>
+<ul>
+<li><a href="#1-基本可用-basically-available">1. 基本可用(Basically Available)</a></li>
+<li><a href="#2-软状态-soft-state">2. 软状态(Soft State)</a></li>
+<li><a href="#3-最终一致性-eventual-consistency">3. 最终一致性(Eventual Consistency)</a></li>
+</ul></li>
+<li><a href="#我的解读-3">我的解读</a></li>
+</ul></li>
+<li><a href="#四-组织和系统改进原则">四、组织和系统改进原则</a>
+<ul>
+<li><a href="#康威法则">康威法则</a></li>
+<li><a href="#系统改进三原则">系统改进三原则</a>
+<ul>
+<li><a href="#原理一-系统思考-system-thinking">原理一：系统思考(System Thinking)</a></li>
+<li><a href="#原理二-强化反馈环-amplify-feedback-loops">原理二：强化反馈环(Amplify Feedback Loops)</a></li>
+<li><a href="#原理三-持续试验和学习的文化-culture-of-continual-experimentation-and-learning">原理三：持续试验和学习的文化(Culture of Continual Experimentation And Learning)</a></li>
+</ul></li>
+<li><a href="#我的解读-4">我的解读</a></li>
+</ul></li>
+<li><a href="#五-写在最后">五、写在最后</a></li>
+<li><a href="#六-参考">六、参考</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h2 id="一-前言">一、前言</h2>
+
+<p>如果一个技术已经存在3年，比如现在很火的前端技术react和vue等，那么我能预估这个技术大致还有3年的生命期，再久就不确定了；如果一个架构或设计原则已经存在15年，例如单一职责和依赖倒置原则，我可以预期它还有15年甚至更久的生命期。原则是比具体技术更抽象，更接近事物本质，也更经得起时间考验的东西。这些原则沉淀在架构师的脑海中，最终内化成他的mindset，以潜意识方式影响和指导他的架构和设计工作。</p>
+
+<p>一晃我在软件研发行业工作十多个年头了，前面大部分时间做架构设计和开发，现在转型做研发管理。随着时间的推移，很多技战术细节性的东西(工具，框架，编程语言)在我脑海中渐渐模糊，但是一些平时学习积累起来，并且在实践中加深体会的软件架构设计和组织原则，这些原则性的东西却丝毫没有被时间冲淡，反而愈加清新。现在即使我不在一线开发，但这些沉淀下来的原则仍然潜移默化地影响我的日常管理和部分架构设计指导工作。我想有必要总结一下那些业界知名，给我留下深刻印象的软件架构设计和组织原则，和大家一起分享。</p>
+
+<h2 id="二-软件设计原则">二、软件设计原则</h2>
+
+<h3 id="grasp通用职责分配软件模式">GRASP通用职责分配软件模式</h3>
+
+<p>来自Craig Larman的软件设计书《UML和模式应用》[附录1]，Larman在书中提出软件设计的关键任务是职责分配，并提炼总结出9种(5种核心+4种扩展)软件职责分配模式，这些模式是比GoF设计模式更抽象的元模式。</p>
+
+<h4 id="1-信息专家-information-expert">1. 信息专家(Information Expert)</h4>
+
+<p>为对象分配职责的通用原则 – 把职责分配给拥有足够信息可以履行职责的专家</p>
+
+<h4 id="2-创建者-creator">2. 创建者(Creator)</h4>
+
+<p>将创建A的职责赋给B，如果至少下面一种情况为真：
+* B“包含”或者聚合A
+* B记录A的实例
+* B密切地使用A
+* B拥有A的初始化数据</p>
+
+<h4 id="3-低耦合-low-coupling">3. 低耦合(Low Coupling)</h4>
+
+<p>赋予职责使得对象间的耦合度尽可能低，最小化对象间的依赖和变更影响，最大化重用。</p>
+
+<h4 id="4-高内聚-high-cohesion">4. 高内聚(High Cohesion)</h4>
+
+<p>赋予职责使得每个对象的职责尽可能保持聚焦和单一，易于管理和理解。</p>
+
+<h4 id="5-控制器-controller">5.控制器(Controller)</h4>
+
+<p>把职责赋予系统、设备或者子系统的表示类(门面控制器)，或者某个用例的表示类(用例控制器)，让控制器接收事件并协调整个系统的运作。</p>
+
+<h4 id="6-多态-polymorphism">6. 多态(Polymorphism)</h4>
+
+<p>将职责分配给多个具有同名方法的多态子类，运行时根据需要动态切换子类，让系统行为变得可插拔。</p>
+
+<h4 id="7-纯虚构-pure-fabrication">7. 纯虚构(Pure Fabrication)</h4>
+
+<p>针对真实问题域中不存在，但是设计建模中有用的概念，设计虚构类并赋予职责。</p>
+
+<h4 id="8-间接-indirection">8. 间接(Indirection)</h4>
+
+<p>在两个或者多个对象间有交互的情况下，为避免直接耦合，提高重用性，创建中间类并赋予职责，对象的交互交由中间类协调。</p>
+
+<h4 id="9-受保护的变化-protected-variation">9. 受保护的变化(Protected Variation)</h4>
+
+<p>简单讲就是封装变化。识别系统中可能的不稳定或者变化，在不稳定组件上创建稳定的抽象接口，将可能的变化封装在接口之后，使得系统内部的不稳定或者变化不会对系统的其它部分产生不良影响。</p>
+
+<h3 id="solid面向对象设计原则">SOLID面向对象设计原则</h3>
+
+<h4 id="1-单一职责原则-the-single-responsibility-principle">1. 单一职责原则(The Single Responsibility Principle)</h4>
+
+<p>修改某个类的理由应该只有一个，如果超过一个，说明类承担不止一个职责，要视情况拆分。</p>
+
+<p><img src="/img/post/20180521/srp.png" alt="srp" /></p>
+
+<h4 id="2-开放封闭原则-the-open-closed-principle">2. 开放封闭原则(The Open Closed Principle)</h4>
+
+<p>软件实体应该对扩展开放，对修改封闭。一般不要直接修改类库源码（即使你有源代码），通过继承等方式扩展。</p>
+
+<p><img src="/img/post/20180521/ocp.png" alt="ocp" /></p>
+
+<h4 id="3-里氏替代原则-the-liskov-substitution-principle">3. 里氏替代原则(The Liskov Substitution Principle)</h4>
+
+<p>当一个子类的实例能够被替换成任何超类的实例时，它们之间才是真正的is-a关系。</p>
+
+<p><img src="/img/post/20180521/lsp.png" alt="lsp" /></p>
+
+<h4 id="4-依赖倒置原则-the-dependency-inversion-principle">4. 依赖倒置原则(The Dependency Inversion Principle)</h4>
+
+<p>高层模块不应该依赖于底层模块，二者都应该依赖于抽象。换句话说，依赖于抽象，不要依赖于具体实现。比方说，你不会把电器电源线焊死在室内电源接口处，而是用标准的插头插在标准的插座(抽象)上。</p>
+
+<p><img src="/img/post/20180521/dip.png" alt="dip" /></p>
+
+<h4 id="5-接口分离原则-the-interface-segregation-principle">5. 接口分离原则(The Interface Segregation Principle)</h4>
+
+<p>不要强迫用户去依赖它们不使用的接口。换句话说，使用多个专门的接口比使用单一的大而全接口要好。</p>
+
+<p><img src="/img/post/20180521/isp.png" alt="isp" /></p>
+
+<h3 id="我的解读">我的解读</h3>
+
+<ol>
+<li>我职业早年主要关注软件设计和编程，所以花蛮多时间学习和消化GRASP和SOLID设计原则。这些原则对我影响很深，尤其是单一职责，信息专家，关注分离，依赖倒置/封装变化，分而治之等核心原则，现在日常研发中我时常用这些原则指导新手工程师。</li>
+<li><strong>高内聚+低耦合</strong>，就像道中的一阴一阳，是所有其它OO设计原则的原则(元原则)，其它设计原则都是在这两个基础上泛化衍生出来的。</li>
+<li>上述原则虽然是针对OO设计和编程提出，但是对于大规模系统架构仍然适用。比如，微服务架构就体现了：
+
+<ul>
+<li>单一职责：一个微服务尽可能要职责单一，提供的接口也尽可能单一(接口分离原则)，安全/路由/限流等跨横切面的关注点(Cross-Cutting Concerns)由独立网关负责，体现关注分离(Separation of Concerns)。</li>
+<li>信息专家：当不确定哪个团队应该负责某个微服务时，一般原则也是谁拥有数据谁负责，基于有界上下文Bounded Context（一般是边界比较清晰的领域数据源）构建微服务。</li>
+<li>松散耦合：服务之间通过HTTP/JSON等轻量机制通信，服务之间不强耦合。</li>
+<li>受保护的变化和依赖倒置：服务之间只依赖抽象接口，实现可能随时变化。</li>
+<li>间接：网关在外面的客户端和内部的服务之间增加了一层间接，使两者不强耦合，可以相互独立演化。</li>
+</ul></li>
+<li>作为架构师或者设计师，有两个设计能力是需要重点培养的，也是最难和最能体现架构设计水平的：
+
+<ul>
+<li><strong>合理的职责分配能力</strong>，也就是每个类/组件/子系统应该承担什么职责，如何保证职责单一，它们之间如何协作；</li>
+<li><strong>系统抽象和核心领域建模能力</strong>，需要深入一线业务域。</li>
+</ul></li>
+</ol>
+
+<h2 id="三-分布式系统架构设计原则和理论">三、分布式系统架构设计原则和理论</h2>
+
+<h3 id="akf架构原则">AKF架构原则</h3>
+
+<p>这15个架构原则来自《架构即未来(The Art of Scalability)》[附录2]一书，作者马丁L.阿伯特和迈克尔T.费舍尔分别是eBay和PayPal的前CTO，他们经历过eBay和PayPal大规模分布式电商平台的架构演进，在一线实战经验的基础上总结并提炼出15条架构原则：</p>
+
+<h4 id="1-n-1设计">1. N + 1设计</h4>
+
+<p>永远不要少于两个，通常为三个。比方说无状态的Web/API一般部署至少&gt;=2个。</p>
+
+<h4 id="2-回滚设计">2. 回滚设计</h4>
+
+<p>确保系统可以回滚到以前发布过的任何版本。可以通过发布系统保留历史版本，或者代码中引入动态开关切换机制(Feature Switch)。</p>
+
+<h4 id="3-禁用设计">3. 禁用设计</h4>
+
+<p>能够关闭任何发布的功能。新功能隐藏在动态开关机制(Feature Switch)后面，可以按需一键打开，如发现问题随时关闭禁用。</p>
+
+<h4 id="4-监控设计">4. 监控设计</h4>
+
+<p>在设计阶段就必须考虑监控，而不是在实施完毕之后补充。例如在需求阶段就要考虑关键指标监控项，这就是度量驱动开发(Metrics Driven Development)的理念。</p>
+
+<h4 id="5-设计多活数据中心">5. 设计多活数据中心</h4>
+
+<p>不要被一个数据中心的解决方案把自己限制住。当然也要考虑成本和公司规模发展阶段。</p>
+
+<h4 id="6-使用成熟的技术">6. 使用成熟的技术</h4>
+
+<p>只用确实好用的技术。商业组织毕竟不是研究机构，技术要落地实用，成熟的技术一般坑都被踩平了，新技术在完全成熟前一般需要踩坑躺坑。</p>
+
+<h4 id="7-异步设计">7. 异步设计</h4>
+
+<p>能异步尽量用异步，只有当绝对必要或者无法异步时，才使用同步调用。</p>
+
+<h4 id="8-无状态系统">8. 无状态系统</h4>
+
+<p>尽可能无状态，只有当业务确实需要，才使用状态。无状态系统易于扩展，有状态系统不易扩展且状态复杂时更易出错。</p>
+
+<h4 id="9-水平扩展而非垂直升级">9. 水平扩展而非垂直升级</h4>
+
+<p>永远不要依赖更大、更快的系统。一般公司成长到一定阶段普遍经历过买更大、更快系统的阶段，即使淘宝当年也买小型机扛流量，后来扛不住才体会这样做不scalable，所以才有后来的去IOE行动。</p>
+
+<h4 id="10-设计时至少要有两步前瞻性">10. 设计时至少要有两步前瞻性</h4>
+
+<p>在扩展性问题发生前考虑好下一步的行动计划。架构师的价值就体现在这里，架构设计对于流量的增长要有提前量。</p>
+
+<h4 id="11-非核心则购买">11. 非核心则购买</h4>
+
+<p>如果不是你最擅长，也提供不了差异化的竞争优势则直接购买。避免Not Invented Here症状，避免凡事都要重造轮子，毕竟达成业务目标才是重点。</p>
+
+<h4 id="12-使用商品化硬件">12. 使用商品化硬件</h4>
+
+<p>在大多数情况下，便宜的就是最好的。这点和第9点是一致的，通过商品化硬件水平扩展，而不是买更大、更快的系统。</p>
+
+<h4 id="13-小构建-小发布和快试错">13. 小构建、小发布和快试错</h4>
+
+<p>全部研发要小构建，不断迭代，让系统不断成长。这个和微服务理念一致。</p>
+
+<h4 id="14-隔离故障">14. 隔离故障</h4>
+
+<p>实现故障隔离设计，通过断路保护避免故障传播和交叉影响。通过舱壁泳道等机制隔离失败单元(Failure Unit)，一个单元的失败不至影响其它单元的正常工作。</p>
+
+<h4 id="15-自动化">15. 自动化</h4>
+
+<p>设计和构建自动化的过程。如果机器可以做，就不要依赖于人。自动化是DevOps的基础。</p>
+
+<h3 id="我的解读-1">我的解读</h3>
+
+<ol>
+<li>这15条架构原则基本上是eBay在发展，经历过流量数量级增长冲击过程中，通过不断踩坑踩出来的，是干货中的干货。消化吸收这15条原则，基本可保系统架构不会有原则性问题。</li>
+<li>这15条原则同样适用于现在的微服务架构。eBay发展较早，它内部其实很早(差不多2010年前)就已形成完善的微服务生态，只是没有提出微服务这个概念。</li>
+<li>这15条原则可根据TTM(Time To Market)，可用性/可扩展性/质量，成本/效率分布在三个环内，如下图所示:</li>
+</ol>
+
+<p><img src="/img/post/20180521/akf.png" alt="akf" /></p>
+
+<h3 id="十二要素应用">十二要素应用</h3>
+
+<p>Heroku[附录3]是国外知名的云应用平台。基于上百万应用的托管和运营经验，创始人Adam Wiggins提出了12要素应用宣言[附录4]。简单讲，满足这12个要素的应用是比较容易云化并居住在Heroku平台上的。</p>
+
+<h4 id="1-基准代码">1. 基准代码</h4>
+
+<p>一份基准代码，多份部署。如果用镜像部署方式，则一个镜像可以部署到多个环境(测试，预发，生产)，而不是给每个环境制作一个不同镜像。</p>
+
+<h4 id="2-依赖">2. 依赖</h4>
+
+<p>显式声明依赖。如果用镜像部署，则一般依赖被直接打在镜像中，或者声明在docker file中。</p>
+
+<h4 id="3-配置">3. 配置</h4>
+
+<p>在环境中存储配置。在Heroku或者类似的PaaS平台上，配置一般是推荐注入到环境变量中的。现在采用集中式配置中心也是一种流行方式。</p>
+
+<h4 id="4-后端服务">4. 后端服务</h4>
+
+<p>把后端服务(例如缓存，数据库，MQ等)当作附加资源，相关配置和连接字符串通过环境变量注入，或者采用配置中心。</p>
+
+<h4 id="5-构建-发布和运行">5. 构建、发布和运行</h4>
+
+<p>严格分离构建和运行。如果使用镜像部署，则构建、发布/运行是通过镜像这种中间格式严格分离的。</p>
+
+<h4 id="6-进程">6. 进程</h4>
+
+<p>一个或者多个无状态的进程运行应用。容器运行时相当于进程，适用于无状态Web/API。</p>
+
+<h4 id="7-端口绑定">7. 端口绑定</h4>
+
+<p>通过端口绑定提供服务。容器也是通过端口绑定对外提供服务。</p>
+
+<h4 id="8-并发">8. 并发</h4>
+
+<p>通过进程模型进行扩展。容器运行时相当于进程，通过起多个容器可以任意扩展并发数量。</p>
+
+<h4 id="9-易处理">9. 易处理</h4>
+
+<p>快速启动和优雅终止可最大化健壮性。docker容器支持秒级启动和关闭。</p>
+
+<h4 id="10-开发环境和线上环境等价">10. 开发环境和线上环境等价</h4>
+
+<p>尽可能保持开发、测试、预发和线上环境相同。容器可以保证容器内运行时环境的一致性，还需要保证不同环境的一致性，例如不同环境内的操作系统，负载均衡，服务发现，后台服务，监控告警等要尽可能一致。</p>
+
+<h4 id="11-日志">11. 日志</h4>
+
+<p>把日志当作数据流。Heroku不支持本地文件，所以必须以流方式把日志输送到后台日志服务。除了日志以外还要补充考虑metrics流的采集和输送。</p>
+
+<h4 id="12-管理进程">12. 管理进程</h4>
+
+<p>后台管理任务当作一次性的进程。其实相当于在Heroku上以独立进程方式运行任务Job。</p>
+
+<h3 id="我的解读-2">我的解读</h3>
+
+<ol>
+<li>12要素应用也是当前云原生应用(Cloud Native App)的参考标准，我把这12要素也称为云应用迁移原则。满足这12个要素的应用，可以比较顺利迁移到各种云平台(Kubernetes, Marathon, Cloud Foundry等)上。</li>
+<li>对于面临企业遗留应用改造和云化迁移的架构师，可以重点参考这12条迁移原则。</li>
+<li>Docker容器技术可以认为是为云迁移量身定制的技术。容器化是后续云迁移的捷径，所以遗留应用改造可以先想办法做到容器化。</li>
+</ol>
+
+<h3 id="cap定理">CAP定理</h3>
+
+<p>2000年7月，加州大学伯克利分校的Eric Brewer教授在ACM PODC会议上提出CAP猜想。2年后，麻省理工学院的Seth Gilbert和Nancy Lynch从理论上证明了CAP。之后，CAP理论正式成为分布式计算领域的公认定理。</p>
+
+<p>CAP认为：一个分布式系统最多同时满足一致性(Consistency)，可用性(Availability)和分区容忍性(Partition Tolerance)这三项中的两项。</p>
+
+<h4 id="1-一致性-consistency">1. 一致性(Consistency)</h4>
+
+<p>一致性指“all nodes see the same data at the same time”，即更新操作成功，所有节点在同一时间的数据完全一致。</p>
+
+<h4 id="2-可用性-availability">2. 可用性(Availability)</h4>
+
+<p>可用性指“Reads and writes always succeed”，即服务一直可用，而且响应时间正常。</p>
+
+<h4 id="3-分区容忍性-partition-tolerance">3. 分区容忍性(Partition tolerance)</h4>
+
+<p>分区容忍性指“the system continue to operate despite arbitrary message loss or failure of part of the system.”，即分布式系统在遇到某节点或网络分区故障时，仍然能够对外提供满足一致性和可用性的服务。</p>
+
+<p><img src="/img/post/20180521/cap.png" alt="cap" /></p>
+
+<h3 id="base理论">BASE理论</h3>
+
+<p>eBay架构师Dan Pritchett基于对大规模分布式系统的实践总结，在ACM上发表文章提出了BASE理论，BASE理论是对于CAP理论的延伸，核心思想是即使无法做到强一致性(Strong Consistency，CAP中的一致性指强一致性)，但是可以采用适当的方式达到最终一致性(Eventual Consistency)。</p>
+
+<p>BASE指基本可用(Basically Available)、软状态(Soft State)和最终一致性(Eventual Consistency)。</p>
+
+<h4 id="1-基本可用-basically-available">1. 基本可用(Basically Available)</h4>
+
+<p>基本可用是指分布式系统在出现故障时，允许损失部分可用性，即保证核心可用。比如服务降级。</p>
+
+<h4 id="2-软状态-soft-state">2. 软状态(Soft State)</h4>
+
+<p>软状态是指允许系统存在中间状态，而该中间状态不会影响系统的整体可用性。分布式存储中一般一份数据至少存三个副本，允许不同节点间副本同步的延迟就是软状态的体现。</p>
+
+<h4 id="3-最终一致性-eventual-consistency">3. 最终一致性(Eventual Consistency)</h4>
+
+<p>最终一致性是指系统中的所有数据副本经过一段时间后，最终能够达成一致状态。弱一致性和强一致性相反，最终一致性是弱一致性的一种特殊情况。</p>
+
+<p><img src="/img/post/20180521/base.png" alt="base" /></p>
+
+<h3 id="我的解读-3">我的解读</h3>
+
+<ol>
+<li>CAP和BASE理论可以抠得很深，背后甚至有很复杂的数学证明。我理解得相对简单浅显：性能、高可用、不丢数据和数据一致性对分布式系统来说一般是强需求，随着流量的增长，复制和分区在所难免：
+
+<ul>
+<li>复制(replication)：数据在多个节点上存多份保证不丢和高可用；</li>
+<li>分区(partition)：数据按某个纬度切分分布在不同节点上分摊流量压力保证高性能，同时也是为了降低每个节点的复杂性。例如数据库的分库分表，系统拆分微服务化也是一种分区。
+这两者都会带来一致性问题，一致性在时间上有一点妥协的余地-即是最终一致性；时间上要求强一致的话，只有可用性可以适当折中。系统架构的游戏很大部分是和状态一致性作斗争的游戏。</li>
+</ul></li>
+<li>选择使用分布式产品时，比如NoSQL数据库，你需要了解它在CAP环中所在的位置，确保它满足你的场景需要。</li>
+</ol>
+
+<h2 id="四-组织和系统改进原则">四、组织和系统改进原则</h2>
+
+<h3 id="康威法则">康威法则</h3>
+
+<p>Melvin Conway在1967年提出所谓康威法则[附录5]，指出组织架构和系统架构之间有一种隐含的映射关系：</p>
+
+<blockquote>
+<p>Organization which design system […] are constrained to produce designs which are copies of the communication structures of these organization. 设计系统的组织其产生的设计等价于组织间的沟通结构。</p>
+</blockquote>
+
+<p><img src="/img/post/20180521/conway_law_1.png" alt="conway's law 1" /></p>
+
+<p>康威法则也可以倒过来阐述：
+&gt; Conway’s law reversed：You won’t be able to successfully establish an efficient organization structure that is not supported by your system design(architecture)。  如果系统架构不支持，你无法建立一个高效的组织；同样，如果你的组织架构不支持，你也无法建立一个高效的系统架构。</p>
+
+<p><img src="/img/post/20180521/conway_law_2.png" alt="conway's law 2" /></p>
+
+<h3 id="系统改进三原则">系统改进三原则</h3>
+
+<p>IT运维管理畅销书《凤凰项目》[附录8]的作者Gene Kim在调研了众多高效能IT组织后总结出支撑DevOps运作的三个原理(The Three Ways: The Principles Underpinning DevOps)[附录9]，我认为也是系统改进提升的一般性原理[附录7]，见下图：</p>
+
+<p><img src="/img/post/20180521/system_thinking.png" alt="system thinking" /></p>
+
+<h4 id="原理一-系统思考-system-thinking">原理一：系统思考(System Thinking)</h4>
+
+<p>开发驱动的组织，其能力不是制作软件，而是持续的交付客户价值。价值从业务需求开始，经过研发测试，到部署运维，依次流动，并最终以服务形式交付到客户手中。整个价值链流速并不依赖单个部分(团队或个人)的杰出工作，而是受整个价值链最薄弱环节(瓶颈)的限制。所以局部优化通常无效，反而招致全局受损。</p>
+
+<p>Gene Kim特别指出：</p>
+
+<blockquote>
+<p>Any improvements made anywhere besides the bottleneck are an illusion. 在瓶颈之外的任何优化提升都只是幻象。</p>
+</blockquote>
+
+<h4 id="原理二-强化反馈环-amplify-feedback-loops">原理二：强化反馈环(Amplify Feedback Loops)</h4>
+
+<p>过程改进常常通过加强反馈环来达成。原理二强调企业和客户之间、组织团队间、流程上和系统内的反馈环。没有测量就没有提升，反馈要以测量数据为准，通过反馈数据优化改进系统。</p>
+
+<h4 id="原理三-持续试验和学习的文化-culture-of-continual-experimentation-and-learning">原理三：持续试验和学习的文化(Culture of Continual Experimentation And Learning)</h4>
+
+<p>在企业管理文化层面强调勇于试错和持续试验、学习和改进的文化。</p>
+
+<h3 id="我的解读-4">我的解读</h3>
+
+<ol>
+<li>康威法则给我们的启示：系统架构和组织架构之间有隐含的映射关系，你不能单方面改变一方的结构，调整时必须两边联动。系统架构如果是耦合的，就很难组织分散式的团队结构，两边映射不起来，团队之间容易摩擦导致生产率下降。所以一般先按业务边界对单块应用进行解耦拆分，同时做相应的团队拆分，使两边可以映射，每个团队可以独立开发、测试和部署各自的微服务，进而提升生产率。这就是近年流行的微服务架构背后的组织原则。详见我之前发表的文章《企业的组织架构是如何影响技术架构的》[附录6]。</li>
+<li>系统思考要求我们加强团队合作，培养流式思维和瓶颈约束思维，找出瓶颈并针对性地优化。在研发型组织中，常见的系统瓶颈如运维机器资源提供(Provisioning)缓慢，发布流程繁琐容易出错，开发/测试／UAT环境缺失或不完善，遗留系统耦合历史负担重，基础研发平台薄弱等等。这些瓶颈点特别需要关注优化。</li>
+<li>反馈原理要求我们关注基于数据的反馈，技术上的手段包括大数据分析和系统各个层次的测量监控。没有测量就没有反馈，没有反馈就没有提升。</li>
+<li>在管理文化层面：
+
+<ul>
+<li>管理层要承认企业内部近50%的创新或流程改进项目是有可能失败的，即使失败，员工不会受到责罚，鼓励持续的试验和从中学习；</li>
+<li>管理层要有技术偿债意识，勿追求100%员工利用率，要预留20%~30%的时间给员工做创新和系统改进提升项目。</li>
+</ul></li>
+</ol>
+
+<h2 id="五-写在最后">五、写在最后</h2>
+
+<p>上述原则是架构师必须深入理解和掌握的，但是不能盲从，实际工作中要根据业务、时间、资源和团队情况随机应变。原则有时甚至可以被违反，当然这样做一定有成本，架构师要意识这一点，并适时变通补偿。</p>
+
+<p>上述原则仅是我个人视角总结，有些理解难免偏颇。如果你认为我忽略了哪些重要的原则，或理解有误，请记得线下和我交流！</p>
+
+<h2 id="六-参考">六、参考</h2>
+
+<ol>
+<li><a href="https://www.amazon.cn/UML%E5%92%8C%E6%A8%A1%E5%BC%8F%E5%BA%94%E7%94%A8-%E6%8B%89%E6%9B%BC/dp/B00116WMSU">UML和模式应用(原书第3版)</a></li>
+<li><a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B01DXW29IM">架构即未来：现代企业可扩展的Web架构、流程和组织(原书第2版)</a></li>
+<li><a href="https://www.heroku.com/">Heroku云应用平台</a></li>
+<li><a href="https://12factor.net/zh_cn/">The Twelve-Factor App</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Conway%27s_law">康威法则</a></li>
+<li><a href="http://www.infoq.com/cn/articles/organization-arch-influence-technology-arch">企业的组织架构是如何影响技术架构的</a></li>
+<li><a href="http://www.sohu.com/a/123304174_467759">痛定思痛，谈成长型公司应该如何突破方轮子困局!</a></li>
+<li><a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B016VW1I6U">凤凰项目：一个IT运维的传奇故事</a></li>
+<li><a href="https://itrevolution.com/the-three-ways-principles-underpinning-devops/">The Three Ways: The Principles Underpinning DevOps</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-05-20-engineer-growth/" data-toggle="tooltip" data-placement="top" title="工程师成长快车道">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>
