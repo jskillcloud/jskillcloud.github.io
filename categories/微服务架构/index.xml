@@ -6,10 +6,19 @@
     <description>Recent content in 微服务架构 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 27 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>中国式微服务技术栈2.0</title>
+      <link>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-2.0/</link>
+      <pubDate>Sun, 27 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-27-msa-tech-stack-2.0/</guid>
+      <description>前言 近年，Spring Cloud俨然已经成为微服务开发的主流技术栈，在国内开发者社区非常火爆。我近年一直在一线互联网公司（携程，拍拍贷等）开</description>
+    </item>
     
     <item>
       <title>架构设计有哪些核心原则？</title>
