@@ -6,10 +6,19 @@
     <description>Recent content in 微服务架构 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>四种核心架构思维</title>
+      <link>http://jskillcloud.com/post/2018-05-29-four-arch-thinkings/</link>
+      <pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-05-29-four-arch-thinkings/</guid>
+      <description>一、介绍 架构的本质是管理复杂性，抽象、分层、分治和演化思维是我们工程师/架构师应对和管理复杂性的四种最基本武器。 最近团队来了一些新人，有些有</description>
+    </item>
     
     <item>
       <title>微服务该如何发布?</title>
