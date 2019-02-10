@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="Zuul网关生产部署实践" />
-    <meta property="og:title" content="Zuul网关生产部署实践" />
-    <meta property="twitter:title" content="Zuul网关生产部署实践" />
+    <meta name="title" content="Zuul1和Zuul2该如何选择?" />
+    <meta property="og:title" content="Zuul1和Zuul2该如何选择?" />
+    <meta property="twitter:title" content="Zuul1和Zuul2该如何选择?" />
     
 
     
-    <meta name="description" content="Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。">
-    <meta property="og:description" content="Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。" />
-    <meta property="twitter:description" content="Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。" />
+    <meta name="description" content="Netflix在今年5月刚开源了支持异步调用的Zuul网关2.0版本，从它官方博客给出的信息看，Zuul2性能很强，那么我们是否就该抛弃Zuul1直接拥抱Zuul2呢？本文给出批判性的分析和建议。">
+    <meta property="og:description" content="Netflix在今年5月刚开源了支持异步调用的Zuul网关2.0版本，从它官方博客给出的信息看，Zuul2性能很强，那么我们是否就该抛弃Zuul1直接拥抱Zuul2呢？本文给出批判性的分析和建议。" />
+    <meta property="twitter:description" content="Netflix在今年5月刚开源了支持异步调用的Zuul网关2.0版本，从它官方博客给出的信息看，Zuul2性能很强，那么我们是否就该抛弃Zuul1直接拥抱Zuul2呢？本文给出批判性的分析和建议。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Zuul网关生产部署实践-掘艺云 | JSkillCloud</title>
+    <title>Zuul1和Zuul2该如何选择?-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/post/2018-07-12-zuul-deployment-in-practice/">
+    <link rel="canonical" href="/post/2018-07-16-zuul1-zuul2-howto/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/overlapping_rings.png')
+        background-image: url('/img/background/plaid.png')
     }
 </style>
 <header class="intro-header">
@@ -165,26 +165,26 @@
                             Zuul
                         </a>
                         
-                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
-                            微服务
-                        </a>
-                        
                         <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
                             微服务网关
                         </a>
                         
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
                     </div>
-                    <h1>Zuul网关生产部署实践</h1>
-                    <h2 class="subheading">Zuul Production Deployment in Practice</h2>
+                    <h1>Zuul1和Zuul2该如何选择?</h1>
+                    <h2 class="subheading">Zuul1 &amp; Zuul2 How to Choose</h2>
                     <span class="meta">
 			Posted by 
 			
 			         &#34;杨波&#34;
 			 
 			on 
-			Thursday, July 12, 2018
+			Monday, July 16, 2018
                         
-                            <span id="/post/2018-07-12-zuul-deployment-in-practice/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-07-16-zuul1-zuul2-howto/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -347,14 +347,21 @@ $(function() {
 <li>
 <ul>
 <li><a href="#介绍">介绍</a></li>
-<li><a href="#zuul参考部署架构">Zuul参考部署架构</a>
+<li><a href="#zuul-1-0编程模型和优劣">Zuul 1.0编程模型和优劣</a>
 <ul>
-<li><a href="#第一层-负载均衡lb">第一层、负载均衡LB</a></li>
-<li><a href="#第二层-zuul网关层">第二层、Zuul网关层</a></li>
-<li><a href="#第三层-内部微服务">第三层、内部微服务</a></li>
+<li><a href="#优势">优势</a></li>
+<li><a href="#不足">不足</a></li>
 </ul></li>
-<li><a href="#zuul生产级部署实践">Zuul生产级部署实践</a></li>
+<li><a href="#zuul-2-0编程模型和优劣">Zuul 2.0编程模型和优劣</a>
+<ul>
+<li><a href="#优势-1">优势</a></li>
+<li><a href="#不足-1">不足</a></li>
+</ul></li>
+<li><a href="#zuul1和zuul2的性能比对">Zuul1和Zuul2的性能比对</a></li>
+<li><a href="#zuul-2-0架构和额外特性">Zuul 2.0架构和额外特性</a></li>
+<li><a href="#建议">建议</a></li>
 <li><a href="#结论">结论</a></li>
+<li><a href="#附录">附录</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -363,74 +370,120 @@ $(function() {
 
 <h2 id="介绍">介绍</h2>
 
-<p>Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。</p>
+<p>在今年5月中，Netflix终于开源了它的支持异步调用模式的Zuul网关2.0版本，真可谓千呼万唤始出来。从Netflix的官方博文[附录1]中，我们获得的信息也比较令人振奋：</p>
 
-<p>本文介绍Zuul网关的一些生产部署实践。</p>
+<blockquote>
+<p>The Cloud Gateway team at Netflix runs and operates more than 80 clusters of Zuul 2, sending traffic to about 100 (and growing) backend service clusters which amounts to more than 1 million requests per second.
+Netflix部署了超过80+的Zuul2云网关集群，流量经过Zuul2集群被路由到后端超过100+的微服务，且每秒钟经过Zuul2集群的请求超过100万。</p>
+</blockquote>
 
-<h2 id="zuul参考部署架构">Zuul参考部署架构</h2>
+<p>Zuul2看起来很强大，支持异步高并发(Zuul1仅支持同步)特性看起来很亮眼，那么我们是否就应该抛弃Zuul1，开始拥抱Zuul2呢？作为架构师，我们不能盲目追时髦，技术的选择必须基于实践和理性的分析，基于我之前对Zuul1的一线落地实战经验，也基于我近期对Zuul2的一些调研，我会在本文中对Zuul1和Zuul2做一个比较客观的编程模型和优劣分析，同时给出我的个人建议。</p>
 
-<p><img src="/img/post/20180712/zuul_ref_arch.png" alt="zuul reference deployment architecture" /></p>
+<h2 id="zuul-1-0编程模型和优劣">Zuul 1.0编程模型和优劣</h2>
 
-<p>上图是一个可供参考的Zuul部署架构，总体可以简化为一个三层架构：</p>
+<p><img src="/img/post/20180716/zuul1_blocking.png" alt="zuul1 blocking" /></p>
 
-<h3 id="第一层-负载均衡lb">第一层、负载均衡LB</h3>
+<p>Zuul1设计比较简单，代码不多也比较容易读懂，它本质上就是一个同步Servlet，采用多线程阻塞模型，如上图所示[图片来自附录4]。</p>
 
-<p>Zuul网关本身无状态，以集群方式部署，它的前端需要负载均衡LB支持。在AWS云中，经常使用ELB作为负载均衡器，这个也是Netflix的做法。一般企业如果自建数据中心，则经常采用Nginx作为反向代理对Zuul网关进行负载均衡，Nginx是7层负载均衡器，本身也需集群部署，一般前端还需要4层负载均衡，例如使用软件LVS或者硬件F5等。</p>
+<p>同步Servlet使用thread per connection方式处理请求。简单讲，每来一个请求，Servlet容器要为该请求分配一个线程专门负责处理这个请求，直到响应返回客户端这个线程才会被释放返回容器线程池。如果后台服务调用比较耗时，那么这个线程就会被阻塞，阻塞期间线程资源被占用，不能干其它事情。我们知道Servlet容器线程池的大小是有限制的，当前端请求量大，而后台慢服务比较多时，很容易耗尽容器线程池内的线程，造成容器无法接受新的请求，Netflix为此还专门研发了Hystrix[附录2]熔断组件来解决慢服务耗尽资源问题。</p>
 
-<h3 id="第二层-zuul网关层">第二层、Zuul网关层</h3>
+<p>注意在上图Netflix给出的场景中，它的后台服务调用也是启动另外一个IO线程来处理的，但是本质上还是阻塞模式，后台IO线程在处理的时候，前台容器线程仍然是阻塞的。</p>
 
-<p>网关无状态以集群方式部署，一个集群规模小的有几台Zuul实例，大的可以有几十甚至上百个Zuul实例。</p>
+<p>同步阻塞模式有利有弊，分析如下图：</p>
 
-<p>Zuul网关一般根据业务场景以分集群方式部署，例如上图中：</p>
+<p><img src="/img/post/20180716/blocking_good_and_bad.png" alt="blocking good and bad" /></p>
+
+<h3 id="优势">优势</h3>
+
+<p>同步阻塞模式的编程模型比较简单，整个请求-&gt;处理-&gt;响应的流程(call flow)都是在一个线程中处理的，这样开发调试比较方便易于理解，比如出了问题跟踪调试比较方便。另外，线程局部变量(ThreadLocal)机制在同步多线程模式下可以工作，有些监控产品，例如CAT调用链依赖于ThreadLocal，在同步多线程模式下，CAT埋点比较方便，调用链关系的展示也比较直观。</p>
+
+<h3 id="不足">不足</h3>
+
+<p>我们知道线程本身需要消耗CPU和内存资源，且多线程之间切换是有开销的(所谓的上下文切换Context Switch开销)，线程越多，这种上下文切换的开销就越大，同步阻塞模式一般会启动很多的线程，必然引入线程切换开销。另外，同步阻塞模式下，容器线程池的数量一般是固定的，造成对连接数有一定限制，当后台服务慢，容器线程池易被耗尽，一旦耗尽容器会拒绝新的请求，这个时候容器线程其实并不忙，只是被后台服务调用IO阻塞，但是干不了其它事情。</p>
+
+<p>总体上，同步阻塞模式比较适用于计算密集型(CPU bound)应用场景。对于IO密集型场景(IO bound)，同步阻塞模式会白白消耗很多线程资源，它们都在等待IO的阻塞状态，没有做实质性工作。</p>
+
+<h2 id="zuul-2-0编程模型和优劣">Zuul 2.0编程模型和优劣</h2>
+
+<p><img src="/img/post/20180716/zuul2_nonblocking.png" alt="zuul2 nonblocking" /></p>
+
+<p>Zuul2的设计相对比较复杂，代码也不太容易读懂，它采用了Netty实现异步非阻塞编程模型，如上图所示[图片来自附录4]。</p>
+
+<p>一般异步模式的本质都是使用队列Queue(或称总线Bus)，在上图中，你可以简单理解为前端有一个队列专门负责处理用户请求，后端有个队列专门负责处理后台服务调用，中间有个事件环线程(Event Loop Thread)，它同时监听前后两个队列上的事件，有事件就触发回调函数处理事件。这种模式下需要的线程比较少，基本上每个CPU核上只需要一个事件环处理线程，前端的连接数可以很多，连接来了只需要进队列，不需要启动线程，事件环线程由事件触发，没有多线程阻塞问题。</p>
+
+<p>异步非阻塞模式也是有利有弊，分析如下图：</p>
+
+<p><img src="/img/post/20180716/nonblocking_good_and_bad.png" alt="nonblocking good and bad" /></p>
+
+<h3 id="优势-1">优势</h3>
+
+<p>异步非阻塞模式启动的线程很少，基本上一个CPU core上只需启一个事件环处理线程，它使用的线程资源就很少，上下文切换(Context Switch)开销也少。非阻塞模式可以接受的连接数大大增加，可以简单理解为请求来了只需要进队列，这个队列的容量可以设得很大，只要不超时，队列中的请求都会被依次处理。</p>
+
+<h3 id="不足-1">不足</h3>
+
+<p>异步模式让编程模型变得复杂。一方面Zuul2本身的代码要比Zuul1复杂很多，Zuul1的代码比较容易看懂，Zuul2的代码看起来就比较费劲。另一方面异步模型没有一个明确清晰的请求-&gt;处理-&gt;响应执行流程(call flow)，它的流程是通过事件触发的，请求处理的流程随时可能被切换断开，内部实现要通过一些关联id机制才能把整个执行流再串联起来，这就给开发调试运维引入了很多复杂性，比如你在IDE里头调试异步请求流就非常困难。另外ThreadLocal机制在这种异步模式下就不能简单工作，因为只有一个事件环线程，不是每个请求一个线程，也就没有线程局部的概念，所以对于CAT这种依赖于ThreadLocal才能工作的监控工具，调用链埋点就不好搞(实际可以工作但需要进行特殊处理)。</p>
+
+<p>总体上，异步非阻塞模式比较适用于IO密集型(IO bound)场景，这种场景下系统大部分时间在处理IO，CPU计算比较轻，少量事件环线程就能处理。</p>
+
+<h2 id="zuul1和zuul2的性能比对">Zuul1和Zuul2的性能比对</h2>
+
+<p>Netflix本身对网关使用异步非阻塞模式这件事情是非常谨慎的，它们进行了严格的性能测试，下面是Netflix给出的一些性能数据，来自Zuul2网关核心研发成员Arthur Gonigberg的ppt(Zuul&rsquo;s Journey to Non-Blocking)[附录3]：</p>
+
+<p><img src="/img/post/20180716/zuul_performance.png" alt="zuul1 vs zuul2 performance" /></p>
+
+<p>Netflix给出了一个比较模糊的数据，<strong>大致Zuul2的性能比Zuul1好20%左右</strong>，这里的性能主要指每节点每秒处理的请求数。为什么说模糊呢？因为这个数据受实际测试环境，流量场景模式等众多因素影响，你很难复现这个测试数据。即便这个20%的性能提升是确实的，其实这个性能提升也并不大，和异步引入的复杂性相比，这20%的提升是否值得是个问题。Netflix本身在其博文[附录4]和ppt[附录3]中也是有点含糊其词，甚至自身都有一些疑问的。</p>
+
+<blockquote>
+<p>While we did not see a significant efficiency benefit in migrating to async and non-blocking, we did achieve the goals of connection scaling.</p>
+</blockquote>
+
+<p>比较明确的是，Zuul2在连接数方面表现要好于Zuul1，也就是说Zuul2能接受更多的连接数。</p>
+
+<h2 id="zuul-2-0架构和额外特性">Zuul 2.0架构和额外特性</h2>
+
+<p><img src="/img/post/20180716/zuul2_architecture.png" alt="zuul2 architecture" /></p>
+
+<p>上图是Zuul2的架构，和Zuul1没有本质区别，两点变化：</p>
 
 <ol>
-<li><strong>无线网关集群</strong>，接入无线应用的API调用流量，例如对应域名api.mobile.xxx.com，Nginx会把对该域名的访问转发到无线网关集群。</li>
-<li><strong>H5网关集群</strong>，接入H5应用的API调用流量，例如对应域名api.h5.xxx.com，Nginx会把对该域名的访问转发到H5网关集群。</li>
-<li><strong>开放平台网关集群</strong>，接入第三方应用的API调用流量，例如对应域名api.open.xxx.com，Nginx会把对该域名的访问转发到开放平台网关集群。</li>
+<li>前端用Netty Server代替Servlet，目的是支持前端异步。后端用Netty Client代替Http Client，目的是支持后端异步。</li>
+<li>过滤器换了一下名字，用Inbound Filters代替Pre-routing Filters，用Endpoint Filter代替Routing Filter，用Outbound Filters代替Post-routing Filters。</li>
 </ol>
 
-<p>另外，企业还可根据需要增加联盟商网关集群，要求严格安全的PCI兼容网关集群等，分别针对不同的业务接入需求。</p>
+<p><img src="/img/post/20180716/highlights.png" alt="zuul2 highlights" /></p>
 
-<h3 id="第三层-内部微服务">第三层、内部微服务</h3>
+<p>上图是Zuul2的一些功能亮点，我个人认为除了对HTTP/2的支持算是一个亮点，其它都是在安全、弹性和运维层面的一些优化，不能算新功能。其中像Request Passport，Status Categories，Request Attempts这些所谓的新功能，其实是为了减轻异步带来的复杂性，方便开发人员调试异步请求而专门开发的。</p>
 
-<p>这个是企业内部微服务的统称，既可以是前端聚合服务，也可以是后台基础服务。关于网关如何发现和路由到内部微服务，请参考我上一篇文章《微服务架构~Zuul网关路由管理实践》。</p>
+<h2 id="建议">建议</h2>
 
-<p>另外，Zuul网关支持动态过滤器脚本(Groovy)上传机制，可以灵活更改网关逻辑。过滤器脚本建议集中管理，需要开发一套<strong>过滤器集中管理站点</strong>，统一管理针对不同网关集群的过滤器。</p>
-
-<p><img src="/img/post/20180712/filter_management.png" alt="filter management" /></p>
-
-<p>上图是一个可以参考的过滤器管理界面，支持过滤器的上传/灰度/上下线等动作，管理员通过该界面可以集中管理针对无线网关/H5网关/第三方网关的过滤器。</p>
-
-<p>各网关集群会定期到过滤器管理中心拉取对应的最新的过滤器。</p>
-
-<h2 id="zuul生产级部署实践">Zuul生产级部署实践</h2>
-
-<p><img src="/img/post/20180712/zuul_in_production.png" alt="zuul in production" /></p>
-
-<p>如上节所述，Zuul网关本身的部署并不复杂，但是要生产级地(production ready)使用Zuul网关，周边仍需众多的配套服务进行支持，其中很多服务是和运维Ops治理监控相关，如上图所示，这些支持服务主要包括：</p>
+<p>基于上述分析，我对大家的建议是<strong>在生产环境中继续使用Zuul1</strong>，原因如下：</p>
 
 <ol>
-<li>授权认证中心：对某些安全敏感的API进行Token校验，校验通过才能放行。</li>
-<li>配置中心：例如使用Apollo，能够动态修改网关上的配置(连接数、超时熔断阀值等)，并且一键修改实时生效。</li>
-<li>Hystrix Dashboard和Turbine：Zuul网关一般集成Hystrix熔断组件，Hystrix能够实时吐出性能Metrics，Turbine能够对Hystrix Metrics Stream按集群进行聚合，并展示在Hystrix Dashboard上。Turbine如何发现网关集群的实例？一种方案是在Turbine上静态配置ip，这种方案简单但是不太灵活。另外一种方案是使用Eureka自注册自发现，网关启动时自动注册到Eureka上，Turbine再从Eureka自动发现网关实例地址，这种方案比较灵活，网关扩缩容Turbine能自动感知。</li>
-<li>BotBlocker防爬虫系统：所有API调用流量经过网关门口，可以采集所有访问日志，通过后台BotBlocker防爬虫防攻击系统分析爬虫和攻击等恶意行为，计算出恶意用户或者ip，再反馈给网关系统block对应的恶意用户或ip。</li>
-<li>调用链监控系统：例如集成CAT，让网关成为调用链发起的入口，并且和后台的服务调用链(后台服务、缓存，数据库等)打通，这样可以比较直观的查看端到端的微服务调用性能状况。</li>
-<li>ELK日志系统：采集访问日志和错误日志，供后续进一步分析。</li>
-<li>Metrics监控系统，例如采用KairosDB等时间序列数据库，可以在调用链的基础上做更细粒度的Metrics监控，例如Zuul网关本身也提供丰富的Metrics。</li>
-<li>告警系统：例如集成ZMon，通过主动check的方式，时刻检查网关的健康状况，如有异常立刻报警。</li>
+<li>Zuul1同步编程模型简单，门槛低，开发运维方便，容易调试定位问题。Zuul2门槛高，调试不方便。</li>
+<li>Zuul1监控埋点容易，比如和调用链监控工具CAT集成，如果你用Zuul2的话，CAT不好埋点是个问题。</li>
+<li>Zuul1已经开源超过6年，稳定成熟，坑已经被踩平。Zuul2刚开源很新，实际落地案例不多，难说有bug需要踩坑。</li>
+<li>大部分公司达不到Netflix那个量级，Netflix是要应对每日千亿级流量，它们才挖空心思搞异步，一般公司亿级可能都不到，Zuul1绰绰有余。</li>
+<li>Zuul1可以集成Hystrix熔断组件，可以部分解决后台服务慢阻塞网关线程的问题。</li>
+<li>Zuul1可以使用Servlet 3.0规范支持的AsyncServlet进行优化，可以实现前端异步，支持更多的连接数，达到和Zuul2一样的效果，但是不用引入太多异步复杂性。波波和极客时间合作的课程《微服务架构和实践160讲》，7月份马上上线第三模块《微服务网关Zuul架构和实践》，其中会讲解Zuul1如何使用AsyncServlet优化连接数，欢迎大家关注。</li>
 </ol>
 
-<p><img src="/img/post/20180712/hystrix_dashboard.png" alt="hystrix dashboard" /></p>
-
-<p>网关是API流量入口，是对微服务系统健康状况的集中和最佳观测点。上图是一个通过Hystrix Dashboard对网关集群进行实时监控的案例，展示每个通过网关的API的实时流量(10秒窗口)情况，可看成功/失败/超时，性能和集群等的流量情况。如果发生熔断，则Hystrix Dashboard上对应的API会直接飙红，提示报警干预。</p>
+<p>对于Zuul2，我的建议是持谨慎观望的态度，可以在测试环境小规模实验验证，但是暂不上到生产环境。</p>
 
 <h2 id="结论">结论</h2>
 
 <ol>
-<li>Zuul网关一般针对不同的应用场景(无线/H5/开放平台等)分集群部署，前端依赖LB做负载均衡。建议部署集中式的过滤器管理站点，对不同网关集群的过滤器进行集中管理，这样可灵活调整网关的运行时逻辑。</li>
-<li>对于生产级(production ready）的网关部署，周边需要很多配套的支持服务，这些服务大多和运维Ops相关，例如配置，监控和告警等。</li>
-<li>网关是API流量入口，是对微服务系统健康状况的集中和最佳观测点。</li>
-<li>波波在极客时间的课程《微服务架构和实践160讲》，马上上线第三模块《微服务网关Zuul架构和实践》，会对Zuul网关的架构、源码和生产实践等内容进行深度剖析，欢迎关注。</li>
+<li>同步异步各有利弊，同步多线程编程模型简单，但会有线程开销和阻塞问题，异步非阻塞模式线程少并发高，但是编程模型变得复杂。</li>
+<li>架构师做技术选型需要严谨务实，具备批判性思维(Critical Thinking)，即使是对于一线大公司推出的开源产品，也要批判性看待，不可盲目追新。</li>
+<li>个人建议生产环境继续使用Zuul1，同步阻塞模式的一些不足，可以使用熔断组件Hystrix和AsyncServlet等技术进行优化。波波和极客时间合作的课程《微服务架构和实践160讲》，7月份马上上线第三模块《微服务网关Zuul架构和实践》，其中会讲解对Zuul1的这些优化技术，欢迎大家关注。</li>
+</ol>
+
+<h2 id="附录">附录</h2>
+
+<ol>
+<li><a href="https://medium.com/netflix-techblog/open-sourcing-zuul-2-82ea476cb2b3">Open Sourcing Zuul 2</a></li>
+<li><a href="https://github.com/netflix/hystrix">Hystrix</a></li>
+<li><a href="https://github.com/strangeloop/StrangeLoop2017/blob/master/slides/ArthurGonigberg-ZuulsJourneyToNonBlocking.pdf">Zuul&rsquo;s Journey to Non-Blocking</a></li>
+<li><a href="https://medium.com/netflix-techblog/zuul-2-the-netflix-journey-to-asynchronous-non-blocking-systems-45947377fb5c">Zuul2：Netflix&rsquo;s Journey to Asynchronous，Non-blocking Systems</a></li>
 </ol>
 
 
@@ -440,15 +493,10 @@ $(function() {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2018-07-10-zuul-routing-in-practice/" data-toggle="tooltip" data-placement="top" title="Zuul路由管理实践">&larr;
+                        <a href="/post/2018-07-12-zuul-deployment-in-practice/" data-toggle="tooltip" data-placement="top" title="Zuul网关生产部署实践">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-07-16-zuul1-zuul2-howto/" data-toggle="tooltip" data-placement="top" title="Zuul1和Zuul2该如何选择?">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
