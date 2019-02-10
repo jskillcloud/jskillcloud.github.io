@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>面试 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E9%9D%A2%E8%AF%95/</link>
+    <description>Recent content in 面试 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 17 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E9%9D%A2%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>直播回顾 | 程序员到架构师的成长锦囊</title>
+      <link>http://jskillcloud.com/post/2018-12-17-geeklive-yangbo/</link>
+      <pubDate>Mon, 17 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-12-17-geeklive-yangbo/</guid>
+      <description>标题：直播回顾 | 程序员到架构师的成长锦囊 大家好，我是杨波，也是极客时间「微服务架构实战160讲」的课程讲师。很荣幸可以接受极客时间的邀请，来</description>
+    </item>
+    
+  </channel>
+</rss>

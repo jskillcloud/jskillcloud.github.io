@@ -6,10 +6,19 @@
     <description>Recent content in 技术管理 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 17 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>直播回顾 | 程序员到架构师的成长锦囊</title>
+      <link>http://jskillcloud.com/post/2018-12-17-geeklive-yangbo/</link>
+      <pubDate>Mon, 17 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-12-17-geeklive-yangbo/</guid>
+      <description>标题：直播回顾 | 程序员到架构师的成长锦囊 大家好，我是杨波，也是极客时间「微服务架构实战160讲」的课程讲师。很荣幸可以接受极客时间的邀请，来</description>
+    </item>
     
     <item>
       <title>一个创业失败案例的复盘</title>
