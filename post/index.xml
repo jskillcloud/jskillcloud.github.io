@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 30 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>一个软件初创公司的十大信条</title>
+      <link>http://jskillcloud.com/post/2018-09-30-startup-dogmas/</link>
+      <pubDate>Sun, 30 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-09-30-startup-dogmas/</guid>
+      <description>前言 VAMP(vamp.io)是一家总部位于荷兰阿姆斯特丹的软件科技初创公司，公司的核心产品是支持微服务持续交付的容器云平台VAMP(Ver</description>
+    </item>
     
     <item>
       <title>聊聊价值、价值观和价值积累</title>

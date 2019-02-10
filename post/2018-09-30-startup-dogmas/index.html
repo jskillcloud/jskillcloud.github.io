@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="Zuul路由管理实践" />
-    <meta property="og:title" content="Zuul路由管理实践" />
-    <meta property="twitter:title" content="Zuul路由管理实践" />
+    <meta name="title" content="一个软件初创公司的十大信条" />
+    <meta property="og:title" content="一个软件初创公司的十大信条" />
+    <meta property="twitter:title" content="一个软件初创公司的十大信条" />
     
 
     
-    <meta name="description" content="路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。">
-    <meta property="og:description" content="路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。" />
-    <meta property="twitter:description" content="路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。" />
+    <meta name="description" content="VAMP是一家以微服务平台为核心产品的软件技术初创公司，创始人团队在创业实践过程中凝练出来的十大行事原则。">
+    <meta property="og:description" content="VAMP是一家以微服务平台为核心产品的软件技术初创公司，创始人团队在创业实践过程中凝练出来的十大行事原则。" />
+    <meta property="twitter:description" content="VAMP是一家以微服务平台为核心产品的软件技术初创公司，创始人团队在创业实践过程中凝练出来的十大行事原则。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Zuul路由管理实践-掘艺云 | JSkillCloud</title>
+    <title>一个软件初创公司的十大信条-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/post/2018-07-10-zuul-routing-in-practice/">
+    <link rel="canonical" href="/post/2018-09-30-startup-dogmas/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/overlapping_circles.png')
+        background-image: url('/img/background/sine_waves.png')
     }
 </style>
 <header class="intro-header">
@@ -161,30 +161,26 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/zuul" title="Zuul">
-                            Zuul
+                        <a class="tag" href="/tags/startup" title="startup">
+                            startup
                         </a>
                         
-                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
-                            微服务网关
-                        </a>
-                        
-                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
-                            微服务
+                        <a class="tag" href="/tags/%E5%88%9B%E4%B8%9A" title="创业">
+                            创业
                         </a>
                         
                     </div>
-                    <h1>Zuul路由管理实践</h1>
-                    <h2 class="subheading">Zuul Routing Management in Practice</h2>
+                    <h1>一个软件初创公司的十大信条</h1>
+                    <h2 class="subheading">Ten Dogmas of a Tech Startup</h2>
                     <span class="meta">
 			Posted by 
 			
 			         &#34;杨波&#34;
 			 
 			on 
-			Tuesday, July 10, 2018
+			Sunday, September 30, 2018
                         
-                            <span id="/post/2018-07-10-zuul-routing-in-practice/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-09-30-startup-dogmas/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -346,95 +342,108 @@ $(function() {
 <ul>
 <li>
 <ul>
-<li><a href="#介绍">介绍</a></li>
-<li><a href="#方案一-基于eureka自发现">方案一，基于Eureka自发现</a></li>
-<li><a href="#方案二-基于服务治理中心和域名做法">方案二，基于服务治理中心和域名做法</a></li>
-<li><a href="#方案三-基于配置中心apollo和域名做法">方案三，基于配置中心Apollo和域名做法</a></li>
-<li><a href="#结论">结论</a></li>
-<li><a href="#附录">附录</a></li>
+<li><a href="#前言">前言</a></li>
+<li><a href="#信条一-创造革命性产品-build-revolutionarily">信条一：创造革命性产品(Build revolutionarily)</a></li>
+<li><a href="#信条二-不要预测-保持响应式-don-t-predict-be-reactive">信条二：不要预测，保持响应式(Don&rsquo;t predict, be reactive)</a></li>
+<li><a href="#信条三-以微服务方式组合-compose-with-microservices">信条三：以微服务方式组合(Compose with microservices)</a></li>
+<li><a href="#信条四-快总是更好-faster-is-always-better">信条四：快总是更好(Faster is always better)</a></li>
+<li><a href="#信条五-做趋势的弄潮儿-趁势做大-ride-the-wave-and-make-it-bigger">信条五：做趋势的弄潮儿，趁势做大(Ride the wave and make it bigger)</a></li>
+<li><a href="#信条六-创新很难-但是还好-new-is-hard-but-that-s-ok">信条六：创新很难，但是还好(New is hard, but that&rsquo;s OK)</a></li>
+<li><a href="#信条七-做简单其实更难-easy-can-be-complex">信条七：做简单其实更难(Easy can be complex)</a></li>
+<li><a href="#信条八-只要管用的都可以用-use-what-works">信条八：只要管用的都可以用(Use what works)</a></li>
+<li><a href="#信条九-成为全栈工程师-ui和ux都要会-do-full-stack-ui-ux">信条九：成为全栈工程师，UI和UX都要会(Do full stack UI &amp; UX)</a></li>
+<li><a href="#信条十-别做陌生人-don-t-be-a-stranger">信条十：别做陌生人(Don&rsquo;t be a stranger)</a></li>
 </ul></li>
 </ul>
 </nav>
                 
                 
 
-<h2 id="介绍">介绍</h2>
+<h2 id="前言">前言</h2>
 
-<p>网关的核心功能之一是<strong>路由转发</strong>，为此，网关需要获取并维护一张路由表，这个路由表简单可以理解为一个服务名&lt;&gt;服务地址的映射表，有了这张路由表，网关就可以根据请求路径或者HTTP头中的服务信息，将请求转发到对应的目标服务地址。</p>
+<p><img src="/img/post/20180930/Vamp.png" alt="vamp" /></p>
 
-<p>Zuul[附录1]是Netflix开源的微服务网关，在Netflix经过大规模生产级验证，最新的数据表明Netflix每天有近千亿级流量要经过Zuul网关。另外,Zuul也是Spring Cloud全家桶的核心组件。本文介绍Zuul网关路由管理的一些常用方案，可供准备在生产环境使用Zuul的企业参考。</p>
+<p>VAMP(vamp.io)是一家总部位于荷兰阿姆斯特丹的软件科技初创公司，公司的核心产品是支持微服务持续交付的容器云平台VAMP(Very Awesome Microservice Platform)。因为技术领域关系，我一直关注这个公司的产品和它的成长，最近在研究VAMP的产品文档时，无意中发现该公司的十大信条，这些信条应该是公司创始人团队在创业实践过程中凝练出来的行事原则。我认为在软件技术领域，这些信条值得学习借鉴，所以我把它整理翻译在自己的公众号里头。</p>
 
-<h2 id="方案一-基于eureka自发现">方案一，基于Eureka自发现</h2>
+<h2 id="信条一-创造革命性产品-build-revolutionarily">信条一：创造革命性产品(Build revolutionarily)</h2>
 
-<p><img src="/img/post/20180710/eureka_discovery.png" alt="eureka discovery" /></p>
+<p>Put your efforts creating the stuff that doesn&rsquo;t exist yet. The rest we can just buy, borrow, fork or clone.</p>
 
-<p>这个也是Netflix的做法，Zuul网关借助Eureka[附录2]服务注册中心获取路由表，简述步骤如下：</p>
+<blockquote>
+<p>在软件技术领域，把精力放在创造还不存在的东西。其它的尽管买、借、fork或者克隆。</p>
+</blockquote>
 
-<ol>
-<li>内部微服务(前端聚合服务或者后台基础服务)启动时，自动注册到Eureka服务注册中心，并定期向注册中心报心跳，表明自己的存活状态。例如，上图中，svcx在Eureka上有一组对应的ip:port对，表示svc服务对应的存活服务实例地址列表。</li>
-<li>Zuul网关集成Ribbon[附录3]客户端，Ribbon能够从Eureka上自动发现并定期获取服务的实例地址信息，并进行本地缓存。</li>
-<li>当Zuul网关接收到外部请求，它根据某种规则从请求中获取服务名，例如，假设第一级path就是服务名，那么api.xxx.com/svcx中的svcx就是服务名。解析获取服务名后，Zuul将服务名传给Ribbon，Ribbon通过查找缓存的路由表获取服务实例地址列表，再根据某种路由策略（例如，随机或者RoundRobin等），选择一个目标实例地址发起调用。</li>
-</ol>
+<h2 id="信条二-不要预测-保持响应式-don-t-predict-be-reactive">信条二：不要预测，保持响应式(Don&rsquo;t predict, be reactive)</h2>
 
-<p>该方法相对简单，部署Eureka服务注册中心即可实现。同时也比较灵活，内部服务可以自注册自发现，研发人员可以自助完成服务上下线，更贴合DevOps研发模式，不太需要运维配合介入。</p>
+<p>Nobody really knows what&rsquo;s going to happen, so react to whatever comes your way.</p>
 
-<p>该方案的问题是，目前很多企业内部还有很多历史遗留服务，这些服务基本上还是基于传统域名进行管理的，如果升级到Eureka的自注册自发现方式，迁移和改造成本不小。</p>
+<blockquote>
+<p>没人知道明天会发生什么，所以对发生在你身边的事情，保持响应式心态。</p>
+</blockquote>
 
-<h2 id="方案二-基于服务治理中心和域名做法">方案二，基于服务治理中心和域名做法</h2>
+<h2 id="信条三-以微服务方式组合-compose-with-microservices">信条三：以微服务方式组合(Compose with microservices)</h2>
 
-<p><img src="/img/post/20180710/dns_discovery.png" alt="dns discovery" /></p>
+<p>Monolithic has been dead for a while. Keep it that way.</p>
 
-<p>对于内部遗留系统较多，服务主要基于传统域名方式管理，暂时还不具备条件采用上述第一种方案的企业，可以采用基于服务治理中心+域名的做法，如上图所示。</p>
+<blockquote>
+<p>单块应用暂时已死，别管它了。</p>
+</blockquote>
 
-<p>该方案需要开发一套服务治理中心，用来集中管理路由等服务元数据信息，同时企业内部需要DNS域名服务支持。采用该方案的流程简述如下：</p>
+<h2 id="信条四-快总是更好-faster-is-always-better">信条四：快总是更好(Faster is always better)</h2>
 
-<ol>
-<li>研发人员通过运维申请部署服务所需的机器，ip和内部域名等相关信息，完成服务开发和部署，通过内部域名测试服务正常。</li>
-<li>研发人员通过服务治理中心注册服务，提供相应的服务名和域名信息，也提供一些额外的元数据信息，如该服务对哪些网关可见(即要通过哪些网关将该服务暴露出去)，该服务目前是否在生产环境可访问(是否已经过QA流程升级到生产环境)。</li>
-<li>Zuul网关定期从服务治理中心拉取服务路由表(注意，这里只需要拉取对该网关可见的路由表，例如无线网关只拉取对无线网关可见的服务，不需要拉取全部路由表)，并缓存在本地内存。</li>
-<li>当Zuul网关接收到外部请求，它根据某种规则从请求中解析出服务名，再通过查询内存中的路由表找到目标服务的内部域名，最后对目标域名发起调用。通过域名调用时，底层HTTP客户端会自动通过DNS服务解析并获取对应的ip地址。<strong>注意</strong>，在实际场景中，这里解析到的ip一般是一个vip，真实的服务实例一般躲在一个内部的负载均衡器LB(例如F5+nginx)后面，这个vip指向LB，LB会对后台服务做负载均衡和转发。</li>
-</ol>
+<p>The millisecond is the new second. Especially on mobile.</p>
 
-<p>该方案复杂度适中，内部的域名和负载均衡系统一般由运维支持，服务治理中心的研发门槛和成本不高，基本上就是一个简单的数据库应用。该方案的灵活性和自动化程度没有第一种方案好，需要一些人工配置，但是可以在运维和服务治理中心层面按需增加一些治理环节，可治理性会更好一点。</p>
+<blockquote>
+<p>现在时间以毫秒计，而不是秒，尤其在移动时代。</p>
+</blockquote>
 
-<h2 id="方案三-基于配置中心apollo和域名做法">方案三，基于配置中心Apollo和域名做法</h2>
+<h2 id="信条五-做趋势的弄潮儿-趁势做大-ride-the-wave-and-make-it-bigger">信条五：做趋势的弄潮儿，趁势做大(Ride the wave and make it bigger)</h2>
 
-<p><img src="/img/post/20180710/discovery_apollo.png" alt="discovery apollo" /></p>
+<p>Useful and cool stuff is released all the time. Use it and contribute to it.</p>
 
-<p>对于一些初创公司，刚开始什么都缺的情况下，最简单的路由管理的方式就是直接把路由配置在Zuul网关的本地配置文件中。但是这种做法很不灵活，每次修改路由都需要重启网关集群。所有建议可以部署一套配置中心，例如Apollo，把路由信息简单配置在Apollo配置中心中，然后让网关定期从Apollo获取路由配置并做本地缓存，该方案如上图所示。</p>
+<blockquote>
+<p>有用和有趣的东西每天都会被创造出来。使用这些新东西，可能的话一起参与贡献创造这些东西。</p>
+</blockquote>
 
-<p>Apollo支持XML格式的配置，下面是一个路由配置案例：</p>
+<h2 id="信条六-创新很难-但是还好-new-is-hard-but-that-s-ok">信条六：创新很难，但是还好(New is hard, but that&rsquo;s OK)</h2>
 
-<pre><code class="language-xml">&lt;zuul_route&gt;
-  &lt;svc_route&gt;
-    &lt;name&gt;svc1&lt;/name&gt;
-    &lt;endpoint&gt;192.168.100.1:8080&lt;/endpoint&gt;
-    &lt;endpoint&gt;192.168.100.2:8080&lt;/endpoint&gt;
-    &lt;endpoint&gt;192.168.100.3:8080&lt;/endpoint&gt;      
-  &lt;/svc_route&gt;
-  &lt;svc_route&gt;
-    &lt;name&gt;svc2&lt;/name&gt;
-    &lt;endpoint&gt;192.168.101.1:8080&lt;/endpoint&gt;
-    &lt;endpoint&gt;192.168.101.2:8080&lt;/endpoint&gt;
-    &lt;endpoint&gt;192.168.101.3:8080&lt;/endpoint&gt;      
-  &lt;/svc_route&gt;
-&lt;/zuul_route&gt;
-</code></pre>
+<p>Some things don&rsquo;t have pattern, reference or best practice yet. Don&rsquo;t be afraid to coin them.</p>
 
-<h2 id="结论">结论</h2>
+<blockquote>
+<p>有些新玩意没有现成模式、参考或者最佳实践。不要害怕，去创造它们。</p>
+</blockquote>
 
-<ol>
-<li>路由转发是网关的核心功能，为此网关需要维护和管理一张路由表，常见做法有基于Eureka自发现，基于服务治理中心和域名，或者最简单的基于配置中心。</li>
-<li>波波在极客时间的课程《微服务架构和实践160讲》，马上上线第三模块《微服务网关Zuul架构和实践》，会对Zuul网关的架构、源码和生产实践等内容进行深度剖析，欢迎关注。</li>
-</ol>
+<h2 id="信条七-做简单其实更难-easy-can-be-complex">信条七：做简单其实更难(Easy can be complex)</h2>
 
-<h2 id="附录">附录</h2>
+<p>Some thing are complex by nature. The Challenge is making them look simple. That&rsquo;s even more complex. Nice!</p>
 
-<ol>
-<li><a href="https://github.com/netflix/zuul">Zuul</a></li>
-<li><a href="https://github.com/netflix/eureka">Eureka</a></li>
-<li><a href="https://github.com/netflix/ribbon">Ribbon</a></li>
-</ol>
+<blockquote>
+<p>有些东西本质上就很复杂，挑战在于将它们变得简单，要做到这点其实更加复杂。但乐趣尽在其中！</p>
+</blockquote>
+
+<h2 id="信条八-只要管用的都可以用-use-what-works">信条八：只要管用的都可以用(Use what works)</h2>
+
+<p>Ignore religious debates about tools, languages and platforms. They will eat your happiness and confidence.</p>
+
+<blockquote>
+<p>忽略哪些对工具，语言和平台的近乎宗教信仰般的争论。争论会让你扫兴，失去自信。</p>
+</blockquote>
+
+<h2 id="信条九-成为全栈工程师-ui和ux都要会-do-full-stack-ui-ux">信条九：成为全栈工程师，UI和UX都要会(Do full stack UI &amp; UX)</h2>
+
+<p>API&rsquo;s，CLI&rsquo;s, manual pages and admin screens also need a proper UI and UX.</p>
+
+<blockquote>
+<p>API，CLI，使用手册页和管理界面，都需要良好的用户接口和体验设计。</p>
+</blockquote>
+
+<h2 id="信条十-别做陌生人-don-t-be-a-stranger">信条十：别做陌生人(Don&rsquo;t be a stranger)</h2>
+
+<p>It&rsquo;s 2018：Brazil, India and China are just around the corner. Use I18N。</p>
+
+<blockquote>
+<p>现在是2018年了，巴西、印度和中国就在我们身边。软件要支持国际化I18N。</p>
+</blockquote>
 
 
                 
@@ -443,15 +452,10 @@ $(function() {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2018-07-08-archaius-configuration-library/" data-toggle="tooltip" data-placement="top" title="变色龙Archaius配置组件">&larr;
+                        <a href="/post/2018-08-28-core-values/" data-toggle="tooltip" data-placement="top" title="聊聊价值、价值观和价值积累">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-07-12-zuul-deployment-in-practice/" data-toggle="tooltip" data-placement="top" title="Zuul网关生产部署实践">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
