@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://jskillcloud.com/post/2018-08-28-core-values/</loc>
+    <lastmod>2018-08-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://jskillcloud.com/post/2018-08-01-distributed-tracing-howto/</loc>
     <lastmod>2018-08-01T00:00:00+00:00</lastmod>
   </url>
@@ -154,7 +159,7 @@
   
   <url>
     <loc>http://jskillcloud.com/</loc>
-    <lastmod>2018-08-01T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -166,7 +171,7 @@
   
   <url>
     <loc>http://jskillcloud.com/post/</loc>
-    <lastmod>2018-08-01T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -189,6 +194,12 @@
   <url>
     <loc>http://jskillcloud.com/tags/zuul/</loc>
     <lastmod>2018-07-16T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jskillcloud.com/tags/%E4%BB%B7%E5%80%BC%E8%A7%82/</loc>
+    <lastmod>2018-08-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -254,7 +265,7 @@
   
   <url>
     <loc>http://jskillcloud.com/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/</loc>
-    <lastmod>2018-07-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -308,7 +319,7 @@
   
   <url>
     <loc>http://jskillcloud.com/tags/%E8%BD%AF%E6%8A%80%E8%83%BD/</loc>
-    <lastmod>2018-07-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 28 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>聊聊价值、价值观和价值积累</title>
+      <link>http://jskillcloud.com/post/2018-08-28-core-values/</link>
+      <pubDate>Tue, 28 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-08-28-core-values/</guid>
+      <description>介绍 最近公司HR约我对新员工做一次关于价值观的培训，所以我想梳理和阐述我自己对价值观的理解，为这次培训做准备，这个是写本文的初衷。 理解价值 当</description>
+    </item>
     
     <item>
       <title>调用链监控产品该如何选择？</title>
