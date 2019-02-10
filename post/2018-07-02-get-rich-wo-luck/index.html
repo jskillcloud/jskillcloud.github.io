@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="Netflix微服务架构是如何分层的？" />
-    <meta property="og:title" content="Netflix微服务架构是如何分层的？" />
-    <meta property="twitter:title" content="Netflix微服务架构是如何分层的？" />
+    <meta name="title" content="如何不靠运气获得财富？" />
+    <meta property="og:title" content="如何不靠运气获得财富？" />
+    <meta property="twitter:title" content="如何不靠运气获得财富？" />
     
 
     
-    <meta name="description" content="本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。">
-    <meta property="og:description" content="本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。" />
-    <meta property="twitter:description" content="本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。" />
+    <meta name="description" content="本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。">
+    <meta property="og:description" content="本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。" />
+    <meta property="twitter:description" content="本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Netflix微服务架构是如何分层的？-掘艺云 | JSkillCloud</title>
+    <title>如何不靠运气获得财富？-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/post/2018-06-28-netflix-microservices-layers/">
+    <link rel="canonical" href="/post/2018-07-02-get-rich-wo-luck/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/concentric_circles.png')
+        background-image: url('/img/background/hexagons.png')
     }
 </style>
 <header class="intro-header">
@@ -161,30 +161,26 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/netflix" title="Netflix">
-                            Netflix
+                        <a class="tag" href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD" title="软技能">
+                            软技能
                         </a>
                         
-                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
-                            微服务
-                        </a>
-                        
-                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%86%E5%B1%82" title="微服务分层">
-                            微服务分层
+                        <a class="tag" href="/tags/%E5%88%9B%E4%B8%9A" title="创业">
+                            创业
                         </a>
                         
                     </div>
-                    <h1>Netflix微服务架构是如何分层的？</h1>
-                    <h2 class="subheading"></h2>
+                    <h1>如何不靠运气获得财富？</h1>
+                    <h2 class="subheading">How to Get Rich (without getting lucky)</h2>
                     <span class="meta">
 			Posted by 
 			
 			         &#34;杨波&#34;
 			 
 			on 
-			Thursday, June 28, 2018
+			Monday, July 2, 2018
                         
-                            <span id="/post/2018-06-28-netflix-microservices-layers/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-07-02-get-rich-wo-luck/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -347,10 +343,8 @@ $(function() {
 <li>
 <ul>
 <li><a href="#介绍">介绍</a></li>
-<li><a href="#netflix微服务分层架构-2017前">Netflix微服务分层架构(2017前)</a></li>
-<li><a href="#netflix微服务分层架构-2018">Netflix微服务分层架构(2018)</a></li>
-<li><a href="#结论">结论</a></li>
-<li><a href="#附录">附录</a></li>
+<li><a href="#原文和翻译">原文和翻译</a></li>
+<li><a href="#参考">参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -359,87 +353,248 @@ $(function() {
 
 <h2 id="介绍">介绍</h2>
 
-<p>在之前一篇<a href="/post/2018-06-07-bff-gateway-evolution/">BFF和网关是如何演化出来的</a>文章中，我向大家解释了BFF和网关Gateway是什么，在微服务架构体系中各承担什么职责，以及它们是如何演化出来的。</p>
+<p>本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上[参考附录]。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己博客上，希望后面能时刻提醒自己。</p>
 
-<p>在本文和后续一篇文章中，我会分析Netflix(本文)和SoundCloud(下一篇)两家公司的微服务分层架构，帮助大家更深入理解BFF和网关Gateway在分布式微服务架构中的地位和作用，以及前沿互联网公司的微服务架构是如何分层组织的。希望对架构师理解和实践微服务架构有所帮助。</p>
+<h2 id="原文和翻译">原文和翻译</h2>
 
-<p>本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017~2018年间，Netflix对其微服务分层架构进行了升级，本文也会分析这次升级背后的架构驱动因素。</p>
+<blockquote>
+<p>Seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your place in the social hierarchy.</p>
+</blockquote>
 
-<h2 id="netflix微服务分层架构-2017前">Netflix微服务分层架构(2017前)</h2>
+<p>追求财富，但是不要追求金钱或者身份。财富是指拥有产生睡后收入的资产。金钱是我们实现时间和财富之间转换的一个媒介。身份是你在社会层级中的位置。</p>
 
-<p>下面两个架构图分别展示2017年前的Netflix微服务分层架构，两个图展示的总体分层架构是一致的，只是视角不同：</p>
+<blockquote>
+<p>Understand that ethical wealth creation is possible. If you secretly despise wealth, it will elude you.</p>
+</blockquote>
 
-<p><img src="/img/post/20180628/arch_2017_1.png" alt="arch 2017 before 1" />
-图片来自附录1</p>
+<p>要懂的通过道德的方式创造财富是完全可以做到的。如果你秘密地鄙视财富，财富也会避开你。</p>
 
-<p><img src="/img/post/20180628/arch_2017_2.png" alt="arch 2018 before 2" />
-图片来自附录2</p>
+<blockquote>
+<p>Ignore people playing status games. They gain status by attacking people playing wealth creation games.</p>
+</blockquote>
 
-<p>这个分层架构和《BFF和网关是如何演化出来的》一文中的V4架构基本类似，共分四个层次：</p>
+<p>远离那些玩身份地位博弈游戏的人。他们获取身份地位的方式是通过攻击那些创造财富的人。</p>
 
-<ol>
-<li><strong>用户体验层</strong>，据说Netflix要支持超过一千种的不同设备体验，这个对Netflix技术团队特别是前端团队是一个巨大的挑战。</li>
-<li><strong>网关路由层</strong>，Netflix使用Zuul网关作为服务路由层，同时兼具安全认证，监控，限流熔断等跨横切面功能。Zuul网关无状态以集群方式部署，网关依赖AWS ELB做负载均衡。</li>
-<li><strong>边界API层</strong>，Netflix的裁剪聚合和适配层，也就是BFF层，将后端微服务，适配到不同的前端体验。在Netflix体系中，该层也称Edge Service Layer。</li>
-<li><strong>微服务层</strong>，Netflix的核心领域服务，也称中间层(Middle Tier)服务。</li>
-</ol>
+<blockquote>
+<p>You’re not going to get rich renting out your time. You must own equity - a piece of a business - to gain your financial freedom.</p>
+</blockquote>
 
-<p>网关+边界API层(BFF)+一些前端服务(如安全认证，Playback相关服务，DRM等)，统一由一个Netflix的前端团队负责，该团队也称边界工程(Edge Engineering)团队。</p>
+<p>通过打工出卖时间的方式，你不可能变得富有。你必须拥有资产(生意的一种)，以赢得你的财务自由。</p>
 
-<p>因为Netflix要应对处理的设备类型巨多，所以它们在边界层投入了很大工程技术资源，2017年前Netflix的边界API层(BFF)具有下面架构特点：</p>
+<blockquote>
+<p>You will get rich by giving society what it wants but does not yet know how to get. At scale.</p>
+</blockquote>
 
-<ol>
-<li>整个边界API层(BFF)住在一个PaaS平台里头，称为Edge PaaS。</li>
-<li>Edge PaaS本质上是一个动态脚本平台(Dyanmic Scripting Platform)，支持使用Groovy等JVM脚本语言，方便前端团队快速聚合裁剪后端微服务，并向前端设备暴露友好的API。之所以使用动态脚本语言Groovy，主要是考虑脚本语言对前端开发的友好性和生产率。</li>
-<li>Edge PaaS里头同时预置后端微服务的Java客户端SDK，方便Groovy脚本调用后端服务，同时对客户端进行Hystrix埋点，保障对后台微服务调用的稳定性。</li>
-<li>由于前端需求变更比较频繁，所以Edge PaaS里头的脚本一般更新也比较频繁，前端团队可以按需每日更新，上传动态脚本即可。</li>
-<li>如果后端微服务有升级更新，一般需要升级Edge PaaS里头的客户端SDK，但是这个不是频繁操作，一般以固定周期（比如两周一个full release）发生，但是集成回归测试成本还是比较高的。</li>
-</ol>
+<p>如果你能规模化地创造并给予社会某种它想要但是还不知道如何获取的东西，你将会变得富有。</p>
 
-<p>关于Netflix动态脚本平台的更多技术细节，可以参考其官方博客[附录4]。</p>
+<blockquote>
+<p>Pick an industry where you can play long term games with long term people.</p>
+</blockquote>
 
-<h2 id="netflix微服务分层架构-2018">Netflix微服务分层架构(2018)</h2>
+<p>要选择你有机会和长线思维的人一起玩长线游戏的行业。</p>
 
-<p>上述的Edge PaaS其实是一个单块架构，随着Netflix的前端业务变得更加复杂，Edge PaaS也逐渐遭遇康威法则的约束，暴露出如下问题：</p>
+<blockquote>
+<p>The Internet has massively broadened the possible space of careers. Most people haven&rsquo;t figured this out yet.</p>
+</blockquote>
 
-<ol>
-<li>Edge PaaS里头同时耦合了前端聚合裁剪适配和后端API/SDK逻辑，当后端API有升级，一般需要升级Edge PaaS里头的客户端SDK，这种升级可能因不兼容和测试不充分，造成前端业务代码出问题。总体上前后端团队因升级、集成测试而造成的沟通协调成本非常大。</li>
-<li>所有面向用户体验的脚本逻辑都住在一套Edge PaaS里头，缺乏隔离性，当某个团队的脚本有bug，很容易负面影响到其它脚本。整个Edge PaaS也是一个大单点(Single Point of Failure)，严重脚本缺陷或者流量洪峰可致集群宕机。</li>
-<li>前端脚本有上传快和动态加载等优势，但是本地调试不方便，很多依赖的环境(Edge PaaS + API/SDK)难以在本地开发环境复制，造成开发反馈效率低下，出现问题排障困难。</li>
-</ol>
+<p>互联网极大的扩展了我们职业的可能空间，很多人其实还没有意识到这一点。</p>
 
-<p>为解决上述问题，Netflix边界工程团队对Edge PaaS的架构进行了调整，从单块一分为二，新的架构如下图所示：
-<img src="/img/post/20180628/arch_2018_new.png" alt="arch 2018 new" />
-图片来自附录3</p>
+<blockquote>
+<p>Play iterated games. All the returns in life, whether in wealth, relationships, or knowledge, come from compound interest.</p>
+</blockquote>
 
-<p>主要变化是将边界API层分成两个子层次：</p>
+<p>专注迭代和积累。生命中所有的回报，不管是财富，关系，还是知识都来自复利效应。</p>
 
-<ol>
-<li><strong>API聚合层</strong>，专注对后端微服务进行聚合，提供前端友好、抽象统一的API。API聚合层主要基于Java+后台服务的客户端SDK实现。API聚合层还按业务功能进行分集群部署(API Sharding)。</li>
-<li><strong>设备适配层BFF</strong>，专注对API聚合层的服务进行裁剪和适配，提供给不同的用户体验展示。</li>
-</ol>
+<blockquote>
+<p>Pick business partners with high intelligence, energy, and, above all, integrity.</p>
+</blockquote>
 
-<p>设备聚合层采用对前端开发友好的Node.js框架，各个团队的服务可以独立部署在容器环境(Netflix的容器云Titus)中，使用容器机制进行隔离，避免相互干扰。Node.js+容器在Netflix称为NodeQuark平台。NodeQuark环境在开发人员本地可以搭建，方便开发本地调试。</p>
+<p>选择高智商，精力充沛的合作伙伴，在所有的素质中，正直诚实最重要。</p>
 
-<p>经过拆分，当前Netflix演化出一个五层的微服务分层架构，前面三层(用户体验、网关路由和设备适配层)专注解决前端开发人员生产率的问题；后端两层(API聚合层和微服务层)专注解决领域抽象和运维监控稳定性问题。整个体系架构层次职责分明，初步解决了之前单块Edge PaaS的诸多问题，解放了生产率。</p>
+<blockquote>
+<p>Don&rsquo;t partner with cynics and pessimists. Their beliefs are self-fulfilling.</p>
+</blockquote>
 
-<h2 id="结论">结论</h2>
+<p>不要和愤世嫉俗和悲观者为伍。他们的信仰是自证预言。</p>
 
-<ol>
-<li>Netflix采用经典的微服务分层架构，前端体验-&gt;网关路由-&gt;边界API层(BFF)-&gt;后端微服务。这个分层架构可供一线企业实践微服务参考。</li>
-<li>近年，为了进一步提升前端研发效率，Netflix又将边界API层(BFF)拆分成两个子层次，设备适配层BFF和API聚合层。总体演化出一个五层的微服务分层架构。增加新的层次对于Netflix这种体谅的公司来说，有其架构合理性，但一般企业没必要细分5层，采用上述经典4层架构就OK了。</li>
-<li>从Netflix架构体系演变我们可以看出，为了提升研发效率，它的架构经过多层细分，这种分层会带来一定的性能损失。但是对于前沿大体量的互联网公司，性能一般并不是其架构的首要考量，灵活性、可治理性和研发效率才是它们的首要考量。性能的损失一般可以通过云计算+水平扩展+缓存等手段来弥补。</li>
-<li>波波近期和极客时间合作，推出《微服务架构实践160讲》的视频课程，其中第三个模块(预计6月份推出)，会对Netflix的微服务网关Zuul的升级版Zuul2进行深度剖析，欢迎大家关注。</li>
-</ol>
+<blockquote>
+<p>Learn to sell. Learn to build. If you can do both, you will be unstoppable.</p>
+</blockquote>
 
-<h2 id="附录">附录</h2>
+<p>学会销售事物，学会构造事物。如果你两者都会，你将不可阻挡。</p>
 
-<ol>
-<li><a href="https://www.slideshare.net/danieljacobson/netflix-edge-engineering-open-house-presentations-june-9-2016">Netflix Edge Engineering Open House</a></li>
-<li><a href="https://www.slideshare.net/KatharinaProbst/the-new-netflix-api">The New Netflix API</a></li>
-<li><a href="https://www.slideshare.net/kcasella/edge-engineering-women-in-tech-dinner-20180322">Edge Engineering Women in Tech Dinner</a></li>
-<li><a href="https://medium.com/netflix-techblog/the-netflix-dynamic-scripting-platform-78c1b18b2a74">The Netflix Dynamic Scripting Platform</a></li>
-</ol>
+<blockquote>
+<p>Arm yourself with specific knowledge, accountability, and leverage.</p>
+</blockquote>
+
+<p>通过特种知识、责任心和杠杆来武装自己。</p>
+
+<blockquote>
+<p>Specific knowledge is knowledge that you cannot be trained for. If society can train you, it can train someone else, and replace you.</p>
+</blockquote>
+
+<p>特种知识是无法通过培训获取的知识。如果社会可以培训你，那么它也可以培训其他人，然后取代你。</p>
+
+<blockquote>
+<p>Specific knowledge is found by pursuing your genuine curiosity and passion rather than whatever is hot right now.</p>
+</blockquote>
+
+<p>特种知识是通过追寻你单纯的好奇和热情而获得的，而不是追当下的热点而获得。</p>
+
+<blockquote>
+<p>Building specific knowledge will feel like play to you but will look like work to others.</p>
+</blockquote>
+
+<p>营建特种知识的过程，自己感觉像是在玩耍，但别人看上去像是工作。</p>
+
+<blockquote>
+<p>When specific knowledge is taught, it’s through apprenticeships, not schools.</p>
+</blockquote>
+
+<p>特种知识只能通过学徒方式授予，而不是学校制的教育。</p>
+
+<blockquote>
+<p>Specific knowledge is often highly technical or creative. It cannot be outsourced or automated.</p>
+</blockquote>
+
+<p>特种知识具有很高的技术性和创造性。它无法被外包或者自动化。</p>
+
+<blockquote>
+<p>Embrace accountability, and take business risks under your own name. Society will reward you with responsibility, equity, and leverage.</p>
+</blockquote>
+
+<p>勇于承担责任，并以自己之名去承担一定的商业风险。社会会通过责任、资产和杠杆来回报你。</p>
+
+<blockquote>
+<p>The most accountable people have singular, public, and risky brands: Oprah, Trump, Kanye, Elon.</p>
+</blockquote>
+
+<p>那些最负责的人拥有独一无二的，公开的和有风险的品牌：奥普拉，川普，坎耶，马斯克。</p>
+
+<blockquote>
+<p>“Give me a lever long enough, and a place to stand, and I will move the earth.”
+-Archimedes</p>
+</blockquote>
+
+<p>“给我一个足够长的杠杆，和一个支点，我能够撬动整个地球。”- 阿基米德</p>
+
+<blockquote>
+<p>Fortunes require leverage. Business leverage comes from capital, people, and products with no marginal cost of replication (code and media).</p>
+</blockquote>
+
+<p>财富需要杠杆。商业杠杆来自于资本，人力，和那些没有边际复制成本的产品（代码或者媒体）</p>
+
+<blockquote>
+<p>Capital means money. To raise money, apply your specific knowledge, with accountability, and show resulting good judgment.</p>
+</blockquote>
+
+<p>资本意味着金钱。想要募集金钱，需要应用你的特种知识，你的责任心，以及展示能产生良好结果的判断力。</p>
+
+<blockquote>
+<p>Labor means people working for you. It&rsquo;s the oldest and most fought-over form of leverage. Labor leverage will impress your parents, but don’t waste your life chasing it.</p>
+</blockquote>
+
+<p>人力意味着别人为你打工。这是最古老，也是竞争最激烈的一种杠杆方式。人力杠杆的运用能力会让你的父母影响深刻，但是不要浪费一生去追逐它。</p>
+
+<blockquote>
+<p>Capital and labor are permissioned leverage. Everyone is chasing capital, but someone has to give it to you. Everyone is trying to lead, but someone has to follow you.</p>
+</blockquote>
+
+<p>资本和人力是需要许可的杠杆。每个人都在追逐资本，但是必须有人把它给你。每个人都想当头，但是必须有人跟随你。</p>
+
+<blockquote>
+<p>Code and media are permissionless leverage. They&rsquo;re the leverage behind the newly rich. You can create software and media that works for you while you sleep.</p>
+</blockquote>
+
+<p>代码和媒体是无需许可的杠杆。它们是新财富背后的杠杆。你可以创造软件和媒体，它们在你睡觉的时候还为你工作。</p>
+
+<blockquote>
+<p>An army of robots is freely available - it&rsquo;s just packed in data centers for heat and space efficiency. Use it.</p>
+</blockquote>
+
+<p>一支机器人军队可以被自由使用-它们只是因散热和空间效率而被打包放置在数据中心。你要使用它。</p>
+
+<blockquote>
+<p>If you can&rsquo;t code, write books and blogs, record videos and podcasts.</p>
+</blockquote>
+
+<p>如果你不会写的代码，那么就写书或者博客，录视频或者播客。</p>
+
+<blockquote>
+<p>Leverage is a force multiplier for your judgement.</p>
+</blockquote>
+
+<p>杠杆是你的判断力的倍增器。</p>
+
+<blockquote>
+<p>Judgement requires experience, but can be built faster by learning foundational skills</p>
+</blockquote>
+
+<p>判断需要经验，但是判断能力可以通过学习基本技能而加速构建。</p>
+
+<blockquote>
+<p>There is no skill called “business.” Avoid business magazines and business classes.</p>
+</blockquote>
+
+<p>没有一种叫“商务”的技能，不要在商务杂志或者课程上浪费时间。</p>
+
+<blockquote>
+<p>Study microeconomics, game theory, psychology, persuasion, ethics, mathematics, and computers.</p>
+</blockquote>
+
+<p>学习微观经济学，博弈论，心理学，说服力，伦理学，数学，和计算机。</p>
+
+<blockquote>
+<p>Reading is faster than listening. Doing is faster than watching.</p>
+</blockquote>
+
+<p>阅读比听更快，做比看更快。</p>
+
+<blockquote>
+<p>You should be too busy to “do coffee,&rdquo; while still keeping an uncluttered calendar.</p>
+</blockquote>
+
+<p>你应该保持日程的简洁，但是应该足够忙碌而没有时间去做很多会面。</p>
+
+<blockquote>
+<p>Set and enforce an aspirational personal hourly rate. If fixing a problem will save less than your hourly rate, ignore it. If outsourcing a task will cost less than your hourly rate, outsource it.</p>
+</blockquote>
+
+<p>给自己设定并执行一个有抱负的时薪。如果修复一个问题节省下来的费用比时薪少，那就忽略这个问题。如果外包某个任务比你的时薪少，就找外包。</p>
+
+<blockquote>
+<p>Work as hard as you can. Even though who you work with and what you work on are more important than how hard you work.</p>
+</blockquote>
+
+<p>尽最大努力工作。同时明白选择做什么事情，和谁一起工作，比努力工作本身更加重要。</p>
+
+<blockquote>
+<p>Become the best in the world at what you do. Keep redefining what you do until this is true.</p>
+</blockquote>
+
+<p>在你专注的领域成为世界最佳。不断打磨优化你的技能，直到世界最佳成真。</p>
+
+<blockquote>
+<p>There are no get rich quick schemes. That&rsquo;s just someone else getting rich off you.</p>
+</blockquote>
+
+<p>没有快速致富的攻略。只有一些想从你身上发财的人。</p>
+
+<blockquote>
+<p>Apply specific knowledge, with leverage, and eventually you will get what you deserve.</p>
+</blockquote>
+
+<p>应用特种知识，加上杠杆，最终你将得到你应得的。</p>
+
+<blockquote>
+<p>When you&rsquo;re finally wealthy, you&rsquo;ll realize that it wasn&rsquo;t what you were seeking in the first place. But that&rsquo;s for another day.</p>
+</blockquote>
+
+<p>当你某天最终获得财富，你会意识到它并不是你开始想寻找的东西。但是这是我会日后再说的东西。</p>
+
+<h2 id="参考">参考</h2>
+
+<p><a href="https://hackernoon.com/how-to-get-rich-without-getting-lucky-9901caca4fd5">How to Get Rich(without getting lucky)</a></p>
 
 
                 
@@ -448,15 +603,10 @@ $(function() {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2018-06-07-bff-gateway-evolution/" data-toggle="tooltip" data-placement="top" title="BFF和网关是如何演化出来的？">&larr;
+                        <a href="/post/2018-06-29-soundcloud-microservices-layers/" data-toggle="tooltip" data-placement="top" title="SoundCloud微服务是如何分层的？">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-06-29-soundcloud-microservices-layers/" data-toggle="tooltip" data-placement="top" title="SoundCloud微服务是如何分层的？">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
