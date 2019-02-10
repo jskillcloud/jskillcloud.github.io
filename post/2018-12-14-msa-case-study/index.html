@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="一个中国式微服务架构模拟案例" />
+    <meta property="og:title" content="一个中国式微服务架构模拟案例" />
+    <meta property="twitter:title" content="一个中国式微服务架构模拟案例" />
+    
+
+    
+    <meta name="description" content="我和极客时间合作的课程《微服务架构和实践160讲》已经接近尾声，最后一个模块是综合案例分析，将会通过一个简单的模拟业务案例，将之前课程的各个组件集成起来，帮助大家全面理解微服务架构。">
+    <meta property="og:description" content="我和极客时间合作的课程《微服务架构和实践160讲》已经接近尾声，最后一个模块是综合案例分析，将会通过一个简单的模拟业务案例，将之前课程的各个组件集成起来，帮助大家全面理解微服务架构。" />
+    <meta property="twitter:description" content="我和极客时间合作的课程《微服务架构和实践160讲》已经接近尾声，最后一个模块是综合案例分析，将会通过一个简单的模拟业务案例，将之前课程的各个组件集成起来，帮助大家全面理解微服务架构。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>一个中国式微服务架构模拟案例-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-12-14-msa-case-study/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84">微服务架构</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/chevrons.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90" title="案例分析">
+                            案例分析
+                        </a>
+                        
+                    </div>
+                    <h1>一个中国式微服务架构模拟案例</h1>
+                    <h2 class="subheading">Microservice Architecture Case Study</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Friday, December 14, 2018
+                        
+                            <span id="/post/2018-12-14-msa-case-study/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#案例背景">案例背景</a></li>
+<li><a href="#架构设计">架构设计</a>
+<ul>
+<li><a href="#业务服务架构">业务服务架构</a></li>
+<li><a href="#原基础服务架构">原基础服务架构</a></li>
+<li><a href="#改造后的基础服务架构">改造后的基础服务架构</a></li>
+</ul></li>
+<li><a href="#注册登录和服务调用流程">注册登录和服务调用流程</a>
+<ul>
+<li><a href="#注册登录流程">注册登录流程</a></li>
+<li><a href="#服务调用流程">服务调用流程</a></li>
+</ul></li>
+<li><a href="#生产扩展">生产扩展</a></li>
+<li><a href="#个人思考">个人思考</a></li>
+<li><a href="#附录">附录</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h2 id="介绍">介绍</h2>
+
+<p>我和极客时间合作的课程《微服务架构和实践160讲》已经接近尾声，最后一个模块是综合案例分析，将会通过一个简单的模拟业务案例，将之前课程的各个组件集成起来，包括：</p>
+
+<ul>
+<li>统一授权认证中心Gravitee OAuth2</li>
+<li>集中配置Apollo</li>
+<li>基础服务Zuul/Eureka/Ribbon/Hystrix</li>
+<li>监控反馈CAT/Prometheus</li>
+</ul>
+
+<p>这些组件既包括Spring Cloud技术栈的部分组件(Zuul/Eureka/Ribbon/Hystrix)，也包含国内一线互联网公司落地的一些组件(如大众点评CAT和携程Apollo)，也包括我自己为课程开发的组件Gravitee OAuth2(非生产级)，所以本案例可以称为是一个中国式微服务技术栈综合演示案例，可供学习参考。</p>
+
+<p>另外，课程开播以来陆续收到一些学员的提问，比较典型的有：</p>
+
+<ul>
+<li>如何使用Apollo集中管理Spring应用的配置？</li>
+<li>网关集中验证令牌怎么做？</li>
+<li>基于OAuth2的注册登录和API调用具体如何实现？</li>
+<li>CAT非侵入式埋点怎么做，如何尽量减少业务研发直接使用CAT进行埋点？</li>
+</ul>
+
+<p>在课程中，通过案例演示，我也会统一回复这些问题。</p>
+
+<h2 id="案例背景">案例背景</h2>
+
+<p>我本人并不打算完全自己开发一个演示案例，而是会重用比较流行的开源项目，在它基础上做定制扩展，所以本案例是基于github上的一个开源项目PiggyMetrics[附录1]改造而来。PiggyMetrics是一个模拟的个人记账理财的应用，原作者称其为一个端到端的微服务PoC(Proof of Concept)，也就是说他开发这个是为了验证微服务架构和Spring Cloud技术栈。PiggyMetrics目前在github上有超过4.6k星，是学习微服务架构和Spring Cloud技术栈的一个不错参考。</p>
+
+<p><img src="/img/post/20181214/piggymetrics.png" alt="piggy metrics" /></p>
+
+<p>PiggMetrics采用前后分离架构，前端是单页SPA，后端采用基于Spring Cloud技术栈的微服务架构。</p>
+
+<h2 id="架构设计">架构设计</h2>
+
+<h3 id="业务服务架构">业务服务架构</h3>
+
+<p><img src="/img/post/20181214/biz_arch.png" alt="biz arch" /></p>
+
+<p>上图是PiggyMetrics的业务服务架构，包括：</p>
+
+<ol>
+<li><strong>CLIENT</strong>，一个纯JS/HTML/CSS单页应用，实现注册登录和前端展示逻辑</li>
+<li><strong>ACCOUNT SERVICE</strong>，账户服务，存储用户账户和记账信息</li>
+<li><strong>NOTIFICATION SERVICE</strong>，通知服务，存储通知和备份等相关配置</li>
+<li><strong>STATISTICS SERVICE</strong>，统计服务，计算用户财务状况和统计信息</li>
+</ol>
+
+<p>每个服务有一个独立的MongoDB数据存储(表示微服务独立数据源思想)。客户端可调用后台服务，例如前端调用账户服务去注册账户。服务之间也会相互调用，例如账户更新时，账户服务会同时调统计服务去更新用户统计信息。另外，统计服务还会调用第三方汇率服务获取汇率信息。</p>
+
+<h3 id="原基础服务架构">原基础服务架构</h3>
+
+<p><img src="/img/post/20181214/tech_arch.png" alt="tech arch" /></p>
+
+<p>上图是PiggyMetrics的原基础服务架构，包括：</p>
+
+<ol>
+<li><strong>API网关</strong>:基于<strong>Spring Cloud Zuul</strong>的网关，是调用后台API的聚合入口，实现反向路由和负载均衡(Eureka+Ribbon)、限流熔断(Hystrix)等功能。CLIENT单页应用和ZUUL网关暂住在一起，简化部署。</li>
+<li><strong>服务注册和发现</strong>:基于<strong>Spring Cloud Eureka</strong>的服务注册中心。业务服务启动时通过Eureka注册，网关调用后台服务通过Eureka做服务发现，服务之间调用也通过Eureka做服务发现。</li>
+<li><strong>授权认证服务</strong>:基于<strong>Spring Security OAuth2</strong>的授权认证中心。客户端登录时通过AUTHSERVICE获取访问令牌(走用户名密码模式)。服务之间调用也通过AUTHSERVICE获取访问令牌(走客户端模式)。令牌校验方式~各资源服务器去AUTHSERVICE集中校验令牌。</li>
+<li><strong>配置服务</strong>:基于<strong>Spring Cloud Config</strong>的配置中心，集中管理所有Spring服务的配置文件。</li>
+<li><strong>分布式调用链</strong>：基于<strong>Spring Cloud Sleuth</strong>的调用链监控。网关调用后台服务，服务之间调用，都采用Zipkin进行埋点和跟踪。</li>
+<li><strong>软负载和限流熔断</strong>:基于<strong>Spring Cloud Ribbon&amp;Hystrix</strong>，Zuul调用后台服务，服务之间相互调用，都通过Ribbon实现软负载，也通过Hystrix实现熔断限流保护。</li>
+<li><strong>METRICS &amp; DASHBOARD</strong>:基于<strong>Spring Cloud Turbine + Hystrix Dashboard</strong>，对所有Hystrix产生的Metrics流进行聚合，并展示在Hystrix Dashboard上。</li>
+<li><strong>日志监控</strong>:采用<strong>ELK</strong>栈集中收集和分析应用日志。</li>
+</ol>
+
+<h3 id="改造后的基础服务架构">改造后的基础服务架构</h3>
+
+<p><img src="/img/post/20181214/custom_arch.png" alt="customized arch" /></p>
+
+<p>上图是经过我改造后的架构，浅蓝色标注的都属于基础服务，主要替换的组件如下：</p>
+
+<ol>
+<li><strong>授权认证服务</strong>：替换为使用第8模块为课程定制开发的<strong>Gravitee OAuth2</strong>服务器。</li>
+<li><strong>配置服务</strong>：替换为使用携程<strong>Apollo</strong>做统一配置中心，集中管理所有Spring微服务的配置。</li>
+<li><strong>分布式调用链</strong>:替换为使用大众点评开源的<strong>CAT</strong>做调用链监控，从网关调后台服务，服务之间相互调用，都采用CAT客户端进行埋点监控。CAT埋点既演示使用拦截器(interceptor)方式，也演示使用AOP非侵入方式。</li>
+<li><strong>METRICS&amp;ALERTING</strong>：网关和微服务都启用Prometheus Metrics端点，便于集成<strong>Prometheus</strong>监控和告警。</li>
+</ol>
+
+<p>其它组件，比如<strong>Zuul</strong>网关、<strong>Eureka</strong>服务发现、<strong>Ribbon</strong>软负载、<strong>Hystrix</strong>限流熔断，以及<strong>ELK</strong>集中日志都同原架构，没有太大变化。</p>
+
+<h2 id="注册登录和服务调用流程">注册登录和服务调用流程</h2>
+
+<h3 id="注册登录流程">注册登录流程</h3>
+
+<p><img src="/img/post/20181214/reglogin.png" alt="register &amp; login" /></p>
+
+<p>上图展示PiggyMetrics的登录注册流程，简化流程如下：</p>
+
+<ol>
+<li>客户端应用向后台发起注册请求。</li>
+<li>请求通过网关反向路由到账户服务(Account Svc)。</li>
+<li>账户服务先去授权认证服务(Gravitee OAuth2)创建一个用户(包括用户和密码，这样后续才可以登录获取访问令牌)。账户服务再保存新账户信息到本地MongoDB数据库。</li>
+<li>注册成功以后，客户应用向授权认证服务请求访问令牌(走用户名密码模式)，拿到令牌以后缓存本地localstorage。</li>
+</ol>
+
+<h3 id="服务调用流程">服务调用流程</h3>
+
+<p><img src="/img/post/20181214/apicall.png" alt="api call" /></p>
+
+<p>上图展示PiggyMetrics的API调用流程，简化流程如下：</p>
+
+<ol>
+<li>客户端向后台服务发起API调用，调用时在HTTP授权头上带上访问令牌</li>
+<li>网关截获API请求，根据安全需求判断是否需要验令牌，如果需要，则向授权服务器发起令牌校验请求。授权服务器校验令牌并返回有效型性信息，如果令牌有效，同时返回用户名等相关信息。网关再判断校验是否通过，如果通过，则<strong>将用户名以HTTP HEADER方式向后台服务传递</strong>，如果不通过，则直接报授权错到客户端。</li>
+<li>资源服务器从HTTP HEADER获取用户名等信息，可通过用户名进一步查询用户相关信息，实现业务逻辑。</li>
+</ol>
+
+<p>客户端调用后台服务，经过改造为<strong>网关集中校验令牌</strong>方式，这样可以简化安全架构，即在企业内网，资源服务器端可直接获取用户名信息，不需要再到授权服务器做集中令牌校验。另外，服务之间的调用也改造为可以直接调用，不需要授权认证和令牌，这种做法也是很多一线企业实际落地的做法，即在生产环境中，内部服务之间调用不授权认证，这样可以简化服务的开发和部署，但是对于安全敏感的服务要求做好生产网段隔离(需运维配合)。</p>
+
+<h2 id="生产扩展">生产扩展</h2>
+
+<p><strong>注意！！！</strong>，我扩展的PiggyMetrics仅供学习参考，如果要参考这个架构进行生产化，仍需做生产化扩展，下面是一些可能的扩展点：</p>
+
+<ol>
+<li><strong>安全</strong>，采用网关集中令牌校验后，内部服务可以直接调用，不需要授权认证，但在生产环境中，特别是对于安全敏感的服务，需要考虑安全增强，例如生产网段隔离和IP白名单等机制。</li>
+<li><strong>CAT客户端进一步封装</strong>，案例演示中为了简化，使用一些手工埋点，但在实际生产中，一般需要有独立框架团队对CAT客户端进行进一步封装，对常用基础组件(服务框架，数据访问层，MVC框架，消息系统，缓存系统等)进行集中埋点，并提供封装好的客户端(最好做到无侵入，可参考Spring Cloud Sleuth Starter埋点方式)，方便业务研发团队接入。基本上，框架层集中埋点以后，业务应用只需引入依赖即可，一般不需要再手工埋点。</li>
+<li><strong>用户服务解耦</strong>，演示案例中，用户服务(包括用户数据库)和Gravitee OAuth2集成在一起，但实际企业中用户服务可能是独立不耦合的，Gravitee OAuth2可以扩展集成独立用户服务，账户服务也可以集成对接独立用户服务。</li>
+<li><strong>前后分离部署</strong>，演示案例中，为简化部署，前端应用和网关住在一起，但在实际生产中，根据企业业务和团队规模，前端应用和后端微服务可能是完全分离部署的，具体做法可参考波波的视频课程。</li>
+<li><strong>Gravitee OAuth2</strong>，另外Gravitee OAuth2本身也需要扩展，具体可参考其站点文档说明[参考3]</li>
+</ol>
+
+<h2 id="个人思考">个人思考</h2>
+
+<p>近年，国外一线互联网公司(如Netflix)在成功落地微服务架构的基础上，陆续开源了其中的一些核心组件，如Zuul/Eureka/Hystrix等，推动了社区技术进步。Pivotal则将这些组件和Spring集成起来，推出Spring Cloud技术栈，在社区产生较大影响，但整个体系可以认为是一个纯西方技术文化的技术栈。同样在近年，我们国内一线互联网公司在实践中也落地了不少基础组件，例如大众点评的CAT，携程的Apollo等，这些组件同样经过大流量考验，使用上更具中国文化特色，也更接地气。我们架构师在做技术选型的时候，不可盲信国外技术栈，更好的做法是兼收并蓄，在吸收借鉴Spring Cloud技术栈的基础上，替换融入一些中国特色的微服务组件，构建中国特色的微服务基础架构，通过实践走出自己的道路。</p>
+
+<p>波波的这门&lt;&lt;微服务架构和实践160讲&gt;&gt;课程，包括本次的综合案例分析，其实就是这样一种博采众长、融合提炼思想的尝试，希望对国内架构师带来一些新的参考和启发。</p>
+
+<h2 id="附录">附录</h2>
+
+<ol>
+<li><a href="https://github.com/sqshq/PiggyMetrics">原版PiggyMetrics</a></li>
+<li><a href="https://github.com/spring2go/piggymetrics">改造版PiggyMetrics</a></li>
+<li><a href="https://github.com/spring2go/gravitee">Gravitee OAuth2</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-12-12-build-oauth2-server/" data-toggle="tooltip" data-placement="top" title="构建OAuth2服务器～Golang语言实现">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/apollo" title="Apollo">
+                            Apollo
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/netflix" title="Netflix">
+                            Netflix
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/zuul" title="Zuul">
+                            Zuul
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%88%9B%E4%B8%9A" title="创业">
+                            创业
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%88%90%E9%95%BF" title="工程师成长">
+                            工程师成长
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%86%E5%B1%82" title="微服务分层">
+                            微服务分层
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
+                            微服务网关
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B" title="技术选型">
+                            技术选型
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E6%80%9D%E7%BB%B4" title="架构思维">
+                            架构思维
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1" title="架构设计">
+                            架构设计
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD" title="软技能">
+                            软技能
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83" title="配置中心">
+                            配置中心
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>
