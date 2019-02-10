@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Zuul网关生产部署实践</title>
+      <link>http://jskillcloud.com/post/2018-07-12-zuul-deployment-in-practice/</link>
+      <pubDate>Thu, 12 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-07-12-zuul-deployment-in-practice/</guid>
+      <description>介绍 Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。 本文介绍Zuul网关的一些生产部</description>
+    </item>
     
     <item>
       <title>Zuul路由管理实践</title>

@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="BFF和网关是如何演化出来的？" />
-    <meta property="og:title" content="BFF和网关是如何演化出来的？" />
-    <meta property="twitter:title" content="BFF和网关是如何演化出来的？" />
+    <meta name="title" content="Zuul网关生产部署实践" />
+    <meta property="og:title" content="Zuul网关生产部署实践" />
+    <meta property="twitter:title" content="Zuul网关生产部署实践" />
     
 
     
-    <meta name="description" content="本文用假想的公司案例&#43;图示的方式，解释BFF和网关是什么，它们是怎么演化出来的。希望对架构师设计和落地微服务架构有所启发。">
-    <meta property="og:description" content="本文用假想的公司案例&#43;图示的方式，解释BFF和网关是什么，它们是怎么演化出来的。希望对架构师设计和落地微服务架构有所启发。" />
-    <meta property="twitter:description" content="本文用假想的公司案例&#43;图示的方式，解释BFF和网关是什么，它们是怎么演化出来的。希望对架构师设计和落地微服务架构有所启发。" />
+    <meta name="description" content="Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。">
+    <meta property="og:description" content="Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。" />
+    <meta property="twitter:description" content="Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>BFF和网关是如何演化出来的？-掘艺云 | JSkillCloud</title>
+    <title>Zuul网关生产部署实践-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/post/2018-06-07-bff-gateway-evolution/">
+    <link rel="canonical" href="/post/2018-07-12-zuul-deployment-in-practice/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/triangles.png')
+        background-image: url('/img/background/overlapping_rings.png')
     }
 </style>
 <header class="intro-header">
@@ -161,30 +161,30 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/bff" title="BFF">
-                            BFF
-                        </a>
-                        
-                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
-                            微服务网关
+                        <a class="tag" href="/tags/zuul" title="Zuul">
+                            Zuul
                         </a>
                         
                         <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
                             微服务
                         </a>
                         
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
+                            微服务网关
+                        </a>
+                        
                     </div>
-                    <h1>BFF和网关是如何演化出来的？</h1>
-                    <h2 class="subheading"></h2>
+                    <h1>Zuul网关生产部署实践</h1>
+                    <h2 class="subheading">Zuul Production Deployment in Practice</h2>
                     <span class="meta">
 			Posted by 
 			
 			         &#34;杨波&#34;
 			 
 			on 
-			Thursday, June 7, 2018
+			Thursday, July 12, 2018
                         
-                            <span id="/post/2018-06-07-bff-gateway-evolution/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-07-12-zuul-deployment-in-practice/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -347,11 +347,13 @@ $(function() {
 <li>
 <ul>
 <li><a href="#介绍">介绍</a></li>
-<li><a href="#服务化架构v1">服务化架构V1</a></li>
-<li><a href="#服务化架构v2">服务化架构V2</a></li>
-<li><a href="#服务化架构v2-1">服务化架构V2.1</a></li>
-<li><a href="#服务化架构v3">服务化架构V3</a></li>
-<li><a href="#服务化架构v4">服务化架构V4</a></li>
+<li><a href="#zuul参考部署架构">Zuul参考部署架构</a>
+<ul>
+<li><a href="#第一层-负载均衡lb">第一层、负载均衡LB</a></li>
+<li><a href="#第二层-zuul网关层">第二层、Zuul网关层</a></li>
+<li><a href="#第三层-内部微服务">第三层、内部微服务</a></li>
+</ul></li>
+<li><a href="#zuul生产级部署实践">Zuul生产级部署实践</a></li>
 <li><a href="#结论">结论</a></li>
 </ul></li>
 </ul>
@@ -361,123 +363,74 @@ $(function() {
 
 <h2 id="介绍">介绍</h2>
 
-<p>BFF(Backend for Frontend)和网关Gateway是微服务架构中的两个重要概念，这两个概念相对比较新，有些开发人员甚至是架构师都不甚理解。</p>
+<p>Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。</p>
 
-<p>本文用假想的公司案例+图示的方式，解释BFF和网关是什么，它们是怎么演化出来的。希望对架构师设计和落地微服务架构有所启发。</p>
+<p>本文介绍Zuul网关的一些生产部署实践。</p>
 
-<h2 id="服务化架构v1">服务化架构V1</h2>
+<h2 id="zuul参考部署架构">Zuul参考部署架构</h2>
 
-<p>我们先把时间推回到大致2011年左右。假设有一家有一定业务体量的电商公司CoolShop，在这个时间点它已经完成单块应用的解构拆分，内部SOA服务化已经初步完成。这个时候它的无线应用还没有起步，前端用户体验层主要是传统的服务端Web应用，总体服务化架构V1如下图所示。</p>
+<p><img src="/img/post/20180712/zuul_ref_arch.png" alt="zuul reference deployment architecture" /></p>
 
-<p><img src="/img/post/2018060702/soa_v1.png" alt="soa v1" /></p>
+<p>上图是一个可供参考的Zuul部署架构，总体可以简化为一个三层架构：</p>
 
-<h2 id="服务化架构v2">服务化架构V2</h2>
+<h3 id="第一层-负载均衡lb">第一层、负载均衡LB</h3>
 
-<p>时间转眼来到2012年初，国内的无线应用开始起风，CoolShop公司也紧跟市场趋势，研发自己的无线原生App。为了能尽快上线，公司的架构师提出如下V2架构，让App直接调用内部的服务：</p>
+<p>Zuul网关本身无状态，以集群方式部署，它的前端需要负载均衡LB支持。在AWS云中，经常使用ELB作为负载均衡器，这个也是Netflix的做法。一般企业如果自建数据中心，则经常采用Nginx作为反向代理对Zuul网关进行负载均衡，Nginx是7层负载均衡器，本身也需集群部署，一般前端还需要4层负载均衡，例如使用软件LVS或者硬件F5等。</p>
 
-<p><img src="/img/post/2018060702/soa_v2.png" alt="soa v2" /></p>
+<h3 id="第二层-zuul网关层">第二层、Zuul网关层</h3>
 
-<p>这个架构有如下问题：</p>
+<p>网关无状态以集群方式部署，一个集群规模小的有几台Zuul实例，大的可以有几十甚至上百个Zuul实例。</p>
 
-<ol>
-<li>无线App和内部微服务强耦合，任何一边的变化都可能对另外一边造成影响。</li>
-<li>无线App需要知道内部服务的地址等细节。</li>
-<li>无线App端需要开发大量的聚合裁剪和适配逻辑：
-
-<ul>
-<li><strong>聚合</strong>：某一个功能需要同时调用几个后端API进行组合，比如首页需要显示分类和产品细节，就要同时调用分类API和产品API，不能一次调用完成。</li>
-<li><strong>裁剪</strong>：后端服务返回的Payload一般比较通用，App需要根据设备类型进行裁剪，比如手机屏幕小，需要多裁掉一些不必要的内容，Pad的屏幕比较大，可以少裁掉一些内容。</li>
-<li><strong>适配</strong>：一种常见的适配场景是格式转换，比如有些后台服务比较老，只支持老的SOAP/XML格式，不支持新的JSON格式，则无线App需要适配处理不同数据格式。</li>
-</ul></li>
-<li>随着设备类型的增多(iPhone/Android/iPad/WindowsPhone)，聚合裁剪和适配逻辑的开发会造成设备端的大量重复劳动。</li>
-</ol>
-
-<h2 id="服务化架构v2-1">服务化架构V2.1</h2>
-
-<p>V2架构问题太多，没有开发实施。为解决上述问题，架构师经过思考决定在外部设备和内部微服务之间引入一个新的角色~Mobile BFF。</p>
-
-<p>所谓BFF其实是Backend for Frontend的简称，中文翻译是为前端而开发的后端，它主要由前端团队开发（后端微服务一般由后端团队开发）。BFF可以认为是一种适配服务，将后端的微服务进行适配（主要包括聚合裁剪和格式适配等逻辑），向无线端设备暴露友好和统一的API，方便无线设备接入访问后端服务。</p>
-
-<p>新的V2.1架构如下图所以：</p>
-
-<p><img src="/img/post/2018060702/soa_v2.1.png" alt="soa v2.1" /></p>
-
-<p>这个架构的优势是：</p>
+<p>Zuul网关一般根据业务场景以分集群方式部署，例如上图中：</p>
 
 <ol>
-<li>无线App和内部微服务不耦合，通过引入BFF这层间接，使得两边可以独立变化：
-
-<ul>
-<li>后端如果发生变化，通过BFF屏蔽，前端设备可以做到不受影响。</li>
-<li>前端如果发生变化，通过BFF屏蔽，后端微服务可以暂不变化。</li>
-<li>当无线App有新的需求时，通过BFF的屏蔽，可以减少前后端团队的沟通协调开销，很多需求由前端团队在BFF上就可以自己搞定。</li>
-</ul></li>
-<li>无线App只需要知道Mobile BFF的地址，并且服务接口是统一的，不需要知道内部复杂微服务的地址和细节。</li>
-<li>聚合裁剪和适配逻辑在Mobile BFF上实现，无线App端可以大大简化瘦身。</li>
+<li><strong>无线网关集群</strong>，接入无线应用的API调用流量，例如对应域名api.mobile.xxx.com，Nginx会把对该域名的访问转发到无线网关集群。</li>
+<li><strong>H5网关集群</strong>，接入H5应用的API调用流量，例如对应域名api.h5.xxx.com，Nginx会把对该域名的访问转发到H5网关集群。</li>
+<li><strong>开放平台网关集群</strong>，接入第三方应用的API调用流量，例如对应域名api.open.xxx.com，Nginx会把对该域名的访问转发到开放平台网关集群。</li>
 </ol>
 
-<h2 id="服务化架构v3">服务化架构V3</h2>
+<p>另外，企业还可根据需要增加联盟商网关集群，要求严格安全的PCI兼容网关集群等，分别针对不同的业务接入需求。</p>
 
-<p>V2.1架构比较成功，实施落地以后支持了CoolShop公司早期无线业务的成长。随着业务量进一步增长，投入无线研发的团队也不断增加，V2.1架构也逐渐暴露出如下问题：</p>
+<h3 id="第三层-内部微服务">第三层、内部微服务</h3>
+
+<p>这个是企业内部微服务的统称，既可以是前端聚合服务，也可以是后台基础服务。关于网关如何发现和路由到内部微服务，请参考我上一篇文章《微服务架构~Zuul网关路由管理实践》。</p>
+
+<p>另外，Zuul网关支持动态过滤器脚本(Groovy)上传机制，可以灵活更改网关逻辑。过滤器脚本建议集中管理，需要开发一套<strong>过滤器集中管理站点</strong>，统一管理针对不同网关集群的过滤器。</p>
+
+<p><img src="/img/post/20180712/filter_management.png" alt="filter management" /></p>
+
+<p>上图是一个可以参考的过滤器管理界面，支持过滤器的上传/灰度/上下线等动作，管理员通过该界面可以集中管理针对无线网关/H5网关/第三方网关的过滤器。</p>
+
+<p>各网关集群会定期到过滤器管理中心拉取对应的最新的过滤器。</p>
+
+<h2 id="zuul生产级部署实践">Zuul生产级部署实践</h2>
+
+<p><img src="/img/post/20180712/zuul_in_production.png" alt="zuul in production" /></p>
+
+<p>如上节所述，Zuul网关本身的部署并不复杂，但是要生产级地(production ready)使用Zuul网关，周边仍需众多的配套服务进行支持，其中很多服务是和运维Ops治理监控相关，如上图所示，这些支持服务主要包括：</p>
 
 <ol>
-<li>刚开始只有一个Mobile BFF，是个单块，但是无线研发团队在不断增加，分别对应多条业务线。根据康威法则，单块的无线BFF和多团队之间就出现不匹配问题，团队之间沟通协调成本高，交付效率低下。</li>
-<li>Mobile BFF里头不仅有各个业务线的聚合/裁剪/适配和业务逻辑，还引入了很多跨横切面逻辑，比如安全认证，日志监控，限流熔断等。随着时间的推移，代码变得越来越复杂，技术债越堆越多，开发效率不断下降，缺陷数量不断增加。</li>
-<li>Mobile BFF集群是个失败单点(Single Point of Failure)，严重代码缺陷或者流量洪峰可能引发集群宕机，所有无线应用都不可用。</li>
+<li>授权认证中心：对某些安全敏感的API进行Token校验，校验通过才能放行。</li>
+<li>配置中心：例如使用Apollo，能够动态修改网关上的配置(连接数、超时熔断阀值等)，并且一键修改实时生效。</li>
+<li>Hystrix Dashboard和Turbine：Zuul网关一般集成Hystrix熔断组件，Hystrix能够实时吐出性能Metrics，Turbine能够对Hystrix Metrics Stream按集群进行聚合，并展示在Hystrix Dashboard上。Turbine如何发现网关集群的实例？一种方案是在Turbine上静态配置ip，这种方案简单但是不太灵活。另外一种方案是使用Eureka自注册自发现，网关启动时自动注册到Eureka上，Turbine再从Eureka自动发现网关实例地址，这种方案比较灵活，网关扩缩容Turbine能自动感知。</li>
+<li>BotBlocker防爬虫系统：所有API调用流量经过网关门口，可以采集所有访问日志，通过后台BotBlocker防爬虫防攻击系统分析爬虫和攻击等恶意行为，计算出恶意用户或者ip，再反馈给网关系统block对应的恶意用户或ip。</li>
+<li>调用链监控系统：例如集成CAT，让网关成为调用链发起的入口，并且和后台的服务调用链(后台服务、缓存，数据库等)打通，这样可以比较直观的查看端到端的微服务调用性能状况。</li>
+<li>ELK日志系统：采集访问日志和错误日志，供后续进一步分析。</li>
+<li>Metrics监控系统，例如采用KairosDB等时间序列数据库，可以在调用链的基础上做更细粒度的Metrics监控，例如Zuul网关本身也提供丰富的Metrics。</li>
+<li>告警系统：例如集成ZMon，通过主动check的方式，时刻检查网关的健康状况，如有异常立刻报警。</li>
 </ol>
 
-<p>为了解决上述问题，架构师经过思考决定在外部设备和内部BFF之间再引入一个新的角色~API Gateway，新的架构V3如下图所示：</p>
+<p><img src="/img/post/20180712/hystrix_dashboard.png" alt="hystrix dashboard" /></p>
 
-<p><img src="/img/post/2018060702/soa_v3.png" alt="soa v3" /></p>
-
-<p>新的架构V3有如下调整：</p>
-
-<ol>
-<li>BFF按团队或业务线进行解耦拆分，拆分成若干个BFF微服务，每个业务线可以并行开发和交付各自负责的BFF微服务。</li>
-<li>网关（一般由独立框架团队负责运维）专注跨横切面(Cross-Cutting Concerns)的功能，包括：
-
-<ul>
-<li><strong>路由</strong>，将来自无线设备的请求路由到后端的某个微服务BFF集群。</li>
-<li><strong>认证</strong>，对涉及敏感数据的API访问进行集中认证鉴权。</li>
-<li><strong>监控</strong>，对API调用进行性能监控。</li>
-<li><strong>限流熔断</strong>，当出现流量洪峰，或者后端BFF/微服务出现延迟或故障，网关能够主动进行限流熔断，保护后端服务，并保持前端用户体验可以接受。</li>
-<li><strong>安全防爬</strong>，收集访问日志，通过后台分析出恶意行为，并阻断恶意请求。</li>
-</ul></li>
-<li>网关在无线设备和BFF之间又引入了一层间接，让两边可以独立变化，特别是当后台BFF在升级或迁移时，可以做到用户端应用不受影响。</li>
-</ol>
-
-<p>在新的V3架构中，网关承担了重要的角色，它是解耦拆分和后续升级迁移的利器。在网关的配合下，单块BFF实现了解耦拆分，各业务线团队可以独立开发和交付各自的微服务，研发效率大大提升。另外，把跨横切面逻辑从BFF剥离到网关上去以后，BFF的开发人员可以更加专注业务逻辑交付，实现了架构上的关注分离(Separation of Concerns)。</p>
-
-<h2 id="服务化架构v4">服务化架构V4</h2>
-
-<p>业务在不断发展，技术架构也需要不断的调整来应对需求的变化。近年，CoolShop公司技术团队又迎来了新的业务和技术需求，主要是：</p>
-
-<ol>
-<li>开放内部的业务能力，建设CoolShop Open API平台。借助第三方社区开发者的力量，在CoolShop平台上进行创新，进一步拓宽CoolShop的应用和业务形态。</li>
-<li>废弃传统的服务端Web应用模式，引入前后分离架构，前端采用H5单页等技术给用户提供更好的体验。</li>
-</ol>
-
-<p>为满足业务需求，架构师对服务化架构又进行了拓展升级，新的V4新架构如下图所示：</p>
-
-<p><img src="/img/post/2018060702/soa_v4.png" alt="soa v4" /></p>
-
-<p>V4整体思路和V3类似，只是拓展了新的接入渠道:</p>
-
-<ol>
-<li>引入面向第三方开放API的BFF层和配套的网关，支持第三方开发者在CoolShop Open API平台上开发应用。</li>
-<li>引入面向H5应用的BFF层和配套的网关，支持前后分离和H5单页应用模式。</li>
-</ol>
-
-<p>V4是一个比较完整的现代微服务架构，从外到内依次分为：端用户体验层-&gt;网关层-&gt;BFF层-&gt;微服务层。整个架构层次清晰，职责分明，是一种灵活的能够支持业务不断创新的演化式架构。</p>
+<p>网关是API流量入口，是对微服务系统健康状况的集中和最佳观测点。上图是一个通过Hystrix Dashboard对网关集群进行实时监控的案例，展示每个通过网关的API的实时流量(10秒窗口)情况，可看成功/失败/超时，性能和集群等的流量情况。如果发生熔断，则Hystrix Dashboard上对应的API会直接飙红，提示报警干预。</p>
 
 <h2 id="结论">结论</h2>
 
 <ol>
-<li>在微服务架构中，BFF(Backend for Frontend)也称聚合层或者适配层，它主要承接一个适配角色：将内部复杂的微服务，适配成对各种不同用户体验（无线/Web/H5/第三方等）友好和统一的API。聚合裁剪适配是BFF的主要职责。</li>
-<li>在微服务架构中，网关专注解决跨横切面逻辑，包括路由、安全、监控和限流熔断等。网关一方面是拆分解耦的利器，同时让开发人员可以专注业务逻辑的实现，达成架构上的关注分离。</li>
-<li>端用户体验层-&gt;网关层-&gt;BFF层-&gt;微服务层，是现代微服务架构的典型分层方式，这个架构能够灵活应对业务需求的变化，是一种支持创新的演化式架构。</li>
-<li>技术和业务都在不断变化，架构师要不断调整架构应对这些的变化，BFF和网关都是架构演化的产物。</li>
-<li>波波近期和极客时间合作，推出一门叫《微服务架构160讲》的视频课程，其中第三个模块（预计6月推出），会对Netflix新近推出的微服务网关Zuul2的架构和实践进行深度剖析，欢迎大家关注。</li>
+<li>Zuul网关一般针对不同的应用场景(无线/H5/开放平台等)分集群部署，前端依赖LB做负载均衡。建议部署集中式的过滤器管理站点，对不同网关集群的过滤器进行集中管理，这样可灵活调整网关的运行时逻辑。</li>
+<li>对于生产级(production ready）的网关部署，周边需要很多配套的支持服务，这些服务大多和运维Ops相关，例如配置，监控和告警等。</li>
+<li>网关是API流量入口，是对微服务系统健康状况的集中和最佳观测点。</li>
+<li>波波在极客时间的课程《微服务架构和实践160讲》，马上上线第三模块《微服务网关Zuul架构和实践》，会对Zuul网关的架构、源码和生产实践等内容进行深度剖析，欢迎关注。</li>
 </ol>
 
 
@@ -487,15 +440,10 @@ $(function() {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2018-06-07-why-centralized-configuration/" data-toggle="tooltip" data-placement="top" title="微服务为什么需要配置中心?">&larr;
+                        <a href="/post/2018-07-10-zuul-routing-in-practice/" data-toggle="tooltip" data-placement="top" title="Zuul路由管理实践">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-06-28-netflix-microservices-layers/" data-toggle="tooltip" data-placement="top" title="Netflix微服务架构是如何分层的？">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 

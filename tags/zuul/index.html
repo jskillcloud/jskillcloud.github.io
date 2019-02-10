@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>技术管理-掘艺云 | JSkillCloud</title>
+    <title>Zuul-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/">
+    <link rel="canonical" href="/tags/zuul/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -179,111 +179,45 @@
             
 
 <div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-07-02-get-rich-wo-luck/">
+    <a href="http://jskillcloud.com/post/2018-07-12-zuul-deployment-in-practice/">
         <h2 class="post-title">
-            如何不靠运气获得财富？
+            Zuul网关生产部署实践
         </h2>
 	
         <h3 class="post-subtitle">
-            How to Get Rich (without getting lucky)
+            Zuul Production Deployment in Practice
         </h3>
 	
         <div class="post-content-preview">
 	
-            本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。
+            Zuul是Netflix开源的微服务网关，在Netflix经过大规模生产验证，在业界很多公司有落地案例。本文介绍Zuul网关的一些生产部署实践。
         
         </div>
     </a>
     <p class="post-meta">
-    Posted by      &#34;杨波&#34; Monday, July 2, 2018
+    Posted by      &#34;杨波&#34; Thursday, July 12, 2018
     </p>
 </div>
 <hr>
 
 <div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-05-25-tech-selection/">
+    <a href="http://jskillcloud.com/post/2018-07-10-zuul-routing-in-practice/">
         <h2 class="post-title">
-            架构师该如何做技术选型？
+            Zuul路由管理实践
         </h2>
 	
         <h3 class="post-subtitle">
-            波波的技术选型哲学
+            Zuul Routing Management in Practice
         </h3>
 	
         <div class="post-content-preview">
 	
-            技术选型说小了关乎项目和团队成败，说大了关乎企业业务的发展，不可小觑。本文是波波在十几年研发趟坑经验基础上，提炼出来的技术选型理念。
+            路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。
         
         </div>
     </a>
     <p class="post-meta">
-    Posted by      &#34;杨波&#34; Friday, May 25, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-05-24-turn-around/">
-        <h2 class="post-title">
-            成长组织如何突破技术困局?
-        </h2>
-	
-        <h3 class="post-subtitle">
-            成长型组织的技术转型升级之路
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            2017年我全程参与了一家成长型组织的技术架构转型升级，本文是在2016年底，在正式启动技术转型之前，我个人的一些战略思考总结。现在转型已经取得阶段性成果，回过头来看，对于大部分成长型组织的技术转型升级，我认为本文还是蛮有借鉴价值的。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Thursday, May 24, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-05-23-netflix-tech-innovation/">
-        <h2 class="post-title">
-            顶级技术组织为啥没有CTO?
-        </h2>
-	
-        <h3 class="post-subtitle">
-            聊聊Netflix技术那些大胆的创新
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            近日和同事一起吃晚饭，期间聊到Netflix技术那些大胆的创新，事后觉得有必要总结一下，给团队分享，让大家了解世界顶级的技术组织在技术、架构、组织和文化方面的创新，让大家在埋头干活的时候，偶尔也可以抬头看看天。于是就有了这篇文章。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Wednesday, May 23, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-05-20-engineer-growth/">
-        <h2 class="post-title">
-            工程师如何快速成长？
-        </h2>
-	
-        <h3 class="post-subtitle">
-            工程师成长快车道
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            我本人在软件研发行业工作了十多年，经历过不少公司，见证过不少年轻人的成长，自己也带过很多年轻人，从他们的成长历程中，我看到那些成长较快的年轻人身上有一些共性的东西。下面是我对这些共性的总结和分享，期望对大家有帮助，让更多人更快步入成长快车道。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Sunday, May 20, 2018
+    Posted by      &#34;杨波&#34; Tuesday, July 10, 2018
     </p>
 </div>
 <hr>
@@ -419,7 +353,7 @@
            <ul class="list-inline"> 
                
                <li>
-                   <a href="http://jskillcloud.com/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                   <a href="http://jskillcloud.com/tags/zuul/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
                        <span class="fa-stack fa-lg">
                            <i class="fa fa-circle fa-stack-2x"></i>
                            <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
@@ -493,7 +427,7 @@
                 <ul class="list-inline text-center">
                    
                    <li>
-                       <a href="http://jskillcloud.com/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                       <a href="http://jskillcloud.com/tags/zuul/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
                            <span class="fa-stack fa-lg">
                                <i class="fa fa-circle fa-stack-2x"></i>
                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
