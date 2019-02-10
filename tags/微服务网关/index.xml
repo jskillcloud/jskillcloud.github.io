@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务网关 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/</link>
+    <description>Recent content in 微服务网关 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 10 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Zuul路由管理实践</title>
+      <link>http://jskillcloud.com/post/2018-07-10-zuul-routing-in-practice/</link>
+      <pubDate>Tue, 10 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-07-10-zuul-routing-in-practice/</guid>
+      <description>介绍 网关的核心功能之一是路由转发，为此，网关需要获取并维护一张路由表，这个路由表简单可以理解为一个服务名&amp;lt;&amp;gt;服务地址的映射表，有</description>
+    </item>
+    
+  </channel>
+</rss>

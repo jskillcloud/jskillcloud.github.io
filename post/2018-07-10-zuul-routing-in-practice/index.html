@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="Zuul路由管理实践" />
+    <meta property="og:title" content="Zuul路由管理实践" />
+    <meta property="twitter:title" content="Zuul路由管理实践" />
+    
+
+    
+    <meta name="description" content="路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。">
+    <meta property="og:description" content="路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。" />
+    <meta property="twitter:description" content="路由转发是网关核心功能之一，为此网关需要管理和维护路由表，本文介绍Zuul网关常用的路由管理方案。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Zuul路由管理实践-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-07-10-zuul-routing-in-practice/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84">微服务架构</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/overlapping_circles.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/zuul%E7%BD%91%E5%85%B3" title="Zuul网关">
+                            Zuul网关
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
+                            微服务网关
+                        </a>
+                        
+                    </div>
+                    <h1>Zuul路由管理实践</h1>
+                    <h2 class="subheading">Zuul Routing Management in Practice</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Tuesday, July 10, 2018
+                        
+                            <span id="/post/2018-07-10-zuul-routing-in-practice/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#介绍">介绍</a></li>
+<li><a href="#方案一-基于eureka自发现">方案一，基于Eureka自发现</a></li>
+<li><a href="#方案二-基于服务治理中心和域名做法">方案二，基于服务治理中心和域名做法</a></li>
+<li><a href="#方案三-基于配置中心apollo和域名做法">方案三，基于配置中心Apollo和域名做法</a></li>
+<li><a href="#结论">结论</a></li>
+<li><a href="#附录">附录</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h2 id="介绍">介绍</h2>
+
+<p>网关的核心功能之一是<strong>路由转发</strong>，为此，网关需要获取并维护一张路由表，这个路由表简单可以理解为一个服务名&lt;&gt;服务地址的映射表，有了这张路由表，网关就可以根据请求路径或者HTTP头中的服务信息，将请求转发到对应的目标服务地址。</p>
+
+<p>Zuul[附录1]是Netflix开源的微服务网关，在Netflix经过大规模生产级验证，最新的数据表明Netflix每天有近千亿级流量要经过Zuul网关。另外,Zuul也是Spring Cloud全家桶的核心组件。本文介绍Zuul网关路由管理的一些常用方案，可供准备在生产环境使用Zuul的企业参考。</p>
+
+<h2 id="方案一-基于eureka自发现">方案一，基于Eureka自发现</h2>
+
+<p><img src="/img/post/20180710/eureka_discovery.png" alt="eureka discovery" /></p>
+
+<p>这个也是Netflix的做法，Zuul网关借助Eureka[附录2]服务注册中心获取路由表，简述步骤如下：</p>
+
+<ol>
+<li>内部微服务(前端聚合服务或者后台基础服务)启动时，自动注册到Eureka服务注册中心，并定期向注册中心报心跳，表明自己的存活状态。例如，上图中，svcx在Eureka上有一组对应的ip:port对，表示svc服务对应的存活服务实例地址列表。</li>
+<li>Zuul网关集成Ribbon[附录3]客户端，Ribbon能够从Eureka上自动发现并定期获取服务的实例地址信息，并进行本地缓存。</li>
+<li>当Zuul网关接收到外部请求，它根据某种规则从请求中获取服务名，例如，假设第一级path就是服务名，那么api.xxx.com/svcx中的svcx就是服务名。解析获取服务名后，Zuul将服务名传给Ribbon，Ribbon通过查找缓存的路由表获取服务实例地址列表，再根据某种路由策略（例如，随机或者RoundRobin等），选择一个目标实例地址发起调用。</li>
+</ol>
+
+<p>该方法相对简单，部署Eureka服务注册中心即可实现。同时也比较灵活，内部服务可以自注册自发现，研发人员可以自助完成服务上下线，更贴合DevOps研发模式，不太需要运维配合介入。</p>
+
+<p>该方案的问题是，目前很多企业内部还有很多历史遗留服务，这些服务基本上还是基于传统域名进行管理的，如果升级到Eureka的自注册自发现方式，迁移和改造成本不小。</p>
+
+<h2 id="方案二-基于服务治理中心和域名做法">方案二，基于服务治理中心和域名做法</h2>
+
+<p><img src="/img/post/20180710/dns_discovery.png" alt="dns discovery" /></p>
+
+<p>对于内部遗留系统较多，服务主要基于传统域名方式管理，暂时还不具备条件采用上述第一种方案的企业，可以采用基于服务治理中心+域名的做法，如上图所示。</p>
+
+<p>该方案需要开发一套服务治理中心，用来集中管理路由等服务元数据信息，同时企业内部需要DNS域名服务支持。采用该方案的流程简述如下：</p>
+
+<ol>
+<li>研发人员通过运维申请部署服务所需的机器，ip和内部域名等相关信息，完成服务开发和部署，通过内部域名测试服务正常。</li>
+<li>研发人员通过服务治理中心注册服务，提供相应的服务名和域名信息，也提供一些额外的元数据信息，如该服务对哪些网关可见(即要通过哪些网关将该服务暴露出去)，该服务目前是否在生产环境可访问(是否已经过QA流程升级到生产环境)。</li>
+<li>Zuul网关定期从服务治理中心拉取服务路由表(注意，这里只需要拉取对该网关可见的路由表，例如无线网关只拉取对无线网关可见的服务，不需要拉取全部路由表)，并缓存在本地内存。</li>
+<li>当Zuul网关接收到外部请求，它根据某种规则从请求中解析出服务名，再通过查询内存中的路由表找到目标服务的内部域名，最后对目标域名发起调用。通过域名调用时，底层HTTP客户端会自动通过DNS服务解析并获取对应的ip地址。<strong>注意</strong>，在实际场景中，这里解析到的ip一般是一个vip，真实的服务实例一般躲在一个内部的负载均衡器LB(例如F5+nginx)后面，这个vip指向LB，LB会对后台服务做负载均衡和转发。</li>
+</ol>
+
+<p>该方案复杂度适中，内部的域名和负载均衡系统一般由运维支持，服务治理中心的研发门槛和成本不高，基本上就是一个简单的数据库应用。该方案的灵活性和自动化程度没有第一种方案好，需要一些人工配置，但是可以在运维和服务治理中心层面按需增加一些治理环节，可治理性会更好一点。</p>
+
+<h2 id="方案三-基于配置中心apollo和域名做法">方案三，基于配置中心Apollo和域名做法</h2>
+
+<p><img src="/img/post/20180710/discovery_apollo.png" alt="discovery apollo" /></p>
+
+<p>对于一些初创公司，刚开始什么都缺的情况下，最简单的路由管理的方式就是直接把路由配置在Zuul网关的本地配置文件中。但是这种做法很不灵活，每次修改路由都需要重启网关集群。所有建议可以部署一套配置中心，例如Apollo，把路由信息简单配置在Apollo配置中心中，然后让网关定期从Apollo获取路由配置并做本地缓存，该方案如上图所示。</p>
+
+<p>Apollo支持XML格式的配置，下面是一个路由配置案例：</p>
+
+<pre><code class="language-xml">&lt;zuul_route&gt;
+  &lt;svc_route&gt;
+    &lt;name&gt;svc1&lt;/name&gt;
+    &lt;endpoint&gt;192.168.100.1:8080&lt;/endpoint&gt;
+    &lt;endpoint&gt;192.168.100.2:8080&lt;/endpoint&gt;
+    &lt;endpoint&gt;192.168.100.3:8080&lt;/endpoint&gt;      
+  &lt;/svc_route&gt;
+  &lt;svc_route&gt;
+    &lt;name&gt;svc2&lt;/name&gt;
+    &lt;endpoint&gt;192.168.101.1:8080&lt;/endpoint&gt;
+    &lt;endpoint&gt;192.168.101.2:8080&lt;/endpoint&gt;
+    &lt;endpoint&gt;192.168.101.3:8080&lt;/endpoint&gt;      
+  &lt;/svc_route&gt;
+&lt;/zuul_route&gt;
+</code></pre>
+
+<h2 id="结论">结论</h2>
+
+<ol>
+<li>路由转发是网关的核心功能，为此网关需要维护和管理一张路由表，常见做法有基于Eureka自发现，基于服务治理中心和域名，或者最简单的基于配置中心。</li>
+<li>波波在极客时间的课程《微服务架构和实践160讲》，马上上线第三模块《微服务网关Zuul架构和实践》，会对Zuul网关的架构、源码和生产实践等内容进行深度剖析，欢迎关注。</li>
+</ol>
+
+<h2 id="附录">附录</h2>
+
+<ol>
+<li><a href="https://github.com/netflix/zuul">Zuul</a></li>
+<li><a href="https://github.com/netflix/eureka">Eureka</a></li>
+<li><a href="https://github.com/netflix/ribbon">Ribbon</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-07-08-archaius-configuration-library/" data-toggle="tooltip" data-placement="top" title="变色龙Archaius配置组件">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/apollo" title="Apollo">
+                            Apollo
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/netflix" title="Netflix">
+                            Netflix
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%86%E5%B1%82" title="微服务分层">
+                            微服务分层
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B" title="技术选型">
+                            技术选型
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E6%80%9D%E7%BB%B4" title="架构思维">
+                            架构思维
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1" title="架构设计">
+                            架构设计
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD" title="软技能">
+                            软技能
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83" title="配置中心">
+                            配置中心
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>
