@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>微服务架构-掘艺云 | JSkillCloud</title>
+    <title>调用链监控-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/">
+    <link rel="canonical" href="/tags/%E8%B0%83%E7%94%A8%E9%93%BE%E7%9B%91%E6%8E%A7/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -179,99 +179,23 @@
             
 
 <div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-07-06-arch-use-cases/">
+    <a href="http://jskillcloud.com/post/2018-08-01-distributed-tracing-howto/">
         <h2 class="post-title">
-            四个架构设计案例及其思维方式
+            调用链监控产品该如何选择？
         </h2>
 	
         <h3 class="post-subtitle">
-            Four Architecutre and Design Use Cases
+            Distributed Tracing Products How to Select
         </h3>
 	
         <div class="post-content-preview">
 	
-            本文通过四个架构设计案例，讲解如何综合运用抽象、分层、分治和演化这四种应对复杂性的基本武器，分别对小型系统、中型系统、基础架构甚至组织技术体系进行架构和设计。
+            本文回顾分布式调用链监控(Distributed Tracing)产品的演进史，介绍近年出现的Open Tracing标准，对主流的开源产品进行比较，并给出选型建议。
         
         </div>
     </a>
     <p class="post-meta">
-    Posted by      &#34;杨波&#34; Friday, July 6, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-07-05-apollo-architecture/">
-        <h2 class="post-title">
-            携程Apollo配置中心的架构
-        </h2>
-	
-        <h3 class="post-subtitle">
-            The Architecture of Ctrip Apollo Configuration Centre
-        </h3>
-	
-        <div class="post-content-preview">
-	
-            为了让大家更好地理解Apollo的架构设计，我花了一点时间把Apollo的架构按我的方式重新剖析了一把。只有完全理解了Apollo的架构，大家才能在生产实践中更好地部署和使用Apollo。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Thursday, July 5, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-06-29-soundcloud-microservices-layers/">
-        <h2 class="post-title">
-            SoundCloud微服务是如何分层的？
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            SoundCloud是一家德国网站，提供音乐分享社区服务，成长很快，Alexa世界排名已经进入200位以内。本文以SoundCloud公司为案例，通过一系列架构视图，展示SoundCloud微服务架构的分层组织方式。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Friday, June 29, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-06-28-netflix-microservices-layers/">
-        <h2 class="post-title">
-            Netflix微服务架构是如何分层的？
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            本文通过三个架构视图，展示Netflix微服务的分层架构。另外，2017～2018年间，Netflix对其微服务架构进行了升级，本文也会分析这次升级背后的架构驱动因素。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Thursday, June 28, 2018
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://jskillcloud.com/post/2018-06-07-bff-gateway-evolution/">
-        <h2 class="post-title">
-            BFF和网关是如何演化出来的？
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            本文用假想的公司案例&#43;图示的方式，解释BFF和网关是什么，它们是怎么演化出来的。希望对架构师设计和落地微服务架构有所启发。
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by      &#34;杨波&#34; Thursday, June 7, 2018
+    Posted by      &#34;杨波&#34; Wednesday, August 1, 2018
     </p>
 </div>
 <hr>
@@ -279,19 +203,6 @@
 
             
 
-
-<ul class="pager">
-    
-    <li class="previous">
-        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/">&larr; Newer Posts</a>
-    </li>
-    
-    
-    <li class="next">
-        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/page/3/">Older Posts &rarr;</a>
-    </li>
-    
-</ul>
 
 
        	</div>
@@ -422,7 +333,7 @@
            <ul class="list-inline"> 
                
                <li>
-                   <a href="http://jskillcloud.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                   <a href="http://jskillcloud.com/tags/%E8%B0%83%E7%94%A8%E9%93%BE%E7%9B%91%E6%8E%A7/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
                        <span class="fa-stack fa-lg">
                            <i class="fa fa-circle fa-stack-2x"></i>
                            <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
@@ -496,7 +407,7 @@
                 <ul class="list-inline text-center">
                    
                    <li>
-                       <a href="http://jskillcloud.com/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                       <a href="http://jskillcloud.com/tags/%E8%B0%83%E7%94%A8%E9%93%BE%E7%9B%91%E6%8E%A7/index.xml" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
                            <span class="fa-stack fa-lg">
                                <i class="fa fa-circle fa-stack-2x"></i>
                                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>

@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="变色龙Archaius配置组件" />
-    <meta property="og:title" content="变色龙Archaius配置组件" />
-    <meta property="twitter:title" content="变色龙Archaius配置组件" />
+    <meta name="title" content="调用链监控产品该如何选择？" />
+    <meta property="og:title" content="调用链监控产品该如何选择？" />
+    <meta property="twitter:title" content="调用链监控产品该如何选择？" />
     
 
     
-    <meta name="description" content="本文介绍Netflix开源配置组件Archaius的需求、场景、特性和设计，以及如何与Apollo配置中心进行集成。">
-    <meta property="og:description" content="本文介绍Netflix开源配置组件Archaius的需求、场景、特性和设计，以及如何与Apollo配置中心进行集成。" />
-    <meta property="twitter:description" content="本文介绍Netflix开源配置组件Archaius的需求、场景、特性和设计，以及如何与Apollo配置中心进行集成。" />
+    <meta name="description" content="本文回顾分布式调用链监控(Distributed Tracing)产品的演进史，介绍近年出现的Open Tracing标准，对主流的开源产品进行比较，并给出选型建议。">
+    <meta property="og:description" content="本文回顾分布式调用链监控(Distributed Tracing)产品的演进史，介绍近年出现的Open Tracing标准，对主流的开源产品进行比较，并给出选型建议。" />
+    <meta property="twitter:description" content="本文回顾分布式调用链监控(Distributed Tracing)产品的演进史，介绍近年出现的Open Tracing标准，对主流的开源产品进行比较，并给出选型建议。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>变色龙Archaius配置组件-掘艺云 | JSkillCloud</title>
+    <title>调用链监控产品该如何选择？-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/post/2018-07-08-archaius-configuration-library/">
+    <link rel="canonical" href="/post/2018-08-01-distributed-tracing-howto/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/octogons.png')
+        background-image: url('/img/background/plaid.png')
     }
 </style>
 <header class="intro-header">
@@ -161,16 +161,8 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83" title="配置中心">
-                            配置中心
-                        </a>
-                        
-                        <a class="tag" href="/tags/archaius" title="Archaius">
-                            Archaius
-                        </a>
-                        
-                        <a class="tag" href="/tags/apollo" title="Apollo">
-                            Apollo
+                        <a class="tag" href="/tags/%E8%B0%83%E7%94%A8%E9%93%BE%E7%9B%91%E6%8E%A7" title="调用链监控">
+                            调用链监控
                         </a>
                         
                         <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
@@ -178,17 +170,17 @@
                         </a>
                         
                     </div>
-                    <h1>变色龙Archaius配置组件</h1>
-                    <h2 class="subheading">Archaius Configuation Library</h2>
+                    <h1>调用链监控产品该如何选择？</h1>
+                    <h2 class="subheading">Distributed Tracing Products How to Select</h2>
                     <span class="meta">
 			Posted by 
 			
 			         &#34;杨波&#34;
 			 
 			on 
-			Sunday, July 8, 2018
+			Wednesday, August 1, 2018
                         
-                            <span id="/post/2018-07-08-archaius-configuration-library/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-08-01-distributed-tracing-howto/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -350,124 +342,80 @@ $(function() {
 <ul>
 <li>
 <ul>
-<li><a href="#介绍">介绍</a></li>
-<li><a href="#archaius项目的由来">Archaius项目的由来</a></li>
-<li><a href="#archaius在netflix的用例场景">Archaius在Netflix的用例场景</a></li>
-<li><a href="#archaius的特性和设计">Archaius的特性和设计</a></li>
-<li><a href="#分级配置案例">分级配置案例</a></li>
-<li><a href="#archaius和apollo配置中心集成">Archaius和Apollo配置中心集成</a></li>
-<li><a href="#结论">结论</a></li>
-<li><a href="#附录">附录</a></li>
+<li><a href="#一-演进史">一、演进史</a></li>
+<li><a href="#二-opentracing">二、OpenTracing</a></li>
+<li><a href="#三-产品比较">三、产品比较</a></li>
+<li><a href="#四-选型建议">四、选型建议</a></li>
+<li><a href="#五-附录">五、附录</a></li>
 </ul></li>
 </ul>
 </nav>
                 
                 
 
-<p><img src="/img/post/20180708/Archaius.jpg" alt="archaius image" /></p>
+<p>本文回顾分布式调用链监控(Distributed Tracing)产品的演进史，介绍近年出现的OpenTracing标准，对主流的开源产品进行比较，并给出选型建议。</p>
 
-<h2 id="介绍">介绍</h2>
+<h2 id="一-演进史">一、演进史</h2>
 
-<p>如果我们要设计开发一套微服务基础架构，大家觉得哪个组件是最基础的？基于多年互联网分布式系统的实战经验，我的回答是配置中心以及配套的客户端。之前我在极客时间上的课程《微服务架构和实践160讲》中，已经深度剖析了携程开源的Apollo配置中心，Apollo是自带客户端的，它的客户端不错很灵活，但是实际上Netflix也开源了一个叫变色龙Archaius的配置中心客户端，而且Archaius可以说是比Apollo客户端具备更多生产级特性，也更灵活。</p>
+<p>2012年初，我作为携程框架研发部架构师，主导研发了携程第一代的分布式调用链监控产品CTrace，当时在国内算是比较早的引入调用链监控的一个案例。之后我一直对分布式调用链监控这个技术领域比较关注，下图是我近期总结的该领域的一个产品演进史：</p>
 
-<p>在NetflixOSS微服务技术栈中，几乎所有的其它组件(例如Zuul, Hystrix, Eureka, Ribbon等)都依赖于Archaius，可以说理解Archaius是理解和使用Netflix其它微服务组件的基础。另外，7月份我会在《微服务架构和实践160讲》中推出第3个模块：《微服务网关Zuul架构和实践》，Zuul重度依赖Archaius实现灵活的动态配置，如果缺少Archaius的支持，Zuul的生产级特性可以说会大打折扣。基于上述原因，我写这篇文章普及一下Archaius的原理和设计，也为自己的课程做一些必要的铺垫。</p>
-
-<p><strong>注意</strong>，Netflix只是开源了其配置中心的客户端部分(也就是Archaius)，没有开源配套的服务器端。Archaius其实是配置源实现无关的，可以对接各种配置中心作为数据源，本文后面会介绍Archaius如何和Apollo配置中心进行集成。</p>
-
-<h2 id="archaius项目的由来">Archaius项目的由来</h2>
-
-<p>在微服务环境下，配置常常需要根据不同的上下文环境进行调整，或者说配置应该是多维度的。例如在Netflix，上下文维度包括环境(开发、测试和生产)，发布区域(美国东区us-east-1，美国西区us-west-1等等)，栈(将有依赖关系的应用和服务为了某种目标而隔离起来的一个逻辑概念，例如iPhone App启动栈)，等等。</p>
-
-<p>Netflix希望能够根据发布的环境，甚至请求的上下文，动态地调整服务的配置，让Netflix的整个系统的行为和逻辑变得动态可调配，以适应互联网应用快速多变的需求。为此，Netflix平台团队开发了配置中心产品，团队将这个产品形象地称为变色龙Archaius，因为变色龙这种动物能够根据自己所处的环境动态调整身体的颜色。</p>
-
-<h2 id="archaius在netflix的用例场景">Archaius在Netflix的用例场景</h2>
+<p><img src="/img/post/20180801/evolution.png" alt="evolution" /></p>
 
 <ul>
-<li>根据请求上下文开启或关闭某项功能。</li>
-<li>某个页面缺省显示10个商品，在某些情况下，可以通过Archaius调整配置，只显示5个商品。</li>
-<li>动态调整Hystrix熔断器的行为。</li>
-<li>调整服务调用客户端的连接和请求超时参数。</li>
-<li>如果某个线上服务产生出错告警，可以动态调整日志输出级别(粒度可以细到包或者组件级别)，这样可以通过详细日志排查问题。问题定位以后，再将日志输出级别恢复到默认级别。</li>
-<li>对于多区域或者多国家部署的应用，通过动态配置，可以根据不同区域和国家开启不同的功能。</li>
-<li>可以根据用户的实际访问模式动态调整一些基础中间件的配置，例如缓存的存活时间TTL(Time To Live)。</li>
-<li>数据库访问客户端的连接池配置，可以对不同服务配不同的值。例如，一个请求频率RPS(Request Per Second)小的服务，可以配置较小的连接数，而一个请求频率大的服务，可以配置较大的连接数。</li>
-<li>运行期配置的变更可以在不同维度生效，例如集群中的单个实例维度，多区域部署下的某个区域维度，某个服务栈维度，或者某个应用集群维度。</li>
-<li>功能开关(Feature Flag)发布，有些功能虽然上线，但是并不马上启用，而是通过配置开关动态启用，这样可以根据情况灵活开启或者关闭某项线上功能。</li>
-<li>金丝雀发布(Canary Release)，新功能上线时，让新老集群同时并存一段时间，通过配置将到老集群的流量逐步动态调整到新集群，如果监控显示无异常，则完成新集群的上线，如异常，则快速切回老集群。</li>
+<li>现在业界普遍认为是Google最早提出了分布式调用链监控的理念并研发了相关产品Dapper(见Google Dapper论文[附录1])，但是其实早在2002年，eBay就已经有了调用链监控产品CAL(Centralized Application Logging)。2002年的时候，eBay是世界上最大的电子商务平台，其内部工程团队为了应对分布式系统的复杂性和稳定性挑战而研发了CAL。CAL的理念和Dapper类似，但做法有所不同。CAL是eBay工程师进行性能监控和排障的利器，我曾经在eBay中国研发中心工作(2007~2012)，期间也使用过CAL，对这个工具有很深刻的印象。</li>
+<li>2010年，经过大规模生产落地实践，Google发表了分布式调用链追踪基础设施Dapper论文。Dapper可以认为是现代分布式调用链监控产品的鼻祖，对社区调用链产品的演进发展产生了深远的影响。</li>
+<li>2011年左右，原eBay中国研发中心(eBay CDC)资深架构师吴其敏（我习惯叫他老吴）跳槽到点评，主导研发了点评CAT(Centralized Application Tracking，只和CAL相差一个字)[附录2]。老吴之前在eBay CDC工作近十年，期间深入消化吸收了CAL的设计思路。在CAL设计思路的基础上，老吴根据自己在点评的落地实践，定制发展出具有中国特色的调用链监控系统CAT。上图中，eBay CAL和点评CAT都用黄色标识，表明CAT源自CAL，目前从eBay系CAL演进发展出来的调用链产品只有CAT一款，从Google Dapper演进发展出来的产品则很多（用蓝色标识）。</li>
+<li>2012年发生了几个事情，一个是Twitter在吸收Dapper设计理念的基础上研发并开源了Zipkin[现在叫Open Zipkin，附录3]。第二是携程在吸收Zipkin设计思路的基础上研发了CTrace(我当时是这个产品的主导架构师)。第三是韩国一家叫Naver的公司在吸收Dapper的基础上研发并开源了调用链监控产品Pinpoint[附录4]。Zipkin可以认为是Dapper的一个开源实现，在社区产生比较大的影响力，目前是社区主流。Pinpoint也比较成熟，它独创了非侵入埋点方式，而且它的依赖关系展示UI(ServerMap)很有特色。</li>
+<li>2014年左右，国内互联网巨头如京东和阿里相继研发调用链监控产品，京东相关产品叫Hydra，阿里叫Eagleye。这两家的产品都是吸收了Dapper/Zipkin的设计思路，比较遗憾两家产品都不开源。</li>
+<li>近年，社区又发展出很多调用链监控产品，这个领域呈现百花齐放和相互融合态势。比较知名的如Uber开源的Jaeger，Jaeger可以认为是一个go语言版的Zipkin，在用户体验上有创新亮点。国内开源爱好者吴晟（原OneAPM工程师，目前在华为）开源并提交到Apache孵化器的产品Skywalking，它同时吸收了Zipkin/Pinpoint/CAT的设计思路，支持非侵入式埋点。另外社区还发展出一个叫Open Tracing的组织[附录5]，旨在推进调用链监控的一些规范和标准化工作。</li>
 </ul>
 
-<h2 id="archaius的特性和设计">Archaius的特性和设计</h2>
+<h2 id="二-opentracing">二、OpenTracing</h2>
 
-<p>Archaius实际上是对Apache Common Configuration Library的一个封装和扩展，提供了一组基于Java的配置API，主要的特性包括：</p>
+<p>近年各种调用链监控产品层出不穷，呈现百花齐放的态势，为了避免碎片化(fragmentation)，促进互操作性，社区诞生了一个叫OpenTracing的标准化组织[附录5]。</p>
+
+<p><img src="/img/post/20180801/open_tracing.png" alt="open tracing" /></p>
+
+<p>如上图所示，open tracing旨在标准化Trace数据结构和格式，目的是：</p>
 
 <ul>
-<li>配置可动态调整。</li>
-<li>配置支持类型(Int, Long, Boolean等)。</li>
-<li>高性能和线程安全。</li>
-<li>提供一个拉(pulling)配置的框架，可以从配置源动态拉取变更的配置。</li>
-<li>支持回调(callback)机制，在配置变更时自动调用。</li>
-<li>支持JMX MBean，可以通过JConsole查看配置和修改配置。</li>
+<li>不同语言开发的Trace客户端的互操作性，Java/.Net/PHP/Python/Nodejs等语言开发的客户端，只要遵循Open Tracing标准，就都可以对接Open Tracing兼容的监控后端。</li>
+<li>Tracing监控后端的互操作性，只要遵循Open Tracing标准，企业可以根据需要替换具体的Tracing监控后端产品，比如从Zipkin替换成Jaeger后端。</li>
 </ul>
 
-<p>下图是Archaius的总体设计：</p>
+<p>OpenTracing初衷和方向是好的，但是目前还不明朗，不少调用链监控产品并为明确支持OpenTracing标准。对其后续走势我们可以持续关注。</p>
 
-<p><img src="/img/post/20180708/hierarch.png" alt="archaius design" /></p>
+<h2 id="三-产品比较">三、产品比较</h2>
 
-<p>Achaius的核心是一个称为<strong>组合配置(Composite Configuration)</strong>的概念，简单可以理解为一个分层级的配置，层级有优先级，高优先级的层级的配置会覆盖低优先级的配置。每一个层级可以从某个配置源获取配置，例如本地配置文件，JDBC数据源，远程REST API等。配置源还可以在运行时动态拉取变更，例如在上图中，持久化数据库配置(Persisted DB Configuration)是指将配置存在关系数据库中，相应的配置源会定期从数据库拉取变更)。配置的最终值由顶级配置决定，例如，如果多个层级都含有某个配置项，那么应用最终见到的值是配置层级中最顶层的值。配置分层的顺序是可以调整的。</p>
+<p>点评CAT、Open Zipkin和Naver Pinpoint是目前市场上主流的开源调用链监控产品，下表是我对着这三个产品的详细比较，供参考：</p>
 
-<h2 id="分级配置案例">分级配置案例</h2>
+<p><img src="/img/post/20180801/compare.png" alt="compare" /></p>
 
-<p>假设你开发了一个叫myapp的应用，在本地开发环境，一般你希望用本地配置，不依赖于远程的配置中心，这个时候你只需为应用写一个本地配置文件：</p>
-
-<pre><code>myapp.properties
-</code></pre>
-
-<p>这个配置文件里头包含myapp的所有缺省配置。</p>
-
-<p>当你的应用开发完成，需要分别部署到测试TEST, UAT和生产PROD环境，如果你希望在不同的环境重载某些缺省值，那么你可以为不同环境分别添加本地配置文件，在相关文件中重载缺省值：</p>
-
-<pre><code>myapp-test.properties
-myapp-uat.properties
-myapp-prod.properties
-</code></pre>
-
-<p>例如，在<code>myapp.properties</code>中<code>timeout</code>配置值是<code>500</code>，在<code>myapp-prod.properties</code>中<code>timeout</code>配置值是<code>200</code>，那么应用在生产环境中将使用重载值<code>timeout=200</code>，其它没有重载则使用<code>myapp.properties</code>中的缺省值。</p>
-
-<p>在Archaius中，可以通过设置<code>archaius.deployment.environment</code>启动参数，来激活不同环境的配置。</p>
-
-<p>如果你还希望应用上线后，可以通过配置中心动态调整配置值，那么你可以将Achaius和某个配置中心(比如Apollo)进行对接，对接后配置中心中的配置具有最高优先级，其中的配置可以覆盖应用本地配置文件中的配置。例如，应用上线后你发现<code>timeout=200</code>设置太小了，想调大到<code>timeout=1000</code>，可以通过配置中心一键搞定。</p>
-
-<h2 id="archaius和apollo配置中心集成">Archaius和Apollo配置中心集成</h2>
-
-<p>Archaius是一款非常优秀的生产级配置客户端组件，比较可惜的是Netflix没有开源它的配置中心的服务器端，幸好业界已经有Apollo这样优秀的配置中心开源产品。Archaius本身是配置源无关的，它提供的拉(pulling)框架可以支持对接各种数据源，而Apollo本身也正好提供基于HTTP REST的配置拉取接口，使得Archaius和Apollo的对接非常简单。</p>
-
-<p>另外，当你想要使用某些Netflix的组件，比如Zuul网关，它原生是支持Archaius进行动态配置的，如果你又想要使用Apollo配置中心支持集中式动态配置，这个时候你用Apollo客户端去改造Zuul的话，工作量不小。其实不需要这么麻烦，这三者可以简单完美实现集成，如下图所示：</p>
-
-<p><img src="/img/post/20180708/archaius_apollo.png" alt="archaius+apollo" /></p>
-
-<p>集成要点：</p>
+<p>三款产品的主要优劣如下：</p>
 
 <ul>
-<li>通过设置<code>archaius.configurationSource.additionalUrls</code>启动参数，设置为Apollo的配置文件拉取端点，激活Archaius的远程配置数据源。</li>
-<li>Apollo的配置文件拉取端点为：<code> {config_server_url}/configfiles/{appId}/{clusterName}/{namespaceName}</code>，其中：<code>config_server_url</code>是配置中心地址，<code>appId</code>是应用(例如Zuul)在Apollo中的唯一标识，<code>clusterName</code>是应用在Apollo中的集群名，一般用缺省<code>default</code>，<code>namespaceName</code>是应用在Apollo中的名字空间，一般用缺省<code>application</code>。</li>
-<li>注意，对于不同的环境(TEST，UAT，PROD等)，Apollo配置中心的地址一般不同</li>
-<li>Archaius动态拉取配置的周期缺省是60秒，可以调整。</li>
+<li>CAT的最大亮点和竞争差异是开箱即用，报表非常丰富，其中报错大盘、Trasaction报表和Problem报表等都是为互联网应用量身定制，能帮助开发人员持续改进系统性能。另外CAT是完全在国内土生土长的一款调用链监控产品，比较贴合国内用户习惯，已经在国内多家中大型互联网公司落地。CAT的不足之处是社区主要在国内，且作者对社区生态建设投入不足，作者也没有融入主流对接OpenTracing的打算，另外CAT的使用有一定的门槛。</li>
+<li>Zipkin目前是社区调用链监控的主流，社区生态好，多语言支持好，文档资源丰富。Spring Cloud也直接支持对接Zipkin。Zipkin的不足之处是功能仅限于调用链的展示呈现和简单依赖图，没有聚合报表，没有告警模块，企业级APM特性欠缺。</li>
+<li>Pinpoint的最大亮点是非侵入式监控，Dashboard用户体验好。不足之处是仅支持Java语言，另外社区生态一般，使用也有一定的门槛。</li>
 </ul>
 
-<h2 id="结论">结论</h2>
+<h2 id="四-选型建议">四、选型建议</h2>
 
 <ol>
-<li>根据不同上下文动态调整应用的行为逻辑，是现代互联网应用的刚需，配置中心应运而生，它是微服务架构必不可少的组件。</li>
-<li>Archaius是Netflix开源的生产级配置中心客户端组件，它的亮点是支持多维度、分层级的和动态的配置。</li>
-<li>Archaius可以和Apollo配置中可以简单无缝集成，让很多Netflix的开源组件(Zuul，Hystrix，Ribbon等)可以简单接入Apollo。波波在极客时间上的课程《微服务架构和实践160讲》，7月份会推出第3模块：《微服务网关Zuul架构和实践》，其中会通过实验详细分析Archaius和Apollo的集成，通过Apollo+Archaius实现Zuul网关的动态配置，欢迎大家关注。</li>
-<li>关于Archaius的更多技术细节，可以参考其在github上的站点[附录1]，另外拍拍贷框架团队的技术专家<strong>尹作龙</strong>也写了一篇文章《微服务动态配置组件netflix archaius》[附录2]，对Archaius的实现细节、使用案例以及如何与Spring Boot集成进行了深入细致的剖析，欢迎大家学习。</li>
+<li>对于中小体量，定制自研能力不足的公司，直接使用CAT，能够快速落地，覆盖大部分应用监控的场景。</li>
+<li>对于中大规模，有一定定制自研实力的公司，则可以考虑在Open Zipkin的基础上进行定制自研，扩展报表和告警等能力。如果主要使用Java技术栈，希望采用非侵入式监控，则可以在Pinpoint或者Apache Skywalking的基础上进行定制自研。</li>
+<li>波波和极客时间合作推出的课程《微服务架构和实践160讲》，马上上线第四模块《微服务调用链监控CAT架构和实践》，会对CAT的背景、架构、埋点案例和生产治理实践等方面进行全面剖析，欢迎大家关注。</li>
 </ol>
 
-<h2 id="附录">附录</h2>
+<h2 id="五-附录">五、附录</h2>
 
 <ol>
-<li><a href="https://github.com/netflix/archaius">Netflix Archaius</a></li>
-<li><a href="http://techblog.ppdai.com/2018/05/08/20180508/">微服务动态配置组件netflix archaius</a></li>
+<li><a href="http://research.google.com/pubs/archive/36356.pdf">Dapper, a Large-Scale Distributed Systems Tracing Infrastructure</a></li>
+<li><a href="https://github.com/dianping/cat">点评CAT</a></li>
+<li><a href="https://zipkin.io/">Open Zipkin</a></li>
+<li><a href="http://naver.github.io/pinpoint/">Naver Pinpoint</a></li>
+<li><a href="http://opentracing.io/">Open Tracing</a></li>
+<li><a href="https://github.com/jaegertracing/jaeger">Uber Jaeger</a></li>
 </ol>
 
 
@@ -477,15 +425,10 @@ myapp-prod.properties
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2018-07-06-arch-use-cases/" data-toggle="tooltip" data-placement="top" title="四个架构设计案例及其思维方式">&larr;
+                        <a href="/post/2018-07-16-zuul1-zuul2-howto/" data-toggle="tooltip" data-placement="top" title="Zuul1和Zuul2该如何选择?">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-07-10-zuul-routing-in-practice/" data-toggle="tooltip" data-placement="top" title="Zuul路由管理实践">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 
