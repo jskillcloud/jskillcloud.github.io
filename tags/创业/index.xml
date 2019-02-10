@@ -6,10 +6,19 @@
     <description>Recent content in 创业 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 30 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 11 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/tags/%E5%88%9B%E4%B8%9A/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>一个创业失败案例的复盘</title>
+      <link>http://jskillcloud.com/post/2018-12-11-startup-retrospect/</link>
+      <pubDate>Tue, 11 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-12-11-startup-retrospect/</guid>
+      <description>前言 Staffjoy[参考1]是一家曾经的技术初创公司，公司主要研发自动排程(Automatic Scheduling)应用，不幸的是，这个公</description>
+    </item>
     
     <item>
       <title>一个软件初创公司的十大信条</title>
