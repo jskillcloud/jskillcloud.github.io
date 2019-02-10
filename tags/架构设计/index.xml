@@ -6,10 +6,19 @@
     <description>Recent content in 架构设计 on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 May 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>携程Apollo配置中心的架构</title>
+      <link>http://jskillcloud.com/post/2018-07-05-apollo-architecture/</link>
+      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-07-05-apollo-architecture/</guid>
+      <description>一、介绍 Apollo（阿波罗）[参考附录1]是携程框架部研发并开源的一款生产级的配置中心产品，它能够集中管理应用在不同环境、不同集群的配置，</description>
+    </item>
     
     <item>
       <title>架构设计有哪些核心原则？</title>

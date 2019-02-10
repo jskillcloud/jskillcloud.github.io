@@ -6,10 +6,19 @@
     <description>Recent content in Tags on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jun 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 05 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Apollo</title>
+      <link>http://jskillcloud.com/tags/apollo/</link>
+      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/apollo/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>BFF</title>
@@ -149,7 +158,7 @@
     <item>
       <title>架构设计</title>
       <link>http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</link>
-      <pubDate>Mon, 21 May 2018 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>http://jskillcloud.com/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</guid>
       <description></description>
@@ -185,7 +194,7 @@
     <item>
       <title>配置中心</title>
       <link>http://jskillcloud.com/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</link>
-      <pubDate>Thu, 07 Jun 2018 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>http://jskillcloud.com/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</guid>
       <description></description>
