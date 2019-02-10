@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="JSkillCloud">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="http://jskillcloud.com/img/background/overlapping_rings.png">
+    <meta property="twitter:image" content="http://jskillcloud.com/img/background/overlapping_rings.png" />
+    
+
+    
+    <meta name="title" content="构建OAuth2服务器～Golang语言实现" />
+    <meta property="og:title" content="构建OAuth2服务器～Golang语言实现" />
+    <meta property="twitter:title" content="构建OAuth2服务器～Golang语言实现" />
+    
+
+    
+    <meta name="description" content="根据极客时间微服务课程学员反馈，带领大家分析一个用Golang语言实现的OAuth2授权认证服务器Gravitee，帮助大家进一步理解OAuth2原理和实现。">
+    <meta property="og:description" content="根据极客时间微服务课程学员反馈，带领大家分析一个用Golang语言实现的OAuth2授权认证服务器Gravitee，帮助大家进一步理解OAuth2原理和实现。" />
+    <meta property="twitter:description" content="根据极客时间微服务课程学员反馈，带领大家分析一个用Golang语言实现的OAuth2授权认证服务器Gravitee，帮助大家进一步理解OAuth2原理和实现。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>构建OAuth2服务器～Golang语言实现-掘艺云 | JSkillCloud</title>
+
+    <link rel="canonical" href="/post/2018-12-12-build-oauth2-server/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+	
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/docco.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">JSkillCloud</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84">微服务架构</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AE%A1%E7%90%86">技术管理</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/background/xes.png')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/oauth2" title="OAuth2">
+                            OAuth2
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                    </div>
+                    <h1>构建OAuth2服务器～Golang语言实现</h1>
+                    <h2 class="subheading">Build an OAuth2 Server using Golang</h2>
+                    <span class="meta">
+			Posted by 
+			
+			         &#34;杨波&#34;
+			 
+			on 
+			Wednesday, December 12, 2018
+                        
+                            <span id="/post/2018-12-12-build-oauth2-server/" class="leancloud_visitors meta_data_item" data-flag-title="">
+    <span class="post-meta-item-icon">
+      <span class="octicon octicon-eye"></span> 
+    </span>
+    <i class="fa fa-eye"></i>
+    <span class="old-visitors-count" style="display: none;"></span>
+    <span class="leancloud-visitors-count"></span>
+</span>
+
+
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>
+	AV.initialize("2CY6sefAePwWqVRFhiMV0Rus-gzGzoHsz", "hHC1RKNfpRgLU7dLKy8Ek1Q8");
+</script>
+
+<script type="text/javascript">
+function showTime(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function() {
+        entries.push($(this).attr("id").trim());
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+        .done(function(results) {
+            var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+            var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+
+            
+            
+            
+            
+
+            for (var i = 0; i < results.length; i++) {
+                var item = results[i];
+                var url = item.get('url');
+                var time = item.get('time');
+                var element = document.getElementById(url);
+
+                $(element).find(COUNT_CONTAINER_REF).text(time);
+            }
+            for (var i = 0; i < entries.length; i++) {
+                var url = entries[i];
+                var element = document.getElementById(url);
+                var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                if (countSpan.text() == '') {
+                    var oldCountSpan = $(element).find(OLD_COUNT_CONTAINER_REF).text();
+                    if(oldCountSpan!=''){
+                        countSpan.text(0+parseInt(oldCountSpan));
+                    }else{
+                        countSpan.text(0);          
+                    }
+                }
+            }
+        })
+        .fail(function(object, error) {
+            console.log("Error: " + error.code + " " + error.message);
+        });
+}
+
+function addCount(Counter) {
+    var $visitors = $(".leancloud_visitors");
+    var url = $visitors.attr('id').trim();
+    var title = $visitors.attr('data-flag-title').trim();
+    var query = new AV.Query(Counter);
+
+    query.equalTo("url", url);
+    query.find({
+        success: function(results) {
+            if (results.length > 0) {
+                var counter = results[0];
+                counter.fetchWhenSave(true);
+                counter.increment("time");
+                counter.save(null, {
+                    success: function(counter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                    },
+                    error: function(counter, error) {
+                        console.log('Failed to save Visitor num, with error message: ' + error.message);
+                    }
+                });
+            } else {
+                var newcounter = new Counter();
+                 
+                var acl = new AV.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                newcounter.setACL(acl);
+                 
+                newcounter.set("title", title);
+                newcounter.set("url", url);
+                var OLD_COUNT_CONTAINER_REF = '.old-visitors-count';
+                var $element = $(document.getElementById(url));
+                var oldCountSpan = $element.find(OLD_COUNT_CONTAINER_REF).text();
+                if(oldCountSpan!=''){
+                    newcounter.set("time", parseInt(oldCountSpan)+1);
+                }else{
+ 	                    newcounter.set("time",  1);
+                }
+                newcounter.save(null, {
+                    success: function(newcounter) {
+                        var $element = $(document.getElementById(url));
+                        $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+                    },
+                    error: function(newcounter, error) {
+                        console.log('Failed to create');
+                    }
+                });
+            }
+        },
+        error: function(error) {
+            console.log('Error:' + error.code + " " + error.message);
+        }
+    });
+}
+$(function() {
+    var Counter = AV.Object.extend("Counter");
+    
+    
+    if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+    } else {
+        showTime(Counter);
+    }
+});
+</script>
+
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+<ul>
+<li><a href="#构建oauth2服务器-golang语言实现">构建OAuth2服务器~Golang语言实现</a>
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#注意"><strong>注意！！！</strong></a></li>
+<li><a href="#架构和设计">架构和设计</a>
+<ul>
+<li><a href="#总体架构和接口模型">总体架构和接口模型</a></li>
+<li><a href="#数据模型">数据模型</a></li>
+</ul></li>
+<li><a href="#源码简析">源码简析</a></li>
+<li><a href="#安装启动起步">安装启动起步</a>
+<ul>
+<li><a href="#步骤一-下载源码并导入依赖">步骤一、下载源码并导入依赖</a></li>
+<li><a href="#步骤二-构建服务器">步骤二、构建服务器</a></li>
+<li><a href="#步骤三-创建数据库">步骤三、 创建数据库</a></li>
+<li><a href="#步骤四-创建表结构">步骤四、创建表结构</a></li>
+<li><a href="#步骤五-导入一些测试用种子数据">步骤五、导入一些测试用种子数据</a></li>
+<li><a href="#步骤六-运行oauth2服务器">步骤六、运行oauth2服务器</a></li>
+</ul></li>
+<li><a href="#oauth2用例实操">OAuth2用例实操</a>
+<ul>
+<li><a href="#步骤一-浏览器授权请求">步骤一，浏览器授权请求</a></li>
+<li><a href="#步骤二-postman请求令牌">步骤二，Postman请求令牌</a></li>
+<li><a href="#其它用例">其它用例</a></li>
+</ul></li>
+<li><a href="#项目扩展环节">项目扩展环节</a></li>
+<li><a href="#参考">参考</a></li>
+</ul></li>
+</ul>
+</nav>
+                
+                
+
+<h1 id="构建oauth2服务器-golang语言实现">构建OAuth2服务器~Golang语言实现</h1>
+
+<p><img src="/img/post/20181212/oauth2-gopher@0.25x.png" alt="gravitee oauth2" /></p>
+
+<h2 id="前言">前言</h2>
+
+<p>自从我和极客时间合作的课程《微服务架构和实践160讲》上线以来，陆续收到一些学员的反馈，包括：</p>
+
+<ul>
+<li>Spring Cloud OAuth2复杂难以理解</li>
+<li>OAuth2的四个流程到底是如何实现的？</li>
+<li>课程缺乏项目架构设计和实战开发案例</li>
+<li>波波老师实践中是如何做架构设计的？</li>
+</ul>
+
+<p>基于学员的上述反馈和疑问，同时考虑到OAuth2是微服务架构的重要环节，我决定带领大家分析一个轻量级OAuth2服务器(项目名Gravitee)的设计和实现，让大家深入理解OAuth2服务的原理和实现，同时解答大家的一些疑问。</p>
+
+<p>我这边Gravitee项目使用Golang语言实现，为啥使用Golang呢？原因如下：</p>
+
+<ol>
+<li>Golang语言简单，语法简洁受控，适合课程讲解</li>
+<li>Golang由Google公司开发支持，背书强大，社区生态好</li>
+<li>Golang语言是云原生基础语言，近年社区热门的开源产品，例如k8s/docker/etcd/istio等，都是使用Golang语言开发</li>
+<li>微服务多语言(polygolot)开发的趋势，目前很多互联网公司会同时采用若干种语言开发业务和系统服务，互为补充</li>
+<li>OAuth2本身实现和具体语言无关，理解了Golang版代码，不难用其它语言(如Java)实现</li>
+</ol>
+
+<h2 id="注意"><strong>注意！！！</strong></h2>
+
+<ol>
+<li>本项目代码仅为课程讲解开发，不是生产级！！！如需生产化，则还需要做很多生产扩展+严格的测试，具体见<a href="#项目扩展环节">项目扩展环节</a>。同时，你若对本项目做了有价值生产扩展，欢迎提交pull requets到<a href="https://github.com/spring2go/gravitee">https://github.com/spring2go/gravitee</a></li>
+<li>本项目源码主要参考RichardKnop的go-oauth2-server[附录1]，感谢原作者！本项目对原项目主要做了如下修改：</li>
+<li>数据库从postgresql改为mysql</li>
+<li>配置简化为使用本地配置文件</li>
+<li>依赖更新和使用glide[附录6]管理</li>
+</ol>
+
+<h2 id="架构和设计">架构和设计</h2>
+
+<h3 id="总体架构和接口模型">总体架构和接口模型</h3>
+
+<p><img src="/img/post/20181212/arch.png" alt="arch" /></p>
+
+<p><img src="/img/post/20181212/intf.png" alt="intf" /></p>
+
+<p>Gravitee总体架构比较简单，使用<strong>mysql</strong>数据库做存储。数据库之上是<strong>数据访问模块</strong>，封装数据模型操作。中间层是<strong>OAuth2服务模块</strong>，这个是Gravitee核心，封装了OAuth2协议的四种核心流程逻辑。顶层有两个接口模块，一个是<strong>API模块</strong>，对外暴露获取令牌(tokens)和校验令牌(introspect)等端点；另外一个是<strong>Web模块</strong>，封装涉及Web交互的一些流程，如授权(authorize，授权码模式和简化模式使用)，用户注册(register)，登录认证(login)和登出(logout)等接口。</p>
+
+<h3 id="数据模型">数据模型</h3>
+
+<p><img src="/img/post/20181212/data.png" alt="data" /></p>
+
+<p>Gravitee的数据模型也不复杂，核心概念是：</p>
+
+<ul>
+<li>oauth_clients，客户应用</li>
+<li>oauth_users，用户或资源拥有者</li>
+</ul>
+
+<p>和三种tokens:</p>
+
+<ul>
+<li>oauth_access_tokens，访问令牌</li>
+<li>oauth_authorization_tokens，授权令牌(授权码)</li>
+<li>oauth_refresh_tokens，刷新令牌</li>
+</ul>
+
+<p>相关概念和其中的字段本身不难理解，关系也很简单，客户和令牌之间是一对多关系，一个客户应用可以关联很多用户的令牌；用户和令牌之间也是一对多关系，即一个用户使用一个或多个不同应用(client)登陆后，会生成对应的授权码和访问令牌(或+刷新令牌)。</p>
+
+<p>另外还有三个支持表，oauth_roles存储用户角色，oauth_scopes存储作用域相关信息，migrations表支持数据库升级。</p>
+
+<p>波波平时做架构设计，关心的基本上就是：</p>
+
+<ol>
+<li><strong>总体架构</strong>，系统的总体架构长啥样？分哪些模块？</li>
+<li><strong>接口模型</strong>，系统对外暴露哪些接口？主要的输入输出是什么？</li>
+<li><strong>数据模型</strong>，也称领域模型(domain model)，系统的核心概念有哪些？相互关系如何？</li>
+</ol>
+
+<p>波波认为这三者是一个系统的核心抽象，是软件最本质的东西。如果这三者定下来了，那么系统基本就定型了，其它的，比如使用哪种语言实现，使用哪种数据访问层框架等等，都是用来填充的是细节。细节可以不断调整变化，但是本质抽象基本不变(除非架构设计做重大调整)。波波平时做架构设计评审，基本就关注这三样东西，如果一个架构师或者开发lead能把这三样东西讲清楚了，我就评审过，如果讲不清楚，那么不好意思，请回去重新设计。</p>
+
+<h2 id="源码简析">源码简析</h2>
+
+<p>Gravitee的源码不多也不复杂，一般的中高级研发人员不难看懂。我这边再把主要的目录结构梳理一下，方便大家阅读理解源码，见下表：</p>
+
+<table>
+<thead>
+<tr>
+<th>主要目录和文件</th>
+<th>简析</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>cmd</td>
+<td>一些命令入口文件，如导入种子数据，数据库升级(包括第一次创建数据库表)和启动服务器</td>
+</tr>
+
+<tr>
+<td>config</td>
+<td>服务器配置相关支持类，配置有数据库配置、OAuth2服务配置和Session相关配置等</td>
+</tr>
+
+<tr>
+<td>database</td>
+<td>负责建立和获取数据库连接的支持文件</td>
+</tr>
+
+<tr>
+<td>health</td>
+<td>暴露健康检查端点的服务</td>
+</tr>
+
+<tr>
+<td>log</td>
+<td>日志相关支持类</td>
+</tr>
+
+<tr>
+<td>models</td>
+<td>数据模型和ORM(使用gorm[附录4])相关支持文件，OAuth2核心数据模型在这里</td>
+</tr>
+
+<tr>
+<td>oauth</td>
+<td>封装OAuth2的核心流程逻辑，并暴露服务接口和HTTP端点，这是最复杂的一个文件夹</td>
+</tr>
+
+<tr>
+<td>public</td>
+<td>静态css文件</td>
+</tr>
+
+<tr>
+<td>services</td>
+<td>服务初始化和入口文件，类似一个service registry</td>
+</tr>
+
+<tr>
+<td>session</td>
+<td>Web Session相关的服务封装支持类</td>
+</tr>
+
+<tr>
+<td>test-util</td>
+<td>测试相关支持类</td>
+</tr>
+
+<tr>
+<td>user</td>
+<td>暴露用户创建端点的服务</td>
+</tr>
+
+<tr>
+<td>util</td>
+<td>项目中用到的工具类</td>
+</tr>
+
+<tr>
+<td>vendor</td>
+<td>第三方依赖包，由glide[附录6]依赖工具导入</td>
+</tr>
+
+<tr>
+<td>web</td>
+<td>web模块的实现类，支持授权、注册、登录和登出的Web流程逻辑，同时依赖<code>OAuth2</code>和<code>Session</code>模块提供的服务</td>
+</tr>
+
+<tr>
+<td>gravitee-server.go</td>
+<td>服务器程序主入口(main)，使用<code>cmd</code>目录内的命令执行具体任务。</td>
+</tr>
+</tbody>
+</table>
+
+<p>程序的服务结构代码可以参考最简单的健康检查<code>health</code>模块(在health文件夹内)，其它的服务模块，如oauth/web/session/user等，都是采用类似的服务结构开发。在<code>web</code>模块中，为了支持登录授权，采用了gorilla session[附录5]做临时状态存储(暂使用客户端session)，也采用了golang http的middleware中间件拦截机制，这样登录授权流程才能穿起来，相关逻辑稍复杂，但是也不难看懂。</p>
+
+<p>另外，本项目使用glide[附录6]做依赖管理，使用vscode[附录7]编辑和开发代码。</p>
+
+<p>如果你对Golang还不太熟悉，可以参考go by example[附录8]和go cheat sheet[附录9]快速上手。</p>
+
+<h2 id="安装启动起步">安装启动起步</h2>
+
+<h3 id="步骤一-下载源码并导入依赖">步骤一、下载源码并导入依赖</h3>
+
+<pre><code>glide install
+</code></pre>
+
+<h3 id="步骤二-构建服务器">步骤二、构建服务器</h3>
+
+<pre><code>go build gravitee-server.go
+</code></pre>
+
+<p>尝试运行服务器，看程序提示信息</p>
+
+<pre><code>./gravitee-server
+</code></pre>
+
+<p>程序主要支持<strong>migate/loaddata/runserver</strong>三个命令。<strong>注意</strong>，配置文件默认为服务器运行目录中的<code>config.yml</code>文件，如果配置文件在其它目录中，可以使用命令行参数<code>--configFile</code>指定。</p>
+
+<h3 id="步骤三-创建数据库">步骤三、 创建数据库</h3>
+
+<p>安装mysql数据库，创建数据库，例如创建数据库名为<code>gravitee</code>，然后修改<code>config.yml</code>配置文件中的数据库连接信息，包括数据库名，用户名和密码等。</p>
+
+<h3 id="步骤四-创建表结构">步骤四、创建表结构</h3>
+
+<p>运行</p>
+
+<pre><code>./gravitee-server migrate
+</code></pre>
+
+<p>校验数据库中users/clients/tokens等相关表格已经正确创建。<strong>注意</strong>，migrate动作只需在初始化时做一次。</p>
+
+<h3 id="步骤五-导入一些测试用种子数据">步骤五、导入一些测试用种子数据</h3>
+
+<p>运行</p>
+
+<pre><code>./gravitee-server loaddata oauth/fixtures/scopes.yml oauth/fixtures/roles.yml oauth/fixtures/test_clients.yml oauth/fixtures/test_users.yml
+</code></pre>
+
+<p>查看users/clients/scopes/roles等表中已经有测试用种子数据</p>
+
+<h3 id="步骤六-运行oauth2服务器">步骤六、运行oauth2服务器</h3>
+
+<p>运行</p>
+
+<pre><code>./gravitee-server runserver 
+</code></pre>
+
+<p><strong>注意</strong>，服务器默认启动在8080端口，如需可在配置文件<code>config.yml</code>中修改，上述安装步骤可以同时参考gravitee lab02[附录2]</p>
+
+<h2 id="oauth2用例实操">OAuth2用例实操</h2>
+
+<p>下面以<strong>授权码模式</strong>为例展示如何使用Gravitee OAuth2服务(关于<strong>授权码模式</strong>的流程规范和请求参数的细节，请参考官方文档[附录3])，假设Gravitee服务器已经启动，端口8080：</p>
+
+<h3 id="步骤一-浏览器授权请求">步骤一，浏览器授权请求</h3>
+
+<p>通过浏览器发起授权码请求：</p>
+
+<pre><code>http://localhost:8080/web/authorize?client_id=test_client_1&amp;redirect_uri=https://www.example.com&amp;response_type=code&amp;state=somestate&amp;scope=read_write
+</code></pre>
+
+<p>提示用户登录，可以采用种子用户数据(test@user/test_password)登录：</p>
+
+<p><img src="/img/post/20181212/login.png" alt="login" /></p>
+
+<p>提示是否授权客户应用(test_client_1)代表用户去访问用户资源：</p>
+
+<p><img src="/img/post/20181212/authorize.png" alt="authorize" /></p>
+
+<p>同意(Allow)授权，则重定向到客户应用指定的redirect_uri(此例是<code>www.example.com</code>)，同时会在查询字符串中给出授权码：</p>
+
+<p><img src="/img/post/20181212/redirect.png" alt="redirect" /></p>
+
+<p>如果选择拒绝(Deny)，则会提示拒绝授权(access denied)错误。</p>
+
+<h3 id="步骤二-postman请求令牌">步骤二，Postman请求令牌</h3>
+
+<p>通过Postman(或者curl命令行)模拟客户应用请求令牌，使用上面步骤获取的授权码：</p>
+
+<pre><code>curl -X POST --user test_client_1:test_secret http://localhost:8080/v1/oauth/tokens -d &quot;code=c88f0354-6cd4-4f4e-ac2f-ffa5bf4c97fb&amp;grant_type=authorization_code&amp;redirect_uri=https://www.example.com&amp;scope=read_write&quot;
+</code></pre>
+
+<p>服务器返回访问令牌和刷新令牌：</p>
+
+<p><img src="/img/post/20181212/postman.png" alt="postman" /></p>
+
+<p>获取令牌后，客户应用就可以使用该令牌访问用户资源。</p>
+
+<h3 id="其它用例">其它用例</h3>
+
+<p>可以直接参考相应的<a href="https://github.com/spring2go/gravitee_lab">Gravitee Lab</a>，或者参考波波的极客时间上的课程视频，其它用例包括：</p>
+
+<ul>
+<li>简化模式</li>
+<li>用户名密码模式</li>
+<li>客户端模式</li>
+<li>令牌校验</li>
+<li>令牌刷新</li>
+</ul>
+
+<h2 id="项目扩展环节">项目扩展环节</h2>
+
+<p><strong>注意！！！</strong>，本项目代码仅为课程讲解开发，不是生产级！！！如需生产化，则还需要做很多生产扩展+严格的测试，下面是一些可能的扩展点：</p>
+
+<ol>
+<li><strong>支持令牌吊销(token revoke)端点</strong>，根据某些业务场景(如用户设备丢失或者恶意用户)，可以吊销其令牌。</li>
+<li><strong>支持jwt令牌</strong>，本项目目前仅支持普通bearer令牌，采用授权服务器集中校验方式验令牌和获取用户信息，可以扩展支持jwt令牌，jwt是自包含令牌(可以包含用户和角色等信息)，且是自校验的(不需要集中校验)，可实现无状态认证。</li>
+<li><strong>Client管理</strong>，扩展对客户应用的管理和权限控制</li>
+<li><strong>对接企业内部用户数据</strong>，目前本项目自带用户模块，实际企业中可能已经有用户数据源，可以考虑和Gravitee服务集成对接。</li>
+<li><strong>监控</strong>，目前项目暂未实现监控埋点，如生产化前一定要做监控埋点，可以考虑和promethues监控平台对接，有golang客户端可以直接集成。</li>
+<li><strong>集中式缓存</strong>，目前令牌存mysql数据库，用户访问量不大时OK，如果量大则DB会成为瓶颈，特别是校验令牌操作会频繁发生，此时可以考虑使用内存数据库(如redis等)缓存令牌，加快校验速度。另外目前Web模块使用客户端Session，生产前建议扩展为集中式缓存Session。</li>
+<li><strong>高可用</strong>，Gravitee本身无状态，生产部署可以水平部署多个，分摊负载和防止单点。</li>
+<li><strong>其它语言实现</strong>，如果企业暂不能引入golang技术栈，则Gravitee本身很简单，在理解其设计实现的基础上，用其它语言(比如Java)实现并不难。</li>
+</ol>
+
+<h2 id="参考">参考</h2>
+
+<ol>
+<li><a href="https://github.com/RichardKnop/go-oauth2-server">go-outh2-server</a>.</li>
+<li><a href="https://github.com/spring2go/gravitee_lab">Gravitee Lab</a></li>
+<li><a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth2授权框架rfc6749的4.1节</a></li>
+<li><a href="https://github.com/jinzhu/gorm">gorm</a></li>
+<li><a href="github.com/gorilla/sessions">gorilla session</a></li>
+<li><a href="https://github.com/Masterminds/glide">glide</a></li>
+<li><a href="https://code.visualstudio.com/">vscode</a></li>
+<li><a href="https://github.com/xg-wang/gobyexample">go by example</a></li>
+<li><a href="https://github.com/a8m/go-lang-cheat-sheet">go cheat sheet</a></li>
+<li><a href="https://github.com/spring2go/gravitee">Gravitee开源地址</a></li>
+</ol>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2018-12-11-startup-retrospect/" data-toggle="tooltip" data-placement="top" title="一个创业失败案例的复盘">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jskillcloud" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/apollo" title="Apollo">
+                            Apollo
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/netflix" title="Netflix">
+                            Netflix
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/zuul" title="Zuul">
+                            Zuul
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%88%9B%E4%B8%9A" title="创业">
+                            创业
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%88%90%E9%95%BF" title="工程师成长">
+                            工程师成长
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1" title="微服务">
+                            微服务
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%88%86%E5%B1%82" title="微服务分层">
+                            微服务分层
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3" title="微服务网关">
+                            微服务网关
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B" title="技术选型">
+                            技术选型
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E6%80%9D%E7%BB%B4" title="架构思维">
+                            架构思维
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1" title="架构设计">
+                            架构设计
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD" title="软技能">
+                            软技能
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83" title="配置中心">
+                            配置中心
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                   <li>
+                       <a href="" rel="alternate" type="application/rss+xml" title="JSkillCloud" >
+                           <span class="fa-stack fa-lg">
+                               <i class="fa fa-circle fa-stack-2x"></i>
+                               <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                           </span>
+                       </a>
+                   </li>
+                   
+                    
+                    <li>
+                        <a href="mailto:bobo@jskillcloud.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/img/wechat-qr-code.png">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/jskillcloud">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; JSkillCloud , 2018
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https'){
+       bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      }
+      else{
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-134174508-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>

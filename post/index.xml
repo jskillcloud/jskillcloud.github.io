@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Dec 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Dec 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>构建OAuth2服务器～Golang语言实现</title>
+      <link>http://jskillcloud.com/post/2018-12-12-build-oauth2-server/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-12-12-build-oauth2-server/</guid>
+      <description>构建OAuth2服务器~Golang语言实现 前言 自从我和极客时间合作的课程《微服务架构和实践160讲》上线以来，陆续收到一些学员的反馈，包括</description>
+    </item>
     
     <item>
       <title>一个创业失败案例的复盘</title>
