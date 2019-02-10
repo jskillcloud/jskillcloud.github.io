@@ -20,23 +20,5 @@
       <description>一、介绍 架构的本质是管理复杂性，抽象、分层、分治和演化思维是我们工程师/架构师应对和管理复杂性的四种最基本武器。 最近团队来了一些新人，有些有</description>
     </item>
     
-    <item>
-      <title>架构师该如何做技术选型？</title>
-      <link>http://jskillcloud.com/post/2018-05-25-tech-selection/</link>
-      <pubDate>Fri, 25 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>http://jskillcloud.com/post/2018-05-25-tech-selection/</guid>
-      <description>一、前言 技术选型是一个很热门的话题，最近我看到自己的微信朋友圈有好几篇关于技术选型的文章，读者对这类主题的热情很高。在技术组织内部，技术人员</description>
-    </item>
-    
-    <item>
-      <title>波波的架构理念</title>
-      <link>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</link>
-      <pubDate>Thu, 17 May 2018 00:00:00 +0000</pubDate>
-      
-      <guid>http://jskillcloud.com/post/2018-05-17-architecture-thinking/</guid>
-      <description>背景 近期我会陆陆续续把我之前在infoq/聊聊架构等媒体上发表的文章，陆续搬到我的公司博客JSkillCloud上，这个是第一篇。 这篇有特殊</description>
-    </item>
-    
   </channel>
 </rss>
