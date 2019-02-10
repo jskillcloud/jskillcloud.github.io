@@ -18,15 +18,15 @@
     
 
     
-    <meta name="title" content="如何不靠运气获得财富？" />
-    <meta property="og:title" content="如何不靠运气获得财富？" />
-    <meta property="twitter:title" content="如何不靠运气获得财富？" />
+    <meta name="title" content="变色龙Archaius配置组件" />
+    <meta property="og:title" content="变色龙Archaius配置组件" />
+    <meta property="twitter:title" content="变色龙Archaius配置组件" />
     
 
     
-    <meta name="description" content="本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。">
-    <meta property="og:description" content="本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。" />
-    <meta property="twitter:description" content="本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己公众号里头，希望这些理念对工程师成长有帮助。" />
+    <meta name="description" content="本文介绍Netflix开源配置组件Archaius的需求、场景、特性和设计，以及如何与Apollo配置中心进行集成。">
+    <meta property="og:description" content="本文介绍Netflix开源配置组件Archaius的需求、场景、特性和设计，以及如何与Apollo配置中心进行集成。" />
+    <meta property="twitter:description" content="本文介绍Netflix开源配置组件Archaius的需求、场景、特性和设计，以及如何与Apollo配置中心进行集成。" />
     
 
     
@@ -37,9 +37,9 @@
     <meta name="keyword"  content="掘艺云, jskillcloud, 微服务, Microservice, 微服务架构, 中间件, SpringCloud, 云原生, CloudNative, Docker, PaaS, Kubernetes, k8s">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>如何不靠运气获得财富？-掘艺云 | JSkillCloud</title>
+    <title>变色龙Archaius配置组件-掘艺云 | JSkillCloud</title>
 
-    <link rel="canonical" href="/post/2018-07-02-get-rich-wo-luck/">
+    <link rel="canonical" href="/post/2018-07-08-archaius-configuration-library/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/hexagons.png')
+        background-image: url('/img/background/octogons.png')
     }
 </style>
 <header class="intro-header">
@@ -161,26 +161,30 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/%E8%BD%AF%E6%8A%80%E8%83%BD" title="软技能">
-                            软技能
+                        <a class="tag" href="/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83" title="配置中心">
+                            配置中心
                         </a>
                         
-                        <a class="tag" href="/tags/%E5%88%9B%E4%B8%9A" title="创业">
-                            创业
+                        <a class="tag" href="/tags/archaius" title="Archaius">
+                            Archaius
+                        </a>
+                        
+                        <a class="tag" href="/tags/apollo" title="Apollo">
+                            Apollo
                         </a>
                         
                     </div>
-                    <h1>如何不靠运气获得财富？</h1>
-                    <h2 class="subheading">How to Get Rich (without getting lucky)</h2>
+                    <h1>变色龙Archaius配置组件</h1>
+                    <h2 class="subheading">Archaius Configuation Library</h2>
                     <span class="meta">
 			Posted by 
 			
 			         &#34;杨波&#34;
 			 
 			on 
-			Monday, July 2, 2018
+			Sunday, July 8, 2018
                         
-                            <span id="/post/2018-07-02-get-rich-wo-luck/" class="leancloud_visitors meta_data_item" data-flag-title="">
+                            <span id="/post/2018-07-08-archaius-configuration-library/" class="leancloud_visitors meta_data_item" data-flag-title="">
     <span class="post-meta-item-icon">
       <span class="octicon octicon-eye"></span> 
     </span>
@@ -343,258 +347,124 @@ $(function() {
 <li>
 <ul>
 <li><a href="#介绍">介绍</a></li>
-<li><a href="#原文和翻译">原文和翻译</a></li>
-<li><a href="#参考">参考</a></li>
+<li><a href="#archaius项目的由来">Archaius项目的由来</a></li>
+<li><a href="#archaius在netflix的用例场景">Archaius在Netflix的用例场景</a></li>
+<li><a href="#archaius的特性和设计">Archaius的特性和设计</a></li>
+<li><a href="#分级配置案例">分级配置案例</a></li>
+<li><a href="#archaius和apollo配置中心集成">Archaius和Apollo配置中心集成</a></li>
+<li><a href="#结论">结论</a></li>
+<li><a href="#附录">附录</a></li>
 </ul></li>
 </ul>
 </nav>
                 
                 
 
+<p><img src="/img/post/20180708/Archaius.jpg" alt="archaius image" /></p>
+
 <h2 id="介绍">介绍</h2>
 
-<p>本文来自Naval Ravikant(AngelList的创始人)在Twitter上的推文，被整理转载在hackernoon上[参考附录]。我觉得作者的观点都是真知灼见，读后很受启发，所以我把它翻译出来，放在自己博客上，希望后面能时刻提醒自己。</p>
+<p>如果我们要设计开发一套微服务基础架构，大家觉得哪个组件是最基础的？基于多年互联网分布式系统的实战经验，我的回答是配置中心以及配套的客户端。之前我在极客时间上的课程《微服务架构和实践160讲》中，已经深度剖析了携程开源的Apollo配置中心，Apollo是自带客户端的，它的客户端不错很灵活，但是实际上Netflix也开源了一个叫变色龙Archaius的配置中心客户端，而且Archaius可以说是比Apollo客户端具备更多生产级特性，也更灵活。</p>
 
-<h2 id="原文和翻译">原文和翻译</h2>
+<p>在NetflixOSS微服务技术栈中，几乎所有的其它组件(例如Zuul, Hystrix, Eureka, Ribbon等)都依赖于Archaius，可以说理解Archaius是理解和使用Netflix其它微服务组件的基础。另外，7月份我会在《微服务架构和实践160讲》中推出第3个模块：《微服务网关Zuul架构和实践》，Zuul重度依赖Archaius实现灵活的动态配置，如果缺少Archaius的支持，Zuul的生产级特性可以说会大打折扣。基于上述原因，我写这篇文章普及一下Archaius的原理和设计，也为自己的课程做一些必要的铺垫。</p>
 
-<blockquote>
-<p>Seek wealth, not money or status. Wealth is having assets that earn while you sleep. Money is how we transfer time and wealth. Status is your place in the social hierarchy.</p>
-</blockquote>
+<p><strong>注意</strong>，Netflix只是开源了其配置中心的客户端部分(也就是Archaius)，没有开源配套的服务器端。Archaius其实是配置源实现无关的，可以对接各种配置中心作为数据源，本文后面会介绍Archaius如何和Apollo配置中心进行集成。</p>
 
-<p>追求财富，但是不要追求金钱或者身份。财富是指拥有产生睡后收入的资产。金钱是我们实现时间和财富之间转换的一个媒介。身份是你在社会层级中的位置。</p>
+<h2 id="archaius项目的由来">Archaius项目的由来</h2>
 
-<blockquote>
-<p>Understand that ethical wealth creation is possible. If you secretly despise wealth, it will elude you.</p>
-</blockquote>
+<p>在微服务环境下，配置常常需要根据不同的上下文环境进行调整，或者说配置应该是多维度的。例如在Netflix，上下文维度包括环境(开发、测试和生产)，发布区域(美国东区us-east-1，美国西区us-west-1等等)，栈(将有依赖关系的应用和服务为了某种目标而隔离起来的一个逻辑概念，例如iPhone App启动栈)，等等。</p>
 
-<p>要懂得通过道德的方式创造财富是完全可以做到的。如果你秘密地鄙视财富，财富也会避开你。</p>
+<p>Netflix希望能够根据发布的环境，甚至请求的上下文，动态地调整服务的配置，让Netflix的整个系统的行为和逻辑变得动态可调配，以适应互联网应用快速多变的需求。为此，Netflix平台团队开发了配置中心产品，团队将这个产品形象地称为变色龙Archaius，因为变色龙这种动物能够根据自己所处的环境动态调整身体的颜色。</p>
 
-<blockquote>
-<p>Ignore people playing status games. They gain status by attacking people playing wealth creation games.</p>
-</blockquote>
+<h2 id="archaius在netflix的用例场景">Archaius在Netflix的用例场景</h2>
 
-<p>远离那些玩身份地位博弈游戏的人。他们获取身份地位的方式是通过攻击那些创造财富的人。</p>
+<ul>
+<li>根据请求上下文开启或关闭某项功能。</li>
+<li>某个页面缺省显示10个商品，在某些情况下，可以通过Archaius调整配置，只显示5个商品。</li>
+<li>动态调整Hystrix熔断器的行为。</li>
+<li>调整服务调用客户端的连接和请求超时参数。</li>
+<li>如果某个线上服务产生出错告警，可以动态调整日志输出级别(粒度可以细到包或者组件级别)，这样可以通过详细日志排查问题。问题定位以后，再将日志输出级别恢复到默认级别。</li>
+<li>对于多区域或者多国家部署的应用，通过动态配置，可以根据不同区域和国家开启不同的功能。</li>
+<li>可以根据用户的实际访问模式动态调整一些基础中间件的配置，例如缓存的存活时间TTL(Time To Live)。</li>
+<li>数据库访问客户端的连接池配置，可以对不同服务配不同的值。例如，一个请求频率RPS(Request Per Second)小的服务，可以配置较小的连接数，而一个请求频率大的服务，可以配置较大的连接数。</li>
+<li>运行期配置的变更可以在不同维度生效，例如集群中的单个实例维度，多区域部署下的某个区域维度，某个服务栈维度，或者某个应用集群维度。</li>
+<li>功能开关(Feature Flag)发布，有些功能虽然上线，但是并不马上启用，而是通过配置开关动态启用，这样可以根据情况灵活开启或者关闭某项线上功能。</li>
+<li>金丝雀发布(Canary Release)，新功能上线时，让新老集群同时并存一段时间，通过配置将到老集群的流量逐步动态调整到新集群，如果监控显示无异常，则完成新集群的上线，如异常，则快速切回老集群。</li>
+</ul>
 
-<blockquote>
-<p>You’re not going to get rich renting out your time. You must own equity - a piece of a business - to gain your financial freedom.</p>
-</blockquote>
+<h2 id="archaius的特性和设计">Archaius的特性和设计</h2>
 
-<p>通过打工出卖时间的方式，你不可能变得富有。你必须拥有资产(生意的一种)，以赢得你的财务自由。</p>
+<p>Archaius实际上是对Apache Common Configuration Library的一个封装和扩展，提供了一组基于Java的配置API，主要的特性包括：</p>
 
-<blockquote>
-<p>You will get rich by giving society what it wants but does not yet know how to get. At scale.</p>
-</blockquote>
+<ul>
+<li>配置可动态调整。</li>
+<li>配置支持类型(Int, Long, Boolean等)。</li>
+<li>高性能和线程安全。</li>
+<li>提供一个拉(pulling)配置的框架，可以从配置源动态拉取变更的配置。</li>
+<li>支持回调(callback)机制，在配置变更时自动调用。</li>
+<li>支持JMX MBean，可以通过JConsole查看配置和修改配置。</li>
+</ul>
 
-<p>如果你能规模化地创造并给予社会某种它想要但是还不知道如何获取的东西，你将会变得富有。</p>
+<p>下图是Archaius的总体设计：</p>
 
-<blockquote>
-<p>Pick an industry where you can play long term games with long term people.</p>
-</blockquote>
+<p><img src="/img/post/20180708/hierarch.png" alt="archaius design" /></p>
 
-<p>要选择你有机会和长线思维的人一起玩长线游戏的行业。</p>
+<p>Achaius的核心是一个称为<strong>组合配置(Composite Configuration)</strong>的概念，简单可以理解为一个分层级的配置，层级有优先级，高优先级的层级的配置会覆盖低优先级的配置。每一个层级可以从某个配置源获取配置，例如本地配置文件，JDBC数据源，远程REST API等。配置源还可以在运行时动态拉取变更，例如在上图中，持久化数据库配置(Persisted DB Configuration)是指将配置存在关系数据库中，相应的配置源会定期从数据库拉取变更)。配置的最终值由顶级配置决定，例如，如果多个层级都含有某个配置项，那么应用最终见到的值是配置层级中最顶层的值。配置分层的顺序是可以调整的。</p>
 
-<blockquote>
-<p>The Internet has massively broadened the possible space of careers. Most people haven&rsquo;t figured this out yet.</p>
-</blockquote>
+<h2 id="分级配置案例">分级配置案例</h2>
 
-<p>互联网极大的扩展了我们职业的可能空间，很多人其实还没有意识到这一点。</p>
+<p>假设你开发了一个叫myapp的应用，在本地开发环境，一般你希望用本地配置，不依赖于远程的配置中心，这个时候你只需为应用写一个本地配置文件：</p>
 
-<blockquote>
-<p>Play iterated games. All the returns in life, whether in wealth, relationships, or knowledge, come from compound interest.</p>
-</blockquote>
+<pre><code>myapp.properties
+</code></pre>
 
-<p>专注迭代和积累。生命中所有的回报，不管是财富，关系，还是知识都来自复利效应。</p>
+<p>这个配置文件里头包含myapp的所有缺省配置。</p>
 
-<blockquote>
-<p>Pick business partners with high intelligence, energy, and, above all, integrity.</p>
-</blockquote>
+<p>当你的应用开发完成，需要分别部署到测试TEST, UAT和生产PROD环境，如果你希望在不同的环境重载某些缺省值，那么你可以为不同环境分别添加本地配置文件，在相关文件中重载缺省值：</p>
 
-<p>选择高智商，精力充沛的合作伙伴，在所有的素质中，正直诚实最重要。</p>
+<pre><code>myapp-test.properties
+myapp-uat.properties
+myapp-prod.properties
+</code></pre>
 
-<blockquote>
-<p>Don&rsquo;t partner with cynics and pessimists. Their beliefs are self-fulfilling.</p>
-</blockquote>
+<p>例如，在<code>myapp.properties</code>中<code>timeout</code>配置值是<code>500</code>，在<code>myapp-prod.properties</code>中<code>timeout</code>配置值是<code>200</code>，那么应用在生产环境中将使用重载值<code>timeout=200</code>，其它没有重载则使用<code>myapp.properties</code>中的缺省值。</p>
 
-<p>不要和愤世嫉俗和悲观者为伍。他们的信仰是自证预言。</p>
+<p>在Archaius中，可以通过设置<code>archaius.deployment.environment</code>启动参数，来激活不同环境的配置。</p>
 
-<blockquote>
-<p>Learn to sell. Learn to build. If you can do both, you will be unstoppable.</p>
-</blockquote>
+<p>如果你还希望应用上线后，可以通过配置中心动态调整配置值，那么你可以将Achaius和某个配置中心(比如Apollo)进行对接，对接后配置中心中的配置具有最高优先级，其中的配置可以覆盖应用本地配置文件中的配置。例如，应用上线后你发现<code>timeout=200</code>设置太小了，想调大到<code>timeout=1000</code>，可以通过配置中心一键搞定。</p>
 
-<p>学会销售事物，学会构造事物。如果你两者都会，你将不可阻挡。</p>
+<h2 id="archaius和apollo配置中心集成">Archaius和Apollo配置中心集成</h2>
 
-<blockquote>
-<p>Arm yourself with specific knowledge, accountability, and leverage.</p>
-</blockquote>
+<p>Archaius是一款非常优秀的生产级配置客户端组件，比较可惜的是Netflix没有开源它的配置中心的服务器端，幸好业界已经有Apollo这样优秀的配置中心开源产品。Archaius本身是配置源无关的，它提供的拉(pulling)框架可以支持对接各种数据源，而Apollo本身也正好提供基于HTTP REST的配置拉取接口，使得Archaius和Apollo的对接非常简单。</p>
 
-<p>通过特种知识、责任心和杠杆来武装自己。</p>
+<p>另外，当你想要使用某些Netflix的组件，比如Zuul网关，它原生是支持Archaius进行动态配置的，如果你又想要使用Apollo配置中心支持集中式动态配置，这个时候你用Apollo客户端去改造Zuul的话，工作量不小。其实不需要这么麻烦，这三者可以简单完美实现集成，如下图所示：</p>
 
-<blockquote>
-<p>Specific knowledge is knowledge that you cannot be trained for. If society can train you, it can train someone else, and replace you.</p>
-</blockquote>
+<p><img src="/img/post/20180708/archaius_apollo.png" alt="archaius+apollo" /></p>
 
-<p>特种知识是无法通过培训获取的知识。如果社会可以培训你，那么它也可以培训其他人，然后取代你。</p>
+<p>集成要点：</p>
 
-<blockquote>
-<p>Specific knowledge is found by pursuing your genuine curiosity and passion rather than whatever is hot right now.</p>
-</blockquote>
+<ul>
+<li>通过设置<code>archaius.configurationSource.additionalUrls</code>启动参数，设置为Apollo的配置文件拉取端点，激活Archaius的远程配置数据源。</li>
+<li>Apollo的配置文件拉取端点为：<code> {config_server_url}/configfiles/{appId}/{clusterName}/{namespaceName}</code>，其中：<code>config_server_url</code>是配置中心地址，<code>appId</code>是应用(例如Zuul)在Apollo中的唯一标识，<code>clusterName</code>是应用在Apollo中的集群名，一般用缺省<code>default</code>，<code>namespaceName</code>是应用在Apollo中的名字空间，一般用缺省<code>application</code>。</li>
+<li>注意，对于不同的环境(TEST，UAT，PROD等)，Apollo配置中心的地址一般不同</li>
+<li>Archaius动态拉取配置的周期缺省是60秒，可以调整。</li>
+</ul>
 
-<p>特种知识是通过追寻你单纯的好奇和热情而获得的，而不是追当下的热点而获得。</p>
+<h2 id="结论">结论</h2>
 
-<blockquote>
-<p>Building specific knowledge will feel like play to you but will look like work to others.</p>
-</blockquote>
+<ol>
+<li>根据不同上下文动态调整应用的行为逻辑，是现代互联网应用的刚需，配置中心应运而生，它是微服务架构必不可少的组件。</li>
+<li>Archaius是Netflix开源的生产级配置中心客户端组件，它的亮点是支持多维度、分层级的和动态的配置。</li>
+<li>Archaius可以和Apollo配置中可以简单无缝集成，让很多Netflix的开源组件(Zuul，Hystrix，Ribbon等)可以简单接入Apollo。波波在极客时间上的课程《微服务架构和实践160讲》，7月份会推出第3模块：《微服务网关Zuul架构和实践》，其中会通过实验详细分析Archaius和Apollo的集成，通过Apollo+Archaius实现Zuul网关的动态配置，欢迎大家关注。</li>
+<li>关于Archaius的更多技术细节，可以参考其在github上的站点[附录1]，另外拍拍贷框架团队的技术专家<strong>尹作龙</strong>也写了一篇文章《微服务动态配置组件netflix archaius》[附录2]，对Archaius的实现细节、使用案例以及如何与Spring Boot集成进行了深入细致的剖析，欢迎大家学习。</li>
+</ol>
 
-<p>营建特种知识的过程，自己感觉像是在玩耍，但别人看上去像是工作。</p>
+<h2 id="附录">附录</h2>
 
-<blockquote>
-<p>When specific knowledge is taught, it’s through apprenticeships, not schools.</p>
-</blockquote>
-
-<p>特种知识只能通过学徒方式授予，而不是学校制的教育。</p>
-
-<blockquote>
-<p>Specific knowledge is often highly technical or creative. It cannot be outsourced or automated.</p>
-</blockquote>
-
-<p>特种知识具有很高的技术性和创造性。它无法被外包或者自动化。</p>
-
-<blockquote>
-<p>Embrace accountability, and take business risks under your own name. Society will reward you with responsibility, equity, and leverage.</p>
-</blockquote>
-
-<p>勇于承担责任，并以自己之名去承担一定的商业风险。社会会通过责任、资产和杠杆来回报你。</p>
-
-<blockquote>
-<p>The most accountable people have singular, public, and risky brands: Oprah, Trump, Kanye, Elon.</p>
-</blockquote>
-
-<p>那些最负责的人拥有独一无二的，公开的和有风险的品牌：奥普拉，川普，坎耶，马斯克。</p>
-
-<blockquote>
-<p>“Give me a lever long enough, and a place to stand, and I will move the earth.”
--Archimedes</p>
-</blockquote>
-
-<p>“给我一个足够长的杠杆，和一个支点，我能够撬动整个地球。”- 阿基米德</p>
-
-<blockquote>
-<p>Fortunes require leverage. Business leverage comes from capital, people, and products with no marginal cost of replication (code and media).</p>
-</blockquote>
-
-<p>财富需要杠杆。商业杠杆来自于资本，人力，和那些没有边际复制成本的产品（代码或者媒体）</p>
-
-<blockquote>
-<p>Capital means money. To raise money, apply your specific knowledge, with accountability, and show resulting good judgment.</p>
-</blockquote>
-
-<p>资本意味着金钱。想要募集金钱，需要应用你的特种知识，你的责任心，以及展示能产生良好结果的判断力。</p>
-
-<blockquote>
-<p>Labor means people working for you. It&rsquo;s the oldest and most fought-over form of leverage. Labor leverage will impress your parents, but don’t waste your life chasing it.</p>
-</blockquote>
-
-<p>人力意味着别人为你打工。这是最古老，也是竞争最激烈的一种杠杆方式。人力杠杆的运用能力会让你的父母影响深刻，但是不要浪费一生去追逐它。</p>
-
-<blockquote>
-<p>Capital and labor are permissioned leverage. Everyone is chasing capital, but someone has to give it to you. Everyone is trying to lead, but someone has to follow you.</p>
-</blockquote>
-
-<p>资本和人力是需要许可的杠杆。每个人都在追逐资本，但是必须有人把它给你。每个人都想当头，但是必须有人跟随你。</p>
-
-<blockquote>
-<p>Code and media are permissionless leverage. They&rsquo;re the leverage behind the newly rich. You can create software and media that works for you while you sleep.</p>
-</blockquote>
-
-<p>代码和媒体是无需许可的杠杆。它们是新财富背后的杠杆。你可以创造软件和媒体，它们在你睡觉的时候还为你工作。</p>
-
-<blockquote>
-<p>An army of robots is freely available - it&rsquo;s just packed in data centers for heat and space efficiency. Use it.</p>
-</blockquote>
-
-<p>一支机器人军队可以被自由使用-它们只是因散热和空间效率而被打包放置在数据中心。你要使用它。</p>
-
-<blockquote>
-<p>If you can&rsquo;t code, write books and blogs, record videos and podcasts.</p>
-</blockquote>
-
-<p>如果你不会写代码，那么就写书或者博客，录视频或者播客。</p>
-
-<blockquote>
-<p>Leverage is a force multiplier for your judgement.</p>
-</blockquote>
-
-<p>杠杆是你的判断力的倍增器。</p>
-
-<blockquote>
-<p>Judgement requires experience, but can be built faster by learning foundational skills</p>
-</blockquote>
-
-<p>判断需要经验，但是判断能力可以通过学习基本技能而加速构建。</p>
-
-<blockquote>
-<p>There is no skill called “business.” Avoid business magazines and business classes.</p>
-</blockquote>
-
-<p>没有一种叫“商务”的技能，不要在商务杂志或者课程上浪费时间。</p>
-
-<blockquote>
-<p>Study microeconomics, game theory, psychology, persuasion, ethics, mathematics, and computers.</p>
-</blockquote>
-
-<p>学习微观经济学，博弈论，心理学，说服力，伦理学，数学，和计算机。</p>
-
-<blockquote>
-<p>Reading is faster than listening. Doing is faster than watching.</p>
-</blockquote>
-
-<p>阅读比听更快，做比看更快。</p>
-
-<blockquote>
-<p>You should be too busy to “do coffee,&rdquo; while still keeping an uncluttered calendar.</p>
-</blockquote>
-
-<p>你应该保持日程的简洁，但是应该足够忙碌而没有时间去做很多会面。</p>
-
-<blockquote>
-<p>Set and enforce an aspirational personal hourly rate. If fixing a problem will save less than your hourly rate, ignore it. If outsourcing a task will cost less than your hourly rate, outsource it.</p>
-</blockquote>
-
-<p>给自己设定并执行一个有抱负的时薪。如果修复一个问题节省下来的费用比时薪少，那就忽略这个问题。如果外包某个任务比你的时薪少，就找外包。</p>
-
-<blockquote>
-<p>Work as hard as you can. Even though who you work with and what you work on are more important than how hard you work.</p>
-</blockquote>
-
-<p>尽最大努力工作。同时明白选择做什么事情，和谁一起工作，比努力工作本身更加重要。</p>
-
-<blockquote>
-<p>Become the best in the world at what you do. Keep redefining what you do until this is true.</p>
-</blockquote>
-
-<p>在你专注的领域成为世界最佳。不断打磨优化你的技能，直到世界最佳成真。</p>
-
-<blockquote>
-<p>There are no get rich quick schemes. That&rsquo;s just someone else getting rich off you.</p>
-</blockquote>
-
-<p>没有快速致富的攻略。只有一些想从你身上发财的人。</p>
-
-<blockquote>
-<p>Apply specific knowledge, with leverage, and eventually you will get what you deserve.</p>
-</blockquote>
-
-<p>应用特种知识，加上杠杆，最终你将得到你应得的。</p>
-
-<blockquote>
-<p>When you&rsquo;re finally wealthy, you&rsquo;ll realize that it wasn&rsquo;t what you were seeking in the first place. But that&rsquo;s for another day.</p>
-</blockquote>
-
-<p>当你某天最终获得财富，你会意识到它并不是你开始想寻找的东西。但是这是我会日后再说的东西。</p>
-
-<h2 id="参考">参考</h2>
-
-<p><a href="https://hackernoon.com/how-to-get-rich-without-getting-lucky-9901caca4fd5">How to Get Rich(without getting lucky)</a></p>
+<ol>
+<li><a href="https://github.com/netflix/archaius">Netflix Archaius</a></li>
+<li><a href="http://techblog.ppdai.com/2018/05/08/20180508/">微服务动态配置组件netflix archaius</a></li>
+</ol>
 
 
                 
@@ -603,15 +473,10 @@ $(function() {
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/post/2018-06-29-soundcloud-microservices-layers/" data-toggle="tooltip" data-placement="top" title="SoundCloud微服务是如何分层的？">&larr;
+                        <a href="/post/2018-07-06-arch-use-cases/" data-toggle="tooltip" data-placement="top" title="四个架构设计案例及其思维方式">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/post/2018-07-05-apollo-architecture/" data-toggle="tooltip" data-placement="top" title="携程Apollo配置中心的架构">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
 

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 08 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>变色龙Archaius配置组件</title>
+      <link>http://jskillcloud.com/post/2018-07-08-archaius-configuration-library/</link>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2018-07-08-archaius-configuration-library/</guid>
+      <description>介绍 如果我们要设计开发一套微服务基础架构，大家觉得哪个组件是最基础的？基于多年互联网分布式系统的实战经验，我的回答是配置中心以及配套的客户端</description>
+    </item>
     
     <item>
       <title>四个架构设计案例及其思维方式</title>

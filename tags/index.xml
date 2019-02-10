@@ -6,7 +6,7 @@
     <description>Recent content in Tags on JSkillCloud</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Jul 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 08 Jul 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://jskillcloud.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,18 @@
     <item>
       <title>Apollo</title>
       <link>http://jskillcloud.com/tags/apollo/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>http://jskillcloud.com/tags/apollo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Archaius</title>
+      <link>http://jskillcloud.com/tags/archaius/</link>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/archaius/</guid>
       <description></description>
     </item>
     
@@ -194,7 +203,7 @@
     <item>
       <title>配置中心</title>
       <link>http://jskillcloud.com/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</link>
-      <pubDate>Thu, 05 Jul 2018 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 08 Jul 2018 00:00:00 +0000</pubDate>
       
       <guid>http://jskillcloud.com/tags/%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</guid>
       <description></description>
