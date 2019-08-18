@@ -151,7 +151,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/background/concentric_circles.png')
+        background-image: url('/img/background/diamonds.png')
     }
 </style>
 <header class="intro-header">
@@ -374,22 +374,22 @@ $(function() {
 <li>第四层(最上层)是业务前台层，按照不同业务线(淘宝、天猫和聚划算等)划分，再根据不同用户体验渠道(PC，无线和第三方接入等)构建不同的用户接口层。</li>
 </ul>
 
-<p><img src="images/ali_platform.jpg" alt="ali platform" />
+<p><img src="/img/post/20190818/ali_platform.jpg" alt="ali platform" />
 所谓“大中台、小前台”，就是要强化技术和业务中台的建设，把中台打扎实，才能支持并且赋能前台业务线快速迭代和创新。换句话说，有平台才有生态，只有把中台的土壤夯实，才能让前台的生态变得更加茂盛。</p>
 
 <p>当一家互联网公司发展出中台以后，它的商业规模化能力就会比较强大。比方说阿里，原来它有淘宝、天猫和 1688 等核心业务线，之后它再扩展出其它业务线(比如阿里妈妈、菜鸟物流和阿里去啊等)就很快，因为它可以重用底层的这些技术和业务中台能力。相反，对于一些没有发展出中台的公司，它的商业拓展能力就会比较弱，每次拓展新的业务线可能需要从零构建这些底层的技术和业务能力，明显缓慢而且很累。这个可以和航母平台化作战体系做一个类比，我们都知道目前美国拥有世界上最庞大的航母战斗群，所以它的作战投射能力非常强，今天把航母拉到中东波斯湾，明天又拉到他国领海，很快能形成战斗威慑力，这就是大规模平台化作战的优势。</p>
 
-<p><img src="images/hangmu.jpg" alt="航母平台化作战" /></p>
+<p><img src="/img/post/20190818/hangmu.jpg" alt="航母平台化作战" /></p>
 
 <p>中台架构不仅阿里有，其它一些大型互联网公司也有，比方说 eBay，下图是 eBay 的中台架构[参考附录 2]。我曾经在 eBay 中国研发中心工作过，最早看到这张 eBay 中台架构图是在 2008 年左右，也就是说，在 2008 年前，eBay 就已经具备了比较完善的中台架构。eBay 的中台架构和阿里的大致是类似，也是分为对应的四个层次，只是各层的具体称谓有些区别。</p>
 
-<p><img src="images/ebay_arch.jpg" alt="ebay arch" /></p>
+<p><img src="/img/post/20190818/ebay_arch.jpg" alt="ebay arch" /></p>
 
 <p>阿里或者 eBay 的中台架构，实际也不是一开始设计出来的，而是不断演进出来的。这些公司都经历过不断重复造轮子和造烟囱的阶段，最终发现这样做不仅不可持续，更无法规模化，最终都演进到模块化和重用的中台架构，也就是说，<strong>中台架构是业务可持续发展和规模化的必然产物</strong>。</p>
 
 <p>中台架构，可以作为互联网企业组织和系统架构的一个参考模型。构建类似阿里或 eBay 级别的中台门槛很高，资源和人力投入大，而且需要多年的沉淀和积累。但是我们可以学习借鉴阿里或者 eBay 的中台架构的思想，然后根据企业实际业务的规模、资源和投入的情况，构建轻量级的中台，来支持业务快速迭代和创新。下图是我在拍拍贷工作期间，根据拍拍贷的业务和组织情况，参考 eBay 的中台架构，设计的面向拍拍贷的轻量级中台架构[参考附录 3]。</p>
 
-<p><img src="images/ppdai_platform.png" alt="ppdai platform" /></p>
+<p><img src="/img/post/20190818/ppdai_platform.png" alt="ppdai platform" /></p>
 
 <p>中台的抽象层次较高，和企业的战略、组织架构密切相关，是企业中高层和架构师需要理解和掌握的。对于一般的开发人员来说，其实并不需要急于去学习中台架构，简单了解即可。但是，对于一般的开发人员，如果后续想往架构或者管理方向发展，可以先从学习和掌握微服务技术中台开始。</p>
 
@@ -397,7 +397,7 @@ $(function() {
 
 <p>微服务架构的思想原本和中台架构没有直接关联，但是如果你有经验的话，你会发现微服务架构和中台架构是密切相关，并且可以相互映射的。同样以上图阿里的中台架构为例，中台架构的第一二层，可以对应称为微服务技术中台，而中台架构中的第三层，则可以对应称为微服务业务中台。对于微服务业务中台，我们并不展开，我们来聊聊微服务技术中台该如何构建？要回答这个问题，我们先要理解微服务技术中台到底要解决哪些技术问题，也就是所谓公共关注点(concerns)。下图总结这些公共技术关注点：</p>
 
-<p><img src="images/common_concerns.jpg" alt="common concerns" /></p>
+<p><img src="/img/post/20190818/common_concerns.jpg" alt="common concerns" /></p>
 
 <p>具体讲，这些关注点包括：</p>
 
@@ -422,7 +422,7 @@ $(function() {
 
 <p>前面我们讲到，SpringCloud 和 K8s，分别是 Netflix 和谷歌，针对微服务公共关注点给出的解，只不过它们两家的解法和侧重点有所不同。这里有两个表，通过这两个表，我们对 SpringCloud vs K8s 所支持的功能点，做一个全面的横向比对：</p>
 
-<p><img src="images/sc_vs_k8s_1.png" alt="sc_vs_k8s_1" /></p>
+<p><img src="/img/post/20190818/sc_vs_k8s_1.png" alt="sc_vs_k8s_1" /></p>
 
 <ol>
 <li><strong>服务发现和 LB</strong>：服务发现和 LB 是微服务基本问题，两家都给出了解决方案。SpringCloud 的服务发现主要引用 Netflix 的 Eureka，配合使用 Ribbon 实现客户端发现和软负载。K8s 则直接在平台层解决这个问题，它直接在平台中引入了 Service 这个抽象概念，屏蔽了底层服务发现和负载均衡细节，让应用开发和服务框架都不需要关心这层细节。</li>
@@ -434,7 +434,7 @@ $(function() {
 <li><strong>调用链监控</strong>：这块 SpringCloud 提供 Spring Cloud Sleuth，支持对接 Zipkin 调用链监控。K8s 推荐采用 Uber 开源的 Jaeger 进行调用链监控，也可以使用 Zipkin。</li>
 </ol>
 
-<p><img src="images/sc_vs_k8s_2.png" alt="sc_vs_k8s_2" /></p>
+<p><img src="/img/post/20190818/sc_vs_k8s_2.png" alt="sc_vs_k8s_2" /></p>
 
 <ol>
 <li><strong>应用打包</strong>：SpringCloud 支持嵌入式容器+Uber Jar 方式打包，方便应用发布和运行。K8s 则直接支持容器镜像部署，它不关心容器内部的具体应用形式。K8s 还支持 Helm 这样的应用级打包标准，可以实现应用商店。</li>
@@ -451,7 +451,7 @@ $(function() {
 
 <p>经过比对，大家应该对 SpringCloud 和 K8s 这两个产品的功能点，应该有比较全面的了解了。下面我们对这两个产品的优势和不足，再进行一个比对：</p>
 
-<p><img src="images/sc_vs_k8s_3.png" alt="sc_vs_k8s_3" /></p>
+<p><img src="/img/post/20190818/sc_vs_k8s_3.png" alt="sc_vs_k8s_3" /></p>
 
 <p>SpringCloud 是 Spring 框架和 NetflixOSS 的融合的产物，它同时吸纳了两者的优势。Spring 框架有超过十年历史，是开源界的一个传奇。Spring 框架社区异常活跃，框架本身成熟灵活，开发者体验好是最大亮点，背后有 Pivotal 公司提供专业支持，不断完善和推陈出新。NetflixOSS 是现代微服务架构大胆创新产物，同时也经历过 Netflix 大流量冲击洗礼。Netflix 框架的一大亮点是抽象和组件化做的比较好，可以像搭积木一样灵活组装微服务基础设施，而且可以灵活替换。SpringCloud 的不足主要是仅限于 JVM 语言栈，其它语言栈支持非常有限。另外，SpringBoot 因为封装较多，运行起来比较吃资源，尤其是跑在容器里的时候。</p>
 
@@ -469,13 +469,13 @@ $(function() {
 
 <p>在波波和极客时间合作的最新课程《SpringBoot 与 Kubernetes 云原生微服务实践》中，波波会结合具体案例<a href="https://github.com/spring2go/staffjoy">Staffjoy 教学版开源项目</a>，教大家如何基于 SpringBoot，架构、设计和实现面向云原生的微服务应用，并最终部署到阿里云 K8s 环境，欢迎感兴趣的同学关注学习。</p>
 
-<p><img src="images/promote.jpg" alt="promote" /></p>
+<p><img src="/img/post/20190818/promote.jpg" alt="promote" /></p>
 
 <p>课程案例项目架构
-<img src="images/staffjoy_arch.jpg" alt="staffjoy architecture" /></p>
+<img src="/img/post/20190818/staffjoy_arch.jpg" alt="staffjoy architecture" /></p>
 
 <p>课程案例项目部署到阿里云 K8s 的部署架构
-<img src="images/staffjoy_aliyun_k8s_deployment.jpg" alt="staffjoy aliyun k8s deployment" /></p>
+<img src="/img/post/20190818/staffjoy_aliyun_k8s_deployment.jpg" alt="staffjoy aliyun k8s deployment" /></p>
 
 <h2 id="附录">附录</h2>
 
