@@ -39,6 +39,15 @@
     </item>
     
     <item>
+      <title>Kubernetes</title>
+      <link>http://jskillcloud.com/tags/kubernetes/</link>
+      <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Netflix</title>
       <link>http://jskillcloud.com/tags/netflix/</link>
       <pubDate>Thu, 28 Jun 2018 00:00:00 +0000</pubDate>
@@ -66,6 +75,15 @@
     </item>
     
     <item>
+      <title>SpringCloud</title>
+      <link>http://jskillcloud.com/tags/springcloud/</link>
+      <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/springcloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Zuul</title>
       <link>http://jskillcloud.com/tags/zuul/</link>
       <pubDate>Mon, 16 Jul 2018 00:00:00 +0000</pubDate>
@@ -80,6 +98,15 @@
       <pubDate>Sun, 30 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>http://jskillcloud.com/tags/startup/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>中台架构</title>
+      <link>http://jskillcloud.com/tags/%E4%B8%AD%E5%8F%B0%E6%9E%B6%E6%9E%84/</link>
+      <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/tags/%E4%B8%AD%E5%8F%B0%E6%9E%B6%E6%9E%84/</guid>
       <description></description>
     </item>
     

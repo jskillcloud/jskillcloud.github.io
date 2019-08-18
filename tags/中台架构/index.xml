@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>中台架构 on JSkillCloud</title>
+    <link>http://jskillcloud.com/tags/%E4%B8%AD%E5%8F%B0%E6%9E%B6%E6%9E%84/</link>
+    <description>Recent content in 中台架构 on JSkillCloud</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 18 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://jskillcloud.com/tags/%E4%B8%AD%E5%8F%B0%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>微服务中台技术栈选型~SpringCloud or K8s?</title>
+      <link>http://jskillcloud.com/post/2019-08-18-msa-platform-springcloud-or-k8s/</link>
+      <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://jskillcloud.com/post/2019-08-18-msa-platform-springcloud-or-k8s/</guid>
+      <description>前言 中台架构一词最近在技术圈内比较火，波波基于自己的经验和视角，也来凑个热闹聊聊什么是中台架构。中台架构实际由若干个层次组成，其中微服务技术</description>
+    </item>
+    
+  </channel>
+</rss>
